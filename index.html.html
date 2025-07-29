@@ -1,0 +1,1390 @@
+<!DOCTYPE html>
+<html>
+<head>
+    <title>Time Allocation Planning Model</title>
+    <style>
+        body { 
+            font-family: Arial, sans-serif; 
+            margin: 20px; 
+            max-width: 1200px; 
+            background: #f5f5f5;
+        }
+        .container { 
+            background: white; 
+            padding: 20px; 
+            border-radius: 8px;
+            box-shadow: 0 2px 4px rgba(0,0,0,0.1);
+        }
+        .tabs { 
+            display: flex; 
+            margin-bottom: 20px; 
+            border-bottom: 2px solid #007cba;
+        }
+        .tab { 
+            padding: 12px 24px; 
+            background: #f0f0f0; 
+            border: none; 
+            cursor: pointer; 
+            margin-right: 2px; 
+            border-radius: 8px 8px 0 0;
+            font-weight: bold;
+            transition: all 0.3s ease;
+        }
+        .tab:hover { 
+            background: #e0e0e0; 
+        }
+        .tab.active { 
+            background: #007cba; 
+            color: white; 
+        }
+        .tab-content { 
+            display: none; 
+            animation: fadeIn 0.3s ease-in;
+        }
+        .tab-content.active { 
+            display: block; 
+        }
+        @keyframes fadeIn {
+            from { opacity: 0; }
+            to { opacity: 1; }
+        }
+        .section { 
+            margin: 20px 0; 
+            padding: 15px; 
+            background: #f9f9f9; 
+            border-left: 4px solid #007cba; 
+            border-radius: 4px;
+        }
+        .input-group { 
+            display: flex; 
+            align-items: center; 
+            margin: 10px 0; 
+            flex-wrap: wrap;
+        }
+        .input-group label { 
+            width: 300px; 
+            font-weight: 500;
+        }
+        .input-group input, .input-group select { 
+            width: 100px; 
+            margin: 0 10px; 
+            padding: 8px; 
+            border: 1px solid #ddd;
+            border-radius: 4px;
+        }
+        .result { 
+            background: #e8f5e8; 
+            padding: 5px 10px; 
+            border-radius: 4px; 
+            font-weight: bold; 
+            color: #2d5a2d;
+        }
+        .warning { 
+            background: #fff3cd; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border-radius: 4px; 
+            border: 1px solid #ffeaa7;
+        }
+        .alert { 
+            background: #f8d7da; 
+            padding: 10px; 
+            margin: 10px 0; 
+            border-radius: 4px; 
+            border: 1px solid #f5c6cb;
+        }
+        .summary { 
+            background: #d4edda; 
+            padding: 15px; 
+            margin: 15px 0; 
+            border-radius: 4px; 
+            border: 1px solid #c3e6cb;
+        }
+        .indicator { 
+            padding: 3px 8px; 
+            border-radius: 4px; 
+            font-size: 12px; 
+            margin-left: 10px; 
+            font-weight: bold;
+        }
+        .individual { background: #4ecdc4; color: white; }
+        .leader { background: #9b59b6; color: white; }
+        .embedded { background: #ff6b6b; color: white; }
+        table { 
+            width: 100%; 
+            border-collapse: collapse; 
+            margin: 10px 0; 
+        }
+        th, td { 
+            padding: 12px; 
+            border: 1px solid #ddd; 
+            text-align: left; 
+        }
+        th { 
+            background: #f8f9fa; 
+            font-weight: bold;
+        }
+        .export-section { 
+            background: #e7f3ff; 
+            padding: 15px; 
+            margin: 15px 0; 
+            border-radius: 5px; 
+            border: 1px solid #007cba; 
+        }
+        .export-btn { 
+            background: #007cba; 
+            color: white; 
+            padding: 10px 20px; 
+            border: none; 
+            border-radius: 4px; 
+            cursor: pointer; 
+            margin: 5px; 
+            font-weight: bold;
+            transition: background 0.3s ease;
+        }
+        .export-btn:hover { 
+            background: #005a8b; 
+        }
+        .small-input { 
+            width: 60px !important; 
+        }
+        h1 {
+            color: #007cba;
+            text-align: center;
+            margin-bottom: 30px;
+        }
+        h3 {
+            color: #333;
+            margin-top: 0;
+        }
+    </style>
+</head>
+<body>
+    <div class="container">
+        <h1>Enhanced Time Allocation Planning Model</h1>
+        
+        <div class="tabs">
+            <button class="tab active" onclick="switchTab(event, 'instructions')">Instructions & Guidelines</button>
+            <button class="tab" onclick="switchTab(event, 'basic')">Basic Planning</button>
+            <button class="tab" onclick="switchTab(event, 'budget')">Budget Planning</button>
+        </div>
+
+        <!-- Instructions Tab -->
+        <div id="instructions" class="tab-content active">
+            <div class="section">
+                <h3>How to Use This Tool</h3>
+                <p><strong>This planning model helps managers allocate employee time between billable and non-billable activities for AOP planning.</strong></p>
+                
+                <h4>Step-by-Step Instructions:</h4>
+                <ol>
+                    <li><strong>Start with Basic Planning:</strong> Select employee type and adjust utilization targets</li>
+                    <li><strong>Create Budget:</strong> Use Budget Planning tab to translate into detailed BMO categories for AOP</li>
+                    <li><strong>Export Results:</strong> Generate a report or spreadsheet for each team member</li>
+                    <li><strong>Adjust as Needed:</strong> Balance allocations to stay within available non-billable time</li>
+                </ol>
+            </div>
+
+            <div class="section">
+                <h3>Leadership Accountability Framework</h3>
+                <p><strong>People Leaders managing billable employees have a fiduciary responsibility to proactively engage in strategic workforce planning conversations.</strong> This includes conducting structured discussions with team members to identify individual professional development priorities, align personal growth objectives with organizational strategic initiatives, and optimize non-billable time allocation to maximize both employee engagement and business value creation.</p>
+            </div>
+            
+            <div class="section">
+                <h3>Strategic Allocation Guidelines for Non-Billable Time</h3>
+                <p>To ensure optimal return on human capital investment, managers should implement the following strategic allocation framework for available non-billable hours:</p>
+                <ol>
+                    <li><strong>25% Optional Training/Development Opportunities</strong> - Builds future capability pipeline and maintains competitive skill sets</li>
+                    <li><strong>30% Culture & Employee Experience Activities</strong> - Drives engagement metrics, retention rates, and organizational culture strength</li>
+                    <li><strong>45% Business-Related Activities</strong> - Ensures operational excellence and strategic alignment</li>
+                </ol>
+                <p><em>Note: These percentages should be applied to discretionary time after accounting for mandatory requirements (PTO, holidays, required training, administrative duties).</em></p>
+                
+                <h4>Cultural Leadership Allocation:</h4>
+                <p>For employees interested in cultural leadership roles (Culture Committee or Employee Resource Groups), allocate:</p>
+                <ul>
+                    <li><strong>60 hours annually</strong> under Culture & Employee Experience (5 hours per month)</li>
+                    <li><strong>16 hours annually</strong> for Leadership Development</li>
+                    <li><strong>6 hours annually</strong> for additional travel</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>Overtime and Personal Time</h3>
+                <ul>
+                    <li>Anything outside the defined billable/indirect ratio is considered personal time</li>
+                    <li>Personal time is not eligible for overtime pay</li>
+                    <li>Team members must coordinate with their supervisors in advance so project delivery and team responsibilities are fully maintained</li>
+                </ul>
+            </div>
+
+            <div class="section">
+                <h3>Examples of Direct Billable Work</h3>
+                <ol>
+                    <li><strong>Project Planning & Coordination</strong>
+                        <ul>
+                            <li>Developing and managing project schedules, budgets, and execution plans</li>
+                            <li>Coordinating with clients, subcontractors, and internal teams</li>
+                        </ul>
+                    </li>
+                    <li><strong>Client-Facing Communication</strong>
+                        <ul>
+                            <li>Participating in client calls, meetings, or site visits related to active projects</li>
+                            <li>Preparing client-facing reports, minutes, and updates</li>
+                        </ul>
+                    </li>
+                    <li><strong>Technical Deliverables</strong>
+                        <ul>
+                            <li>Reviewing, redlining, or contributing to engineering drawings, specifications, or deliverables</li>
+                            <li>Supporting design reviews or QA/QC processes tied to contract scope</li>
+                        </ul>
+                    </li>
+                    <li><strong>Change Order Management</strong>
+                        <ul>
+                            <li>Scoping, pricing, and tracking change orders or budget amendments</li>
+                            <li>Supporting documentation for change approval or T&M logs</li>
+                        </ul>
+                    </li>
+                    <li><strong>Invoicing & Financial Tracking for Active Projects</strong>
+                        <ul>
+                            <li>Reviewing actuals, verifying cost allocations, and submitting project-specific billing data</li>
+                            <li>Supporting Earned Value tracking, WIP review, and monthly forecasting</li>
+                        </ul>
+                    </li>
+                    <li><strong>Subcontractor Oversight or Field Coordination</strong>
+                        <ul>
+                            <li>Engaging with subcontractors or CMs to resolve field issues</li>
+                            <li>Reviewing submittals or installation documentation required by the client</li>
+                        </ul>
+                    </li>
+                    <li><strong>Contractual Reporting & Compliance</strong>
+                        <ul>
+                            <li>Preparing or submitting project deliverables required by the client contract (monthly reports, startup logs, etc.)</li>
+                        </ul>
+                    </li>
+                    <li><strong>Internal Work Directly Tied to a Contract</strong>
+                        <ul>
+                            <li>Internal coordination for a billable scope, including kickoff, safety, or startup meetings</li>
+                            <li>Writing meeting agendas or internal memos tied to deliverable creation</li>
+                        </ul>
+                    </li>
+                </ol>
+            </div>
+
+            <div class="section">
+                <h3>Employee Type Comparison</h3>
+                <table>
+                    <tr>
+                        <th>Employee Type</th>
+                        <th>Target Util%</th>
+                        <th>Reality Util%</th>
+                        <th>Non-Bill Available</th>
+                        <th>Strategic Time</th>
+                    </tr>
+                    <tr>
+                        <td>Individual Contributor</td>
+                        <td>80%</td>
+                        <td>85%</td>
+                        <td>416 hrs</td>
+                        <td>90 hrs</td>
+                    </tr>
+                    <tr>
+                        <td>People Leader</td>
+                        <td>50%</td>
+                        <td>55%</td>
+                        <td>1040 hrs</td>
+                        <td>280 hrs</td>
+                    </tr>
+                    <tr>
+                        <td>Embedded Employee</td>
+                        <td>95%</td>
+                        <td>100%</td>
+                        <td>104 hrs</td>
+                        <td>20 hrs</td>
+                    </tr>
+                </table>
+            </div>
+        </div>
+
+        <!-- Basic Planning Tab -->
+        <div id="basic" class="tab-content">
+            <div class="section">
+                <h3>Employee Configuration</h3>
+                <div class="input-group">
+                    <label>Employee Name:</label>
+                    <input type="text" id="employeeName" placeholder="Enter employee name" style="width: 200px;">
+                </div>
+                <div class="input-group">
+                    <label>Employee Type:</label>
+                    <select id="employeeType" onchange="updateEmployeeType()">
+                        <option value="individual">Individual Contributor</option>
+                        <option value="leader">People Leader</option>
+                        <option value="embedded">Embedded (Client Site)</option>
+                    </select>
+                    <span id="typeDisplay" class="indicator individual">Individual Contributor</span>
+                </div>
+                <div class="input-group">
+                    <label>Life Line Sector (LLS):</label>
+                    <select id="lls">
+                        <option value="power">Power</option>
+                        <option value="renewables">Renewables</option>
+                        <option value="transportation">Transportation</option>
+                        <option value="water">Water</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Total Hours/Year:</label>
+                    <input type="number" id="totalHours" value="2080" onchange="calculateBasic()">
+                    <span class="result" id="totalHoursResult">2,080</span>
+                </div>
+                <div class="input-group">
+                    <label>Target Utilization %:</label>
+                    <input type="number" id="utilization" value="80" onchange="calculateBasic()">
+                    <span class="result" id="utilizationResult">80%</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Billable vs Non-Billable Breakdown</h3>
+                <div class="input-group">
+                    <label>Billable Hours (Target):</label>
+                    <span class="result" id="billableResult">1,664</span>
+                </div>
+                <div class="input-group">
+                    <label>Available Non-Billable Hours:</label>
+                    <span class="result" id="nonBillableResult">416</span>
+                </div>
+                <div class="input-group">
+                    <label>Actual Utilization % (Reality Check):</label>
+                    <input type="number" id="actualUtilization" value="85" onchange="calculateBasic()">
+                    <span class="result" id="actualUtilizationResult">85%</span>
+                </div>
+                <div id="utilizationWarning" class="warning" style="display:none;"></div>
+            </div>
+
+            <div class="section">
+                <h3>Essential Non-Billable Categories</h3>
+                <div class="input-group">
+                    <label>PTO (Personal/Sick Time, parental, medical, bereavement, jury duty):</label>
+                    <input type="number" id="pto" value="120" onchange="calculateBasic()">
+                    <span class="result" id="ptoResult">120</span>
+                </div>
+                <div class="input-group">
+                    <label>Holiday Hours (company holidays):</label>
+                    <input type="number" id="holidays" value="64" onchange="calculateBasic()">
+                    <span class="result" id="holidaysResult">64</span>
+                </div>
+                <div class="input-group">
+                    <label>Travel Time (conferences, training, client meetings):</label>
+                    <input type="number" id="travel" value="20" onchange="calculateBasic()">
+                    <span class="result" id="travelResult">20</span>
+                </div>
+                <div class="input-group">
+                    <label>Required Business Training (compliance, platforms, competencies):</label>
+                    <input type="number" id="businessTraining" value="13" onchange="calculateBasic()">
+                    <span class="result" id="businessTrainingResult">13</span>
+                </div>
+                <div class="input-group">
+                    <label>Technical Training (certifications, upskilling, reskilling):</label>
+                    <input type="number" id="techTraining" value="30" onchange="calculateBasic()">
+                    <span class="result" id="techTrainingResult">30</span>
+                </div>
+                <div class="input-group">
+                    <label>Hiring Activities (interviewing, prep, recruiting):</label>
+                    <input type="number" id="hiring" value="20" onchange="calculateBasic()">
+                    <span class="result" id="hiringResult">20</span>
+                </div>
+                <div class="input-group">
+                    <label>Administrative (reviews, reporting, Glint surveys):</label>
+                    <input type="number" id="admin" value="60" onchange="calculateBasic()">
+                    <span class="result" id="adminResult">60</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Strategic & Development Activities</h3>
+                <div class="input-group">
+                    <label>Innovation/Digital Transformation:</label>
+                    <input type="number" id="innovation" value="10" onchange="calculateBasic()">
+                    <span class="result" id="innovationResult">10</span>
+                </div>
+                <div class="input-group">
+                    <label>Culture & Employee Experience (ERGs, wellbeing, connectivity):</label>
+                    <input type="number" id="culture" value="13" onchange="calculateBasic()">
+                    <span class="result" id="cultureResult">13</span>
+                </div>
+                <div class="input-group">
+                    <label>Volunteer Hours (8 hours annually per employee):</label>
+                    <input type="number" id="volunteer" value="8" onchange="calculateBasic()">
+                    <span class="result" id="volunteerResult">8</span>
+                </div>
+                <div class="input-group">
+                    <label>Optional Professional Development (conferences, external training):</label>
+                    <input type="number" id="optionalDev" value="17" onchange="calculateBasic()">
+                    <span class="result" id="optionalDevResult">17</span>
+                </div>
+                <div class="input-group">
+                    <label>Business Activities (team meetings, town halls, check-ins):</label>
+                    <input type="number" id="businessActivities" value="31" onchange="calculateBasic()">
+                    <span class="result" id="businessActivitiesResult">31</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Summary</h3>
+                <div class="input-group">
+                    <label>Total Allocated Non-Billable Hours:</label>
+                    <span class="result" id="totalAllocated">406</span>
+                </div>
+                <div class="input-group">
+                    <label>Buffer Time:</label>
+                    <span class="result" id="bufferTime">10</span>
+                </div>
+                <div id="statusMessage" class="summary">Status: Within limits</div>
+            </div>
+
+            <div class="export-section">
+                <h3>Export & Replication</h3>
+                <p><strong>Use these options to save and replicate planning for your team members:</strong></p>
+                <button class="export-btn" onclick="exportToCSV()">Download as CSV</button>
+                <button class="export-btn" onclick="printReport()">Print/PDF Report</button>
+                <button class="export-btn" onclick="resetForm()">Clear for Next Employee</button>
+                <p><em>Save each team member's allocation separately. Use the CSV download for spreadsheet analysis or the print function for physical records.</em></p>
+            </div>
+        </div>
+
+        <!-- Budget Planning Tab -->
+        <div id="budget" class="tab-content">
+            <div class="section">
+                <h3>Complete Budget Planning (BMO Category Breakdown)</h3>
+                <p>This tool breaks down your basic planning into detailed BMO budget categories for AOP planning:</p>
+                
+                <div class="input-group">
+                    <label>Employee Name:</label>
+                    <div class="result" id="budgetEmployeeName">Enter name in Basic Planning</div>
+                </div>
+                <div class="input-group">
+                    <label>Total Available Non-Billable Hours:</label>
+                    <div class="result" id="budgetTotal">416 hours</div>
+                </div>
+                <div class="input-group">
+                    <label>Strategic Time Available (after essentials):</label>
+                    <div class="result" id="budgetStrategic">90 hours</div>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>PTO (Personal/Sick Time)</h3>
+                <div class="input-group">
+                    <label>PTO - Personal/Sick Time:</label>
+                    <input type="number" id="budgetPTO" value="120" onchange="calculateBudget()">
+                    <span class="result" id="budgetPTOResult">120</span>
+                </div>
+                <div class="input-group">
+                    <label>Other:</label>
+                    <input type="number" id="budgetPTOOther" value="0" onchange="calculateBudget()" class="small-input">
+                    <input type="text" id="budgetPTOOtherDesc" placeholder="Describe other PTO" style="width: 200px;">
+                </div>
+                <div class="input-group">
+                    <label><strong>Total PTO:</strong></label>
+                    <span class="result" id="budgetPTOTotal">120</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Holiday Hours</h3>
+                <div class="input-group">
+                    <label>Company Holidays:</label>
+                    <input type="number" id="budgetHolidays" value="64" onchange="calculateBudget()">
+                    <span class="result" id="budgetHolidaysResult">64</span>
+                </div>
+                <div class="input-group">
+                    <label>Other:</label>
+                    <input type="number" id="budgetHolidaysOther" value="0" onchange="calculateBudget()" class="small-input">
+                    <input type="text" id="budgetHolidaysOtherDesc" placeholder="Describe other holidays" style="width: 200px;">
+                </div>
+                <div class="input-group">
+                    <label><strong>Total Holiday Hours:</strong></label>
+                    <span class="result" id="budgetHolidaysTotal">64</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Travel Time</h3>
+                <div class="input-group">
+                    <label>Conference Travel:</label>
+                    <input type="number" id="budgetConferenceTravel" value="10" onchange="calculateBudget()">
+                    <span class="result" id="budgetConferenceTravelResult">10</span>
+                </div>
+                <div class="input-group">
+                    <label>Training Travel:</label>
+                    <input type="number" id="budgetTrainingTravel" value="5" onchange="calculateBudget()">
+                    <span class="result" id="budgetTrainingTravelResult">5</span>
+                </div>
+                <div class="input-group">
+                    <label>Client Meeting Travel:</label>
+                    <input type="number" id="budgetClientTravel" value="5" onchange="calculateBudget()">
+                    <span class="result" id="budgetClientTravelResult">5</span>
+                </div>
+                <div class="input-group">
+                    <label>Other:</label>
+                    <input type="number" id="budgetTravelOther" value="0" onchange="calculateBudget()" class="small-input">
+                    <input type="text" id="budgetTravelOtherDesc" placeholder="Describe other travel" style="width: 200px;">
+                </div>
+                <div class="input-group">
+                    <label><strong>Total Travel Time:</strong></label>
+                    <span class="result" id="budgetTravelTotal">20</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Required Business Training</h3>
+                <div class="input-group">
+                    <label>Compliance Training:</label>
+                    <input type="number" id="budgetCompliance" value="4" onchange="calculateBudget()">
+                    <span class="result" id="budgetComplianceResult">4</span>
+                </div>
+                <div class="input-group">
+                    <label>Leadership Development:</label>
+                    <input type="number" id="budgetLeadership" value="5" onchange="calculateBudget()">
+                    <span class="result" id="budgetLeadershipResult">5</span>
+                </div>
+                <div class="input-group">
+                    <label>Processes & Platforms Training:</label>
+                    <input type="number" id="budgetPlatform" value="4" onchange="calculateBudget()">
+                    <span class="result" id="budgetPlatformResult">4</span>
+                </div>
+                <div class="input-group">
+                    <label>Other:</label>
+                    <input type="number" id="budgetBusinessTrainingOther" value="0" onchange="calculateBudget()" class="small-input">
+                    <input type="text" id="budgetBusinessTrainingOtherDesc" placeholder="Describe other training" style="width: 200px;">
+                </div>
+                <div class="input-group">
+                    <label><strong>Total Required Business Training:</strong></label>
+                    <span class="result" id="budgetBusinessTrainingTotal">13</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Technical Training</h3>
+                <div class="input-group">
+                    <label>Certifications:</label>
+                    <input type="number" id="budgetCertifications" value="15" onchange="calculateBudget()">
+                    <span class="result" id="budgetCertificationsResult">15</span>
+                </div>
+                <div class="input-group">
+                    <label>Upskilling/Reskilling:</label>
+                    <input type="number" id="budgetUpskilling" value="15" onchange="calculateBudget()">
+                    <span class="result" id="budgetUpskillingResult">15</span>
+                </div>
+                <div class="input-group">
+                    <label>Other:</label>
+                    <input type="number" id="budgetTechTrainingOther" value="0" onchange="calculateBudget()" class="small-input">
+                    <input type="text" id="budgetTechTrainingOtherDesc" placeholder="Describe other technical training" style="width: 200px;">
+                </div>
+                <div class="input-group">
+                    <label><strong>Total Technical Training:</strong></label>
+                    <span class="result" id="budgetTechTrainingTotal">30</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Hiring Activities</h3>
+                <div class="input-group">
+                    <label>Interviewing:</label>
+                    <input type="number" id="budgetInterviewing" value="10" onchange="calculateBudget()">
+                    <span class="result" id="budgetInterviewingResult">10</span>
+                </div>
+                <div class="input-group">
+                    <label>Recruiting:</label>
+                    <input type="number" id="budgetRecruiting" value="5" onchange="calculateBudget()">
+                    <span class="result" id="budgetRecruitingResult">5</span>
+                </div>
+                <div class="input-group">
+                    <label>Onboarding:</label>
+                    <input type="number" id="budgetOnboarding" value="5" onchange="calculateBudget()">
+                    <span class="result" id="budgetOnboardingResult">5</span>
+                </div>
+                <div class="input-group">
+                    <label>Other:</label>
+                    <input type="number" id="budgetHiringOther" value="0" onchange="calculateBudget()" class="small-input">
+                    <input type="text" id="budgetHiringOtherDesc" placeholder="Describe other hiring activities" style="width: 200px;">
+                </div>
+                <div class="input-group">
+                    <label><strong>Total Hiring Activities:</strong></label>
+                    <span class="result" id="budgetHiringTotal">20</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Administrative</h3>
+                <div class="input-group">
+                    <label>Performance Reviews:</label>
+                    <input type="number" id="budgetReviews" value="25" onchange="calculateBudget()">
+                    <span class="result" id="budgetReviewsResult">25</span>
+                </div>
+                <div class="input-group">
+                    <label>Indirect Reporting:</label>
+                    <input type="number" id="budgetReporting" value="20" onchange="calculateBudget()">
+                    <span class="result" id="budgetReportingResult">20</span>
+                </div>
+                <div class="input-group">
+                    <label>Employee Surveys (Glint):</label>
+                    <input type="number" id="budgetSurveys" value="15" onchange="calculateBudget()">
+                    <span class="result" id="budgetSurveysResult">15</span>
+                </div>
+                <div class="input-group">
+                    <label>Other:</label>
+                    <input type="number" id="budgetAdminOther" value="0" onchange="calculateBudget()" class="small-input">
+                    <input type="text" id="budgetAdminOtherDesc" placeholder="Describe other administrative work" style="width: 200px;">
+                </div>
+                <div class="input-group">
+                    <label><strong>Total Administrative:</strong></label>
+                    <span class="result" id="budgetAdminTotal">60</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Innovation/Digital Transformation</h3>
+                <div class="input-group">
+                    <label>Innovation Projects:</label>
+                    <input type="number" id="budgetInnovationProjects" value="6" onchange="calculateBudget()">
+                    <span class="result" id="budgetInnovationProjectsResult">6</span>
+                </div>
+                <div class="input-group">
+                    <label>Digital Transformation:</label>
+                    <input type="number" id="budgetDigitalTransform" value="4" onchange="calculateBudget()">
+                    <span class="result" id="budgetDigitalTransformResult">4</span>
+                </div>
+                <div class="input-group">
+                    <label>Other:</label>
+                    <input type="number" id="budgetInnovationOther" value="0" onchange="calculateBudget()" class="small-input">
+                    <input type="text" id="budgetInnovationOtherDesc" placeholder="Describe other innovation work" style="width: 200px;">
+                </div>
+                <div class="input-group">
+                    <label><strong>Total Innovation:</strong></label>
+                    <span class="result" id="budgetInnovationTotal">10</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Culture & Employee Experience</h3>
+                <div class="input-group">
+                    <label>ERG Participation:</label>
+                    <input type="number" id="budgetERG" value="8" onchange="calculateBudget()">
+                    <span class="result" id="budgetERGResult">8</span>
+                </div>
+                <div class="input-group">
+                    <label>Wellbeing Activities:</label>
+                    <input type="number" id="budgetWellbeing" value="3" onchange="calculateBudget()">
+                    <span class="result" id="budgetWellbeingResult">3</span>
+                </div>
+                <div class="input-group">
+                    <label>Culture / Connectivity:</label>
+                    <input type="number" id="budgetConnectivity" value="2" onchange="calculateBudget()">
+                    <span class="result" id="budgetConnectivityResult">2</span>
+                </div>
+                <div class="input-group">
+                    <label>Other:</label>
+                    <input type="number" id="budgetCultureOther" value="0" onchange="calculateBudget()" class="small-input">
+                    <input type="text" id="budgetCultureOtherDesc" placeholder="Describe other culture activities" style="width: 200px;">
+                </div>
+                <div class="input-group">
+                    <label><strong>Total Culture & Employee Experience:</strong></label>
+                    <span class="result" id="budgetCultureTotal">13</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Volunteer Hours</h3>
+                <div class="input-group">
+                    <label>Company Volunteer Time:</label>
+                    <input type="number" id="budgetVolunteer" value="8" onchange="calculateBudget()">
+                    <span class="result" id="budgetVolunteerResult">8</span>
+                </div>
+                <div class="input-group">
+                    <label>Other:</label>
+                    <input type="number" id="budgetVolunteerOther" value="0" onchange="calculateBudget()" class="small-input">
+                    <input type="text" id="budgetVolunteerOtherDesc" placeholder="Describe other volunteer work" style="width: 200px;">
+                </div>
+                <div class="input-group">
+                    <label><strong>Total Volunteer Hours:</strong></label>
+                    <span class="result" id="budgetVolunteerTotal">8</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Optional Professional Development</h3>
+                <div class="input-group">
+                    <label>External Conferences:</label>
+                    <input type="number" id="budgetExternalConf" value="12" onchange="calculateBudget()">
+                    <span class="result" id="budgetExternalConfResult">12</span>
+                </div>
+                <div class="input-group">
+                    <label>External Training:</label>
+                    <input type="number" id="budgetExternalTraining" value="5" onchange="calculateBudget()">
+                    <span class="result" id="budgetExternalTrainingResult">5</span>
+                </div>
+                <div class="input-group">
+                    <label>Other:</label>
+                    <input type="number" id="budgetOptionalDevOther" value="0" onchange="calculateBudget()" class="small-input">
+                    <input type="text" id="budgetOptionalDevOtherDesc" placeholder="Describe other professional development" style="width: 200px;">
+                </div>
+                <div class="input-group">
+                    <label><strong>Total Optional Professional Development:</strong></label>
+                    <span class="result" id="budgetOptionalDevTotal">17</span>
+                </div>
+            </div>
+
+            <div class="section">
+                <h3>Business Activities</h3>
+                <div class="input-group">
+                    <label>Team Meetings:</label>
+                    <input type="number" id="budgetTeamMeetings" value="20" onchange="calculateBudget()">
+                    <span class="result" id="budgetTeamMeetingsResult">20</span>
+                </div>
+                <div class="input-group">
+                    <label>Town Halls:</label>
+                    <input type="number" id="budgetTownHalls" value="6" onchange="calculateBudget()">
+                    <span class="result" id="budgetTownHallsResult">6</span>
+                </div>
+                <div class="input-group">
+                    <label>Check-ins:</label>
+                    <input type="number" id="budgetCheckins" value="5" onchange="calculateBudget()">
+                    <span class="result" id="budgetCheckinsResult">5</span>
+                </div>
+                <div class="input-group">
+                    <label>Other:</label>
+                    <input type="number" id="budgetBusinessOther" value="0" onchange="calculateBudget()" class="small-input">
+                    <input type="text" id="budgetBusinessOtherDesc" placeholder="Describe other business activities" style="width: 200px;">
+                </div>
+                <div class="input-group">
+                    <label><strong>Total Business Activities:</strong></label>
+                    <span class="result" id="budgetBusinessActivitiesTotal">31</span>
+                </div>
+            </div>
+
+            <div class="summary">
+                <h3>Complete Budget Summary</h3>
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px;">
+                    <div>
+                        <strong>Total Essential Hours:</strong><br>
+                        <span id="totalEssentialAllocated">327 hours</span>
+                    </div>
+                    <div>
+                        <strong>Total Strategic Hours:</strong><br>
+                        <span id="totalStrategicAllocated">89 hours</span>
+                    </div>
+                </div>
+                
+                <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 20px; margin-top: 15px;">
+                    <div>
+                        <strong>Grand Total Allocated:</strong><br>
+                        <span id="grandTotalAllocated">416 hours</span>
+                    </div>
+                    <div>
+                        <strong>Budget Status:</strong><br>
+                        <span id="budgetStatus" style="color: green;">Within range</span>
+                    </div>
+                </div>
+                
+                <div id="budgetAlert" class="alert" style="display: none;">
+                    <strong>Budget Alert:</strong> Total allocation exceeds available time.
+                </div>
+            </div>
+
+            <div class="export-section">
+                <h3>Export Budget Planning</h3>
+                <p><strong>Save your detailed budget breakdown:</strong></p>
+                <button class="export-btn" onclick="exportBudgetToCSV()">Download Budget as CSV</button>
+                <button class="export-btn" onclick="printBudgetReport()">Print Budget Report</button>
+                <button class="export-btn" onclick="resetBudgetForm()">Clear Budget for Next Employee</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        // Global variables for better state management
+        var currentTab = 'instructions';
+        
+        // Tab switching function
+        function switchTab(evt, tabName) {
+            var i, tabcontent, tablinks;
+            
+            // Hide all tab contents
+            tabcontent = document.getElementsByClassName("tab-content");
+            for (i = 0; i < tabcontent.length; i++) {
+                tabcontent[i].classList.remove("active");
+            }
+            
+            // Remove active class from all tabs
+            tablinks = document.getElementsByClassName("tab");
+            for (i = 0; i < tablinks.length; i++) {
+                tablinks[i].classList.remove("active");
+            }
+            
+            // Show the selected tab content and mark tab as active
+            document.getElementById(tabName).classList.add("active");
+            evt.currentTarget.classList.add("active");
+            
+            // Update current tab
+            currentTab = tabName;
+            
+            // Sync data when switching to budget tab
+            if (tabName === 'budget') {
+                syncBasicToBudget();
+            }
+        }
+
+        // Helper functions for safe DOM manipulation
+        function safeGetValue(id, defaultValue) {
+            var element = document.getElementById(id);
+            if (element && element.value !== undefined && element.value !== '') {
+                var value = parseFloat(element.value);
+                return isNaN(value) ? (defaultValue || 0) : value;
+            }
+            return defaultValue || 0;
+        }
+
+        function safeSetValue(id, value) {
+            var element = document.getElementById(id);
+            if (element) {
+                element.value = value;
+            }
+        }
+
+        function safeSetText(id, text) {
+            var element = document.getElementById(id);
+            if (element) {
+                element.textContent = text;
+            }
+        }
+
+        function safeGetText(id) {
+            var element = document.getElementById(id);
+            return element ? (element.value || element.textContent || '') : '';
+        }
+
+        // Employee type update function
+        function updateEmployeeType() {
+            var employeeType = document.getElementById('employeeType').value;
+            var typeDisplay = document.getElementById('typeDisplay');
+            
+            // Update visual indicator
+            if (typeDisplay) {
+                if (employeeType === 'individual') {
+                    typeDisplay.textContent = 'Individual Contributor';
+                    typeDisplay.className = 'indicator individual';
+                } else if (employeeType === 'leader') {
+                    typeDisplay.textContent = 'People Leader';
+                    typeDisplay.className = 'indicator leader';
+                } else if (employeeType === 'embedded') {
+                    typeDisplay.textContent = 'Embedded';
+                    typeDisplay.className = 'indicator embedded';
+                }
+            }
+            
+            // Update default values based on employee type
+            if (employeeType === 'leader') {
+                safeSetValue('utilization', 50);
+                safeSetValue('actualUtilization', 55);
+                safeSetValue('businessTraining', 35);
+                safeSetValue('travel', 40);
+            } else if (employeeType === 'embedded') {
+                safeSetValue('utilization', 95);
+                safeSetValue('actualUtilization', 100);
+                safeSetValue('businessTraining', 13);
+                safeSetValue('travel', 20);
+            } else { // individual contributor
+                safeSetValue('utilization', 80);
+                safeSetValue('actualUtilization', 85);
+                safeSetValue('businessTraining', 13);
+                safeSetValue('travel', 20);
+            }
+            
+            // Recalculate everything
+            calculateBasic();
+        }
+
+        // Basic planning calculations
+        function calculateBasic() {
+            // Get basic values
+            var totalHours = safeGetValue('totalHours', 2080);
+            var utilization = safeGetValue('utilization', 80);
+            var actualUtilization = safeGetValue('actualUtilization', 85);
+            
+            // Calculate billable/non-billable split
+            var billableHours = Math.round(totalHours * (utilization / 100));
+            var nonBillableHours = totalHours - billableHours;
+            
+            // Get all category values
+            var pto = safeGetValue('pto', 120);
+            var holidays = safeGetValue('holidays', 64);
+            var travel = safeGetValue('travel', 20);
+            var businessTraining = safeGetValue('businessTraining', 13);
+            var techTraining = safeGetValue('techTraining', 30);
+            var hiring = safeGetValue('hiring', 20);
+            var admin = safeGetValue('admin', 60);
+            var innovation = safeGetValue('innovation', 10);
+            var culture = safeGetValue('culture', 13);
+            var volunteer = safeGetValue('volunteer', 8);
+            var optionalDev = safeGetValue('optionalDev', 17);
+            var businessActivities = safeGetValue('businessActivities', 31);
+            
+            // Calculate totals
+            var totalAllocated = pto + holidays + travel + businessTraining + techTraining + 
+                               hiring + admin + innovation + culture + volunteer + 
+                               optionalDev + businessActivities;
+            var bufferTime = nonBillableHours - totalAllocated;
+            
+            // Update display values
+            safeSetText('totalHoursResult', totalHours.toLocaleString());
+            safeSetText('utilizationResult', utilization + '%');
+            safeSetText('actualUtilizationResult', actualUtilization + '%');
+            safeSetText('billableResult', billableHours.toLocaleString());
+            safeSetText('nonBillableResult', nonBillableHours.toLocaleString());
+            
+            // Update category results
+            safeSetText('ptoResult', pto);
+            safeSetText('holidaysResult', holidays);
+            safeSetText('travelResult', travel);
+            safeSetText('businessTrainingResult', businessTraining);
+            safeSetText('techTrainingResult', techTraining);
+            safeSetText('hiringResult', hiring);
+            safeSetText('adminResult', admin);
+            safeSetText('innovationResult', innovation);
+            safeSetText('cultureResult', culture);
+            safeSetText('volunteerResult', volunteer);
+            safeSetText('optionalDevResult', optionalDev);
+            safeSetText('businessActivitiesResult', businessActivities);
+            
+            // Update summary
+            safeSetText('totalAllocated', totalAllocated);
+            safeSetText('bufferTime', bufferTime);
+            
+            // Update status
+            var statusElement = document.getElementById('statusMessage');
+            if (statusElement) {
+                if (bufferTime < 0) {
+                    statusElement.textContent = 'Status: Over-allocated by ' + Math.abs(bufferTime) + ' hours';
+                    statusElement.className = 'alert';
+                } else if (bufferTime < 20) {
+                    statusElement.textContent = 'Status: Tight allocation - ' + bufferTime + ' hours buffer';
+                    statusElement.className = 'warning';
+                } else {
+                    statusElement.textContent = 'Status: Within limits - ' + bufferTime + ' hours buffer';
+                    statusElement.className = 'summary';
+                }
+            }
+            
+            // Update utilization warning
+            var warningElement = document.getElementById('utilizationWarning');
+            if (warningElement) {
+                if (actualUtilization > utilization) {
+                    warningElement.style.display = 'block';
+                    warningElement.textContent = 'Warning: Actual utilization exceeds target by ' + 
+                                               (actualUtilization - utilization) + ' percentage points.';
+                } else {
+                    warningElement.style.display = 'none';
+                }
+            }
+            
+            // Update budget tab values
+            updateBudgetTotals();
+        }
+
+        // Sync basic planning data to budget planning
+        function syncBasicToBudget() {
+            var employeeName = safeGetText('employeeName');
+            if (employeeName) {
+                safeSetText('budgetEmployeeName', employeeName);
+            } else {
+                safeSetText('budgetEmployeeName', 'Enter name in Basic Planning');
+            }
+            
+            var nonBillableHours = safeGetValue('totalHours', 2080) - 
+                                 Math.round(safeGetValue('totalHours', 2080) * (safeGetValue('utilization', 80) / 100));
+            
+            safeSetText('budgetTotal', nonBillableHours + ' hours');
+            
+            // Sync individual category values
+            safeSetValue('budgetPTO', safeGetValue('pto', 120));
+            safeSetValue('budgetHolidays', safeGetValue('holidays', 64));
+            
+            // Calculate strategic time
+            var essentialTime = safeGetValue('pto', 120) + safeGetValue('holidays', 64) + 
+                              safeGetValue('travel', 20) + safeGetValue('businessTraining', 13) + 
+                              safeGetValue('techTraining', 30) + safeGetValue('hiring', 20) + 
+                              safeGetValue('admin', 60);
+            var strategicTime = nonBillableHours - essentialTime;
+            safeSetText('budgetStrategic', strategicTime + ' hours');
+            
+            calculateBudget();
+        }
+
+        // Budget planning calculations
+        function calculateBudget() {
+            // Calculate all subcategory totals
+            var ptoTotal = safeGetValue('budgetPTO', 120) + safeGetValue('budgetPTOOther', 0);
+            var holidaysTotal = safeGetValue('budgetHolidays', 64) + safeGetValue('budgetHolidaysOther', 0);
+            
+            var travelTotal = safeGetValue('budgetConferenceTravel', 10) + 
+                            safeGetValue('budgetTrainingTravel', 5) + 
+                            safeGetValue('budgetClientTravel', 5) + 
+                            safeGetValue('budgetTravelOther', 0);
+            
+            var businessTrainingTotal = safeGetValue('budgetCompliance', 4) + 
+                                      safeGetValue('budgetLeadership', 5) + 
+                                      safeGetValue('budgetPlatform', 4) + 
+                                      safeGetValue('budgetBusinessTrainingOther', 0);
+            
+            var techTrainingTotal = safeGetValue('budgetCertifications', 15) + 
+                                  safeGetValue('budgetUpskilling', 15) + 
+                                  safeGetValue('budgetTechTrainingOther', 0);
+            
+            var hiringTotal = safeGetValue('budgetInterviewing', 10) + 
+                            safeGetValue('budgetRecruiting', 5) + 
+                            safeGetValue('budgetOnboarding', 5) + 
+                            safeGetValue('budgetHiringOther', 0);
+            
+            var adminTotal = safeGetValue('budgetReviews', 25) + 
+                           safeGetValue('budgetReporting', 20) + 
+                           safeGetValue('budgetSurveys', 15) + 
+                           safeGetValue('budgetAdminOther', 0);
+            
+            var innovationTotal = safeGetValue('budgetInnovationProjects', 6) + 
+                                safeGetValue('budgetDigitalTransform', 4) + 
+                                safeGetValue('budgetInnovationOther', 0);
+            
+            var cultureTotal = safeGetValue('budgetERG', 8) + 
+                             safeGetValue('budgetWellbeing', 3) + 
+                             safeGetValue('budgetConnectivity', 2) + 
+                             safeGetValue('budgetCultureOther', 0);
+            
+            var volunteerTotal = safeGetValue('budgetVolunteer', 8) + 
+                               safeGetValue('budgetVolunteerOther', 0);
+            
+            var optionalDevTotal = safeGetValue('budgetExternalConf', 12) + 
+                                 safeGetValue('budgetExternalTraining', 5) + 
+                                 safeGetValue('budgetOptionalDevOther', 0);
+            
+            var businessActivitiesTotal = safeGetValue('budgetTeamMeetings', 20) + 
+                                        safeGetValue('budgetTownHalls', 6) + 
+                                        safeGetValue('budgetCheckins', 5) + 
+                                        safeGetValue('budgetBusinessOther', 0);
+
+            // Update category totals
+            safeSetText('budgetPTOTotal', ptoTotal);
+            safeSetText('budgetHolidaysTotal', holidaysTotal);
+            safeSetText('budgetTravelTotal', travelTotal);
+            safeSetText('budgetBusinessTrainingTotal', businessTrainingTotal);
+            safeSetText('budgetTechTrainingTotal', techTrainingTotal);
+            safeSetText('budgetHiringTotal', hiringTotal);
+            safeSetText('budgetAdminTotal', adminTotal);
+            safeSetText('budgetInnovationTotal', innovationTotal);
+            safeSetText('budgetCultureTotal', cultureTotal);
+            safeSetText('budgetVolunteerTotal', volunteerTotal);
+            safeSetText('budgetOptionalDevTotal', optionalDevTotal);
+            safeSetText('budgetBusinessActivitiesTotal', businessActivitiesTotal);
+
+            // Update individual result displays
+            safeSetText('budgetPTOResult', safeGetValue('budgetPTO', 120));
+            safeSetText('budgetHolidaysResult', safeGetValue('budgetHolidays', 64));
+            safeSetText('budgetConferenceTravelResult', safeGetValue('budgetConferenceTravel', 10));
+            safeSetText('budgetTrainingTravelResult', safeGetValue('budgetTrainingTravel', 5));
+            safeSetText('budgetClientTravelResult', safeGetValue('budgetClientTravel', 5));
+            safeSetText('budgetComplianceResult', safeGetValue('budgetCompliance', 4));
+            safeSetText('budgetLeadershipResult', safeGetValue('budgetLeadership', 5));
+            safeSetText('budgetPlatformResult', safeGetValue('budgetPlatform', 4));
+            safeSetText('budgetCertificationsResult', safeGetValue('budgetCertifications', 15));
+            safeSetText('budgetUpskillingResult', safeGetValue('budgetUpskilling', 15));
+            safeSetText('budgetInterviewingResult', safeGetValue('budgetInterviewing', 10));
+            safeSetText('budgetRecruitingResult', safeGetValue('budgetRecruiting', 5));
+            safeSetText('budgetOnboardingResult', safeGetValue('budgetOnboarding', 5));
+            safeSetText('budgetReviewsResult', safeGetValue('budgetReviews', 25));
+            safeSetText('budgetReportingResult', safeGetValue('budgetReporting', 20));
+            safeSetText('budgetSurveysResult', safeGetValue('budgetSurveys', 15));
+            safeSetText('budgetInnovationProjectsResult', safeGetValue('budgetInnovationProjects', 6));
+            safeSetText('budgetDigitalTransformResult', safeGetValue('budgetDigitalTransform', 4));
+            safeSetText('budgetERGResult', safeGetValue('budgetERG', 8));
+            safeSetText('budgetWellbeingResult', safeGetValue('budgetWellbeing', 3));
+            safeSetText('budgetConnectivityResult', safeGetValue('budgetConnectivity', 2));
+            safeSetText('budgetVolunteerResult', safeGetValue('budgetVolunteer', 8));
+            safeSetText('budgetExternalConfResult', safeGetValue('budgetExternalConf', 12));
+            safeSetText('budgetExternalTrainingResult', safeGetValue('budgetExternalTraining', 5));
+            safeSetText('budgetTeamMeetingsResult', safeGetValue('budgetTeamMeetings', 20));
+            safeSetText('budgetTownHallsResult', safeGetValue('budgetTownHalls', 6));
+            safeSetText('budgetCheckinsResult', safeGetValue('budgetCheckins', 5));
+
+            updateBudgetTotals();
+        }
+
+        // Update budget summary totals
+        function updateBudgetTotals() {
+            // Calculate essential vs strategic totals
+            var essentialTotal = safeGetValue('budgetPTO', 120) + safeGetValue('budgetPTOOther', 0) +
+                               safeGetValue('budgetHolidays', 64) + safeGetValue('budgetHolidaysOther', 0) +
+                               (safeGetValue('budgetConferenceTravel', 10) + safeGetValue('budgetTrainingTravel', 5) + 
+                                safeGetValue('budgetClientTravel', 5) + safeGetValue('budgetTravelOther', 0)) +
+                               (safeGetValue('budgetCompliance', 4) + safeGetValue('budgetLeadership', 5) + 
+                                safeGetValue('budgetPlatform', 4) + safeGetValue('budgetBusinessTrainingOther', 0)) +
+                               (safeGetValue('budgetCertifications', 15) + safeGetValue('budgetUpskilling', 15) + 
+                                safeGetValue('budgetTechTrainingOther', 0)) +
+                               (safeGetValue('budgetInterviewing', 10) + safeGetValue('budgetRecruiting', 5) + 
+                                safeGetValue('budgetOnboarding', 5) + safeGetValue('budgetHiringOther', 0)) +
+                               (safeGetValue('budgetReviews', 25) + safeGetValue('budgetReporting', 20) + 
+                                safeGetValue('budgetSurveys', 15) + safeGetValue('budgetAdminOther', 0));
+            
+            var strategicTotal = (safeGetValue('budgetInnovationProjects', 6) + safeGetValue('budgetDigitalTransform', 4) + 
+                                safeGetValue('budgetInnovationOther', 0)) +
+                               (safeGetValue('budgetERG', 8) + safeGetValue('budgetWellbeing', 3) + 
+                                safeGetValue('budgetConnectivity', 2) + safeGetValue('budgetCultureOther', 0)) +
+                               (safeGetValue('budgetVolunteer', 8) + safeGetValue('budgetVolunteerOther', 0)) +
+                               (safeGetValue('budgetExternalConf', 12) + safeGetValue('budgetExternalTraining', 5) + 
+                                safeGetValue('budgetOptionalDevOther', 0)) +
+                               (safeGetValue('budgetTeamMeetings', 20) + safeGetValue('budgetTownHalls', 6) + 
+                                safeGetValue('budgetCheckins', 5) + safeGetValue('budgetBusinessOther', 0));
+            
+            var grandTotal = essentialTotal + strategicTotal;
+            
+            // Update summary displays
+            safeSetText('totalEssentialAllocated', essentialTotal + ' hours');
+            safeSetText('totalStrategicAllocated', strategicTotal + ' hours');
+            safeSetText('grandTotalAllocated', grandTotal + ' hours');
+            
+            // Calculate budget status
+            var availableHours = safeGetValue('totalHours', 2080) - 
+                               Math.round(safeGetValue('totalHours', 2080) * (safeGetValue('utilization', 80) / 100));
+            var difference = grandTotal - availableHours;
+            
+            var statusElement = document.getElementById('budgetStatus');
+            var alertElement = document.getElementById('budgetAlert');
+            
+            if (statusElement && alertElement) {
+                if (difference > 0) {
+                    safeSetText('budgetStatus', 'Over by ' + difference + ' hours');
+                    statusElement.style.color = 'red';
+                    alertElement.style.display = 'block';
+                } else {
+                    safeSetText('budgetStatus', 'Within range');
+                    statusElement.style.color = 'green';
+                    alertElement.style.display = 'none';
+                }
+            }
+        }
+
+        // Export functions
+        function exportToCSV() {
+            try {
+                var empName = safeGetText('employeeName') || 'Employee';
+                var csvContent = "Category,Hours\n";
+                csvContent += "Employee Name," + empName + "\n";
+                csvContent += "Employee Type," + document.getElementById('employeeType').value + "\n";
+                csvContent += "Life Line Sector," + document.getElementById('lls').value + "\n";
+                csvContent += "Target Utilization," + safeGetValue('utilization', 80) + "%\n";
+                csvContent += "PTO," + safeGetValue('pto', 120) + "\n";
+                csvContent += "Holiday Hours," + safeGetValue('holidays', 64) + "\n";
+                csvContent += "Travel Time," + safeGetValue('travel', 20) + "\n";
+                csvContent += "Required Business Training," + safeGetValue('businessTraining', 13) + "\n";
+                csvContent += "Technical Training," + safeGetValue('techTraining', 30) + "\n";
+                csvContent += "Hiring Activities," + safeGetValue('hiring', 20) + "\n";
+                csvContent += "Administrative," + safeGetValue('admin', 60) + "\n";
+                csvContent += "Innovation/Digital Transformation," + safeGetValue('innovation', 10) + "\n";
+                csvContent += "Culture & Employee Experience," + safeGetValue('culture', 13) + "\n";
+                csvContent += "Volunteer Hours," + safeGetValue('volunteer', 8) + "\n";
+                csvContent += "Optional Professional Development," + safeGetValue('optionalDev', 17) + "\n";
+                csvContent += "Business Activities," + safeGetValue('businessActivities', 31) + "\n";
+                
+                var blob = new Blob([csvContent], { type: 'text/csv' });
+                var url = window.URL.createObjectURL(blob);
+                var link = document.createElement('a');
+                link.href = url;
+                link.download = empName.replace(/\s+/g, '_') + '_time_allocation.csv';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                alert('CSV export not available in this environment. Please use print function instead.');
+            }
+        }
+
+        function exportBudgetToCSV() {
+            try {
+                var empName = safeGetText('employeeName') || 'Employee';
+                var csvContent = "Budget Category,Subcategory,Hours\n";
+                csvContent += "Employee Name,," + empName + "\n";
+                csvContent += "Employee Type,," + document.getElementById('employeeType').value + "\n";
+                csvContent += "PTO,Personal/Sick Time," + safeGetValue('budgetPTO', 120) + "\n";
+                csvContent += "PTO,Other," + safeGetValue('budgetPTOOther', 0) + "\n";
+                csvContent += "Holiday Hours,Company Holidays," + safeGetValue('budgetHolidays', 64) + "\n";
+                csvContent += "Holiday Hours,Other," + safeGetValue('budgetHolidaysOther', 0) + "\n";
+                csvContent += "Travel,Conference Travel," + safeGetValue('budgetConferenceTravel', 10) + "\n";
+                csvContent += "Travel,Training Travel," + safeGetValue('budgetTrainingTravel', 5) + "\n";
+                csvContent += "Travel,Client Meeting Travel," + safeGetValue('budgetClientTravel', 5) + "\n";
+                csvContent += "Travel,Other," + safeGetValue('budgetTravelOther', 0) + "\n";
+                csvContent += "Required Business Training,Compliance Training," + safeGetValue('budgetCompliance', 4) + "\n";
+                csvContent += "Required Business Training,Leadership Development," + safeGetValue('budgetLeadership', 5) + "\n";
+                csvContent += "Required Business Training,Processes & Platforms," + safeGetValue('budgetPlatform', 4) + "\n";
+                csvContent += "Required Business Training,Other," + safeGetValue('budgetBusinessTrainingOther', 0) + "\n";
+                csvContent += "Technical Training,Certifications," + safeGetValue('budgetCertifications', 15) + "\n";
+                csvContent += "Technical Training,Upskilling/Reskilling," + safeGetValue('budgetUpskilling', 15) + "\n";
+                csvContent += "Technical Training,Other," + safeGetValue('budgetTechTrainingOther', 0) + "\n";
+                csvContent += "Hiring Activities,Interviewing," + safeGetValue('budgetInterviewing', 10) + "\n";
+                csvContent += "Hiring Activities,Recruiting," + safeGetValue('budgetRecruiting', 5) + "\n";
+                csvContent += "Hiring Activities,Onboarding," + safeGetValue('budgetOnboarding', 5) + "\n";
+                csvContent += "Hiring Activities,Other," + safeGetValue('budgetHiringOther', 0) + "\n";
+                csvContent += "Administrative,Performance Reviews," + safeGetValue('budgetReviews', 25) + "\n";
+                csvContent += "Administrative,Indirect Reporting," + safeGetValue('budgetReporting', 20) + "\n";
+                csvContent += "Administrative,Employee Surveys," + safeGetValue('budgetSurveys', 15) + "\n";
+                csvContent += "Administrative,Other," + safeGetValue('budgetAdminOther', 0) + "\n";
+                csvContent += "Innovation,Innovation Projects," + safeGetValue('budgetInnovationProjects', 6) + "\n";
+                csvContent += "Innovation,Digital Transformation," + safeGetValue('budgetDigitalTransform', 4) + "\n";
+                csvContent += "Innovation,Other," + safeGetValue('budgetInnovationOther', 0) + "\n";
+                csvContent += "Culture & Employee Experience,ERG Participation," + safeGetValue('budgetERG', 8) + "\n";
+                csvContent += "Culture & Employee Experience,Wellbeing Activities," + safeGetValue('budgetWellbeing', 3) + "\n";
+                csvContent += "Culture & Employee Experience,Culture/Connectivity," + safeGetValue('budgetConnectivity', 2) + "\n";
+                csvContent += "Culture & Employee Experience,Other," + safeGetValue('budgetCultureOther', 0) + "\n";
+                csvContent += "Volunteer Hours,Company Volunteer Time," + safeGetValue('budgetVolunteer', 8) + "\n";
+                csvContent += "Volunteer Hours,Other," + safeGetValue('budgetVolunteerOther', 0) + "\n";
+                csvContent += "Optional Professional Development,External Conferences," + safeGetValue('budgetExternalConf', 12) + "\n";
+                csvContent += "Optional Professional Development,External Training," + safeGetValue('budgetExternalTraining', 5) + "\n";
+                csvContent += "Optional Professional Development,Other," + safeGetValue('budgetOptionalDevOther', 0) + "\n";
+                csvContent += "Business Activities,Team Meetings," + safeGetValue('budgetTeamMeetings', 20) + "\n";
+                csvContent += "Business Activities,Town Halls," + safeGetValue('budgetTownHalls', 6) + "\n";
+                csvContent += "Business Activities,Check-ins," + safeGetValue('budgetCheckins', 5) + "\n";
+                csvContent += "Business Activities,Other," + safeGetValue('budgetBusinessOther', 0) + "\n";
+                
+                var blob = new Blob([csvContent], { type: 'text/csv' });
+                var url = window.URL.createObjectURL(blob);
+                var link = document.createElement('a');
+                link.href = url;
+                link.download = empName.replace(/\s+/g, '_') + '_budget_detail.csv';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+            } catch (error) {
+                alert('CSV export not available in this environment. Please use print function instead.');
+            }
+        }
+
+        function printReport() {
+            window.print();
+        }
+
+        function printBudgetReport() {
+            // Switch to budget tab before printing
+            var budgetTab = document.querySelector('button[onclick*="budget"]');
+            if (budgetTab) {
+                switchTab({currentTarget: budgetTab}, 'budget');
+                setTimeout(function() {
+                    window.print();
+                }, 100);
+            }
+        }
+
+        function resetForm() {
+            if (confirm('Clear all data for next employee?')) {
+                // Reset employee name
+                safeSetValue('employeeName', '');
+                
+                // Reset employee type to default
+                document.getElementById('employeeType').value = 'individual';
+                updateEmployeeType();
+                
+                // Reset LLS to default
+                document.getElementById('lls').value = 'power';
+                
+                // Recalculate with defaults
+                calculateBasic();
+            }
+        }
+
+        function resetBudgetForm() {
+            if (confirm('Clear budget data for next employee?')) {
+                // Reset employee name
+                safeSetValue('employeeName', '');
+                safeSetText('budgetEmployeeName', 'Enter name in Basic Planning');
+                
+                // Reset all budget fields to defaults
+                var budgetFields = [
+                    'budgetPTO', 'budgetPTOOther', 'budgetHolidays', 'budgetHolidaysOther',
+                    'budgetConferenceTravel', 'budgetTrainingTravel', 'budgetClientTravel', 'budgetTravelOther',
+                    'budgetCompliance', 'budgetLeadership', 'budgetPlatform', 'budgetBusinessTrainingOther',
+                    'budgetCertifications', 'budgetUpskilling', 'budgetTechTrainingOther',
+                    'budgetInterviewing', 'budgetRecruiting', 'budgetOnboarding', 'budgetHiringOther',
+                    'budgetReviews', 'budgetReporting', 'budgetSurveys', 'budgetAdminOther',
+                    'budgetInnovationProjects', 'budgetDigitalTransform', 'budgetInnovationOther',
+                    'budgetERG', 'budgetWellbeing', 'budgetConnectivity', 'budgetCultureOther',
+                    'budgetVolunteer', 'budgetVolunteerOther',
+                    'budgetExternalConf', 'budgetExternalTraining', 'budgetOptionalDevOther',
+                    'budgetTeamMeetings', 'budgetTownHalls', 'budgetCheckins', 'budgetBusinessOther'
+                ];
+                
+                // Reset to default values
+                var defaults = {
+                    'budgetPTO': 120, 'budgetHolidays': 64,
+                    'budgetConferenceTravel': 10, 'budgetTrainingTravel': 5, 'budgetClientTravel': 5,
+                    'budgetCompliance': 4, 'budgetLeadership': 5, 'budgetPlatform': 4,
+                    'budgetCertifications': 15, 'budgetUpskilling': 15,
+                    'budgetInterviewing': 10, 'budgetRecruiting': 5, 'budgetOnboarding': 5,
+                    'budgetReviews': 25, 'budgetReporting': 20, 'budgetSurveys': 15,
+                    'budgetInnovationProjects': 6, 'budgetDigitalTransform': 4,
+                    'budgetERG': 8, 'budgetWellbeing': 3, 'budgetConnectivity': 2,
+                    'budgetVolunteer': 8,
+                    'budgetExternalConf': 12, 'budgetExternalTraining': 5,
+                    'budgetTeamMeetings': 20, 'budgetTownHalls': 6, 'budgetCheckins': 5
+                };
+                
+                budgetFields.forEach(function(field) {
+                    safeSetValue(field, defaults[field] || 0);
+                });
+                
+                // Clear description fields
+                var descriptionFields = [
+                    'budgetPTOOtherDesc', 'budgetHolidaysOtherDesc', 'budgetTravelOtherDesc',
+                    'budgetBusinessTrainingOtherDesc', 'budgetTechTrainingOtherDesc', 'budgetHiringOtherDesc',
+                    'budgetAdminOtherDesc', 'budgetInnovationOtherDesc', 'budgetCultureOtherDesc',
+                    'budgetVolunteerOtherDesc', 'budgetOptionalDevOtherDesc', 'budgetBusinessOtherDesc'
+                ];
+                
+                descriptionFields.forEach(function(field) {
+                    safeSetValue(field, '');
+                });
+                
+                calculateBudget();
+            }
+        }
+
+        // Initialize the application
+        function initializeApp() {
+            // Set default employee type
+            updateEmployeeType();
+            
+            // Run initial calculations
+            calculateBasic();
+            calculateBudget();
+            
+            // Set up event listeners for employee name sync
+            var employeeNameField = document.getElementById('employeeName');
+            if (employeeNameField) {
+                employeeNameField.addEventListener('input', function() {
+                    if (currentTab === 'budget') {
+                        syncBasicToBudget();
+                    }
+                });
+            }
+        }
+
+        // Wait for DOM to be ready
+        if (document.readyState === 'loading') {
+            document.addEventListener('DOMContentLoaded', initializeApp);
+        } else {
+            initializeApp();
+        }
+
+        // Fallback initialization
+        setTimeout(initializeApp, 100);
+    </script>
+</body>
+</html>
