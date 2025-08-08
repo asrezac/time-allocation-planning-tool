@@ -65,6 +65,14 @@
             border-radius: 4px;
         }
         
+        .guidelines-breakdown {
+            background: #e7f3ff;
+            border: 1px solid #007cba;
+            padding: 15px;
+            margin: 15px 0;
+            border-radius: 4px;
+        }
+        
         .input-group { 
             display: flex; 
             align-items: center; 
@@ -200,13 +208,14 @@
         <div id="instructions" class="tab-content active">
             <div class="section">
                 <h3>How to Use This Tool</h3>
-                <p><strong>This planning model helps managers allocate employee time between billable and non-billable activities for AOP planning.</strong></p>
+                <p><strong>This planning model helps managers and individual contributors work together to allocate employee time between billable and non-billable activities for AOP planning.</strong></p>
                 
                 <h4>Step-by-Step Instructions:</h4>
                 <ol>
+                    <li><strong>Collaborative Planning:</strong> Managers and individual contributors should fill this out together</li>
                     <li><strong>Start with Basic Planning:</strong> Select employee type and adjust utilization targets</li>
                     <li><strong>Create Budget:</strong> Use Budget Planning tab to translate into detailed BMO categories for AOP</li>
-                    <li><strong>Export to CPM:</strong> Generate a CPM-compatible spreadsheet for direct import into company CRM system</li>
+                    <li><strong>Export to CPM Compatible Sheet:</strong> Generate a CPM-compatible spreadsheet for direct import into company CRM system</li>
                     <li><strong>Adjust as Needed:</strong> Balance allocations to stay within available non-billable time</li>
                 </ol>
                 
@@ -235,11 +244,13 @@
                 <p><em>Note: These percentages should be applied to discretionary time after accounting for mandatory requirements (PTO, holidays, required training, administrative duties).</em></p>
                 
                 <h4>Cultural Leadership Allocation:</h4>
-                <p>For employees interested in cultural leadership roles (Culture Committee or Employee Resource Groups), allocate:</p>
+                <p>For employees interested in cultural leadership roles, allocate:</p>
                 <ul>
-                    <li><strong>60 hours annually</strong> under Culture & Employee Experience (5 hours per month)</li>
-                    <li><strong>16 hours annually</strong> for Leadership Development</li>
-                    <li><strong>6 hours annually</strong> for additional travel</li>
+                    <li><strong>ERG Leader (5 Hours per month)</strong></li>
+                    <li><strong>ERG Leader Development Offsite (16 Hours / additional travel)</strong></li>
+                    <li><strong>EX Council Member (1-2 Hours per month)</strong></li>
+                    <li><strong>Culture Committee Member (5 Hours per month)</strong></li>
+                    <li><strong>Culture Committee Chair or Assistant Chair (10 Hours per month)</strong></li>
                 </ul>
             </div>
 
@@ -281,28 +292,24 @@
                     <tr>
                         <th>Employee Type</th>
                         <th>Target Util%</th>
-                        <th>Reality Util%</th>
                         <th>Non-Bill Available</th>
                         <th>Strategic Time</th>
                     </tr>
                     <tr>
                         <td>Individual Contributor</td>
                         <td>80%</td>
-                        <td>85%</td>
                         <td>416 hrs</td>
                         <td>90 hrs</td>
                     </tr>
                     <tr>
                         <td>People Leader</td>
                         <td>50%</td>
-                        <td>55%</td>
                         <td>1040 hrs</td>
                         <td>280 hrs</td>
                     </tr>
                     <tr>
                         <td>Embedded Employee</td>
                         <td>95%</td>
-                        <td>100%</td>
                         <td>104 hrs</td>
                         <td>20 hrs</td>
                     </tr>
@@ -358,12 +365,6 @@
                     <label>Available Non-Billable Hours:</label>
                     <span class="result" id="nonBillableResult">416</span>
                 </div>
-                <div class="input-group">
-                    <label>Actual Utilization % (Reality Check):</label>
-                    <input type="number" id="actualUtilization" value="85" onchange="calculateAll()">
-                    <span class="result" id="actualUtilizationResult">85%</span>
-                </div>
-                <div id="utilizationWarning" class="warning" style="display:none;"></div>
             </div>
 
             <div class="section">
@@ -375,11 +376,10 @@
                 </div>
                 <div class="input-group">
                     <label>Holiday Hours (company holidays):</label>
-                    <input type="number" id="holidays" value="64" onchange="calculateAll()">
                     <span class="result" id="holidaysResult">64</span>
                 </div>
                 <div class="input-group">
-                    <label>Travel Time (conferences, training, client meetings):</label>
+                    <label>Travel Time (conferences, training, client meetings, team offsites):</label>
                     <input type="number" id="travel" value="20" onchange="calculateAll()">
                     <span class="result" id="travelResult">20</span>
                 </div>
@@ -400,8 +400,8 @@
                 </div>
                 <div class="input-group">
                     <label>Administrative (reviews, reporting, Glint surveys):</label>
-                    <input type="number" id="admin" value="60" onchange="calculateAll()">
-                    <span class="result" id="adminResult">60</span>
+                    <input type="number" id="admin" value="30" onchange="calculateAll()">
+                    <span class="result" id="adminResult">30</span>
                 </div>
             </div>
 
@@ -409,13 +409,13 @@
                 <h3>Strategic & Development Activities</h3>
                 <div class="input-group">
                     <label>Strategy / Innovation:</label>
-                    <input type="number" id="innovation" value="10" onchange="calculateAll()">
-                    <span class="result" id="innovationResult">10</span>
+                    <input type="number" id="innovation" value="19" onchange="calculateAll()">
+                    <span class="result" id="innovationResult">19</span>
                 </div>
                 <div class="input-group">
                     <label>Culture & Employee Experience (ERGs, wellbeing, connectivity):</label>
-                    <input type="number" id="culture" value="13" onchange="calculateAll()">
-                    <span class="result" id="cultureResult">13</span>
+                    <input type="number" id="culture" value="22" onchange="calculateAll()">
+                    <span class="result" id="cultureResult">22</span>
                 </div>
                 <div class="input-group">
                     <label>Volunteer Hours (8 hours annually per employee):</label>
@@ -428,9 +428,9 @@
                     <span class="result" id="optionalDevResult">17</span>
                 </div>
                 <div class="input-group">
-                    <label>Business Activities (team meetings, town halls, check-ins):</label>
-                    <input type="number" id="businessActivities" value="31" onchange="calculateAll()">
-                    <span class="result" id="businessActivitiesResult">31</span>
+                    <label>Business Activities (team meetings, town halls, check-ins, team offsites):</label>
+                    <input type="number" id="businessActivities" value="43" onchange="calculateAll()">
+                    <span class="result" id="businessActivitiesResult">43</span>
                 </div>
             </div>
 
@@ -438,11 +438,11 @@
                 <h3>Summary</h3>
                 <div class="input-group">
                     <label>Total Allocated Non-Billable Hours:</label>
-                    <span class="result" id="totalAllocated">406</span>
+                    <span class="result" id="totalAllocated">416</span>
                 </div>
                 <div class="input-group">
                     <label>Buffer Time:</label>
-                    <span class="result" id="bufferTime">10</span>
+                    <span class="result" id="bufferTime">0</span>
                 </div>
                 <div id="statusMessage" class="summary">Status: Within limits</div>
             </div>
@@ -450,9 +450,7 @@
             <div class="export-section">
                 <h3>Export & Replication</h3>
                 <p><strong>Use these options to save and replicate planning for your team members:</strong></p>
-                <button class="export-btn" onclick="exportToCPM()">Export CPM Spreadsheet</button>
-                <button class="export-btn" onclick="exportToCSV()">Download as CSV</button>
-                <button class="export-btn" onclick="printReport()">Print/PDF Report</button>
+                <button class="export-btn" onclick="exportToCPM()">Export to CPM Compatible</button>
                 <button class="export-btn" onclick="resetForm()">Clear for Next Employee</button>
                 <p><em>Use CPM Export for direct import into company CRM system. Save each team member's allocation separately for comprehensive AOP planning.</em></p>
             </div>
@@ -478,17 +476,34 @@
                 </div>
             </div>
 
+            <div class="guidelines-breakdown">
+                <h3>Strategic Allocation Guidelines Breakdown</h3>
+                <p><strong>Live calculation based on your current budget allocations:</strong></p>
+                <div style="display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 20px;">
+                    <div>
+                        <strong>25% Optional Training/Development:</strong><br>
+                        <span id="guidelineOptionalDev">17 hours</span><br>
+                        <small>Optional Professional Development</small>
+                    </div>
+                    <div>
+                        <strong>30% Culture & Employee Experience:</strong><br>
+                        <span id="guidelineCulture">30 hours</span><br>
+                        <small>Culture/Employee Experience + Volunteer Hours</small>
+                    </div>
+                    <div>
+                        <strong>45% Business-Related Activities:</strong><br>
+                        <span id="guidelineBusiness">63 hours</span><br>
+                        <small>Travel + Hiring + Administrative + Business Activities</small>
+                    </div>
+                </div>
+            </div>
+
             <div class="section">
                 <h3>PTO (Personal/Sick Time)</h3>
                 <div class="input-group">
                     <label>PTO - Personal/Sick Time:</label>
                     <input type="number" id="budgetPTO" value="120" onchange="calculateBudget()">
                     <span class="result" id="budgetPTOResult">120</span>
-                </div>
-                <div class="input-group">
-                    <label>Other:</label>
-                    <input type="number" id="budgetPTOOther" value="0" onchange="calculateBudget()" class="small-input">
-                    <input type="text" id="budgetPTOOtherDesc" placeholder="Describe other PTO" style="width: 200px;">
                 </div>
                 <div class="input-group">
                     <label><strong>Total PTO:</strong></label>
@@ -500,13 +515,7 @@
                 <h3>Holiday Hours</h3>
                 <div class="input-group">
                     <label>Company Holidays:</label>
-                    <input type="number" id="budgetHolidays" value="64" onchange="calculateBudget()">
                     <span class="result" id="budgetHolidaysResult">64</span>
-                </div>
-                <div class="input-group">
-                    <label>Other:</label>
-                    <input type="number" id="budgetHolidaysOther" value="0" onchange="calculateBudget()" class="small-input">
-                    <input type="text" id="budgetHolidaysOtherDesc" placeholder="Describe other holidays" style="width: 200px;">
                 </div>
                 <div class="input-group">
                     <label><strong>Total Holiday Hours:</strong></label>
@@ -518,18 +527,23 @@
                 <h3>Travel Time</h3>
                 <div class="input-group">
                     <label>Conference Travel:</label>
-                    <input type="number" id="budgetConferenceTravel" value="10" onchange="calculateBudget()">
-                    <span class="result" id="budgetConferenceTravelResult">10</span>
+                    <input type="number" id="budgetConferenceTravel" value="7" onchange="calculateBudget()">
+                    <span class="result" id="budgetConferenceTravelResult">7</span>
                 </div>
                 <div class="input-group">
                     <label>Training Travel:</label>
-                    <input type="number" id="budgetTrainingTravel" value="5" onchange="calculateBudget()">
-                    <span class="result" id="budgetTrainingTravelResult">5</span>
+                    <input type="number" id="budgetTrainingTravel" value="7" onchange="calculateBudget()">
+                    <span class="result" id="budgetTrainingTravelResult">7</span>
                 </div>
                 <div class="input-group">
                     <label>Client Meeting Travel:</label>
-                    <input type="number" id="budgetClientTravel" value="5" onchange="calculateBudget()">
-                    <span class="result" id="budgetClientTravelResult">5</span>
+                    <input type="number" id="budgetClientTravel" value="6" onchange="calculateBudget()">
+                    <span class="result" id="budgetClientTravelResult">6</span>
+                </div>
+                <div class="input-group">
+                    <label>Team Offsites:</label>
+                    <input type="number" id="budgetTeamOffsites" value="0" onchange="calculateBudget()">
+                    <span class="result" id="budgetTeamOffsitesResult">0</span>
                 </div>
                 <div class="input-group">
                     <label>Other:</label>
@@ -596,19 +610,19 @@
             <div class="section">
                 <h3>Hiring Activities</h3>
                 <div class="input-group">
-                    <label>Interviewing:</label>
-                    <input type="number" id="budgetInterviewing" value="10" onchange="calculateBudget()">
-                    <span class="result" id="budgetInterviewingResult">10</span>
+                    <label>Recruiting:</label>
+                    <input type="number" id="budgetRecruiting" value="2" onchange="calculateBudget()">
+                    <span class="result" id="budgetRecruitingResult">2</span>
                 </div>
                 <div class="input-group">
-                    <label>Recruiting:</label>
-                    <input type="number" id="budgetRecruiting" value="5" onchange="calculateBudget()">
-                    <span class="result" id="budgetRecruitingResult">5</span>
+                    <label>Interviewing:</label>
+                    <input type="number" id="budgetInterviewing" value="6" onchange="calculateBudget()">
+                    <span class="result" id="budgetInterviewingResult">6</span>
                 </div>
                 <div class="input-group">
                     <label>Onboarding:</label>
-                    <input type="number" id="budgetOnboarding" value="5" onchange="calculateBudget()">
-                    <span class="result" id="budgetOnboardingResult">5</span>
+                    <input type="number" id="budgetOnboarding" value="12" onchange="calculateBudget()">
+                    <span class="result" id="budgetOnboardingResult">12</span>
                 </div>
                 <div class="input-group">
                     <label>Other:</label>
@@ -625,18 +639,18 @@
                 <h3>Administrative</h3>
                 <div class="input-group">
                     <label>Performance Reviews:</label>
-                    <input type="number" id="budgetReviews" value="25" onchange="calculateBudget()">
-                    <span class="result" id="budgetReviewsResult">25</span>
+                    <input type="number" id="budgetReviews" value="12" onchange="calculateBudget()">
+                    <span class="result" id="budgetReviewsResult">12</span>
                 </div>
                 <div class="input-group">
                     <label>Indirect Reporting:</label>
-                    <input type="number" id="budgetReporting" value="20" onchange="calculateBudget()">
-                    <span class="result" id="budgetReportingResult">20</span>
+                    <input type="number" id="budgetReporting" value="12" onchange="calculateBudget()">
+                    <span class="result" id="budgetReportingResult">12</span>
                 </div>
                 <div class="input-group">
                     <label>Employee Surveys (Glint):</label>
-                    <input type="number" id="budgetSurveys" value="15" onchange="calculateBudget()">
-                    <span class="result" id="budgetSurveysResult">15</span>
+                    <input type="number" id="budgetSurveys" value="6" onchange="calculateBudget()">
+                    <span class="result" id="budgetSurveysResult">6</span>
                 </div>
                 <div class="input-group">
                     <label>Other:</label>
@@ -645,21 +659,21 @@
                 </div>
                 <div class="input-group">
                     <label><strong>Total Administrative:</strong></label>
-                    <span class="result" id="budgetAdminTotal">60</span>
+                    <span class="result" id="budgetAdminTotal">30</span>
                 </div>
             </div>
 
             <div class="section">
-                <h3>Strategy / Innovation</h3>
+                <h3>Strategy / Innovation (Formerly Bold Step)</h3>
                 <div class="input-group">
                     <label>Innovation / Digital Transformation:</label>
-                    <input type="number" id="budgetInnovationProjects" value="6" onchange="calculateBudget()">
-                    <span class="result" id="budgetInnovationProjectsResult">6</span>
+                    <input type="number" id="budgetInnovationProjects" value="10" onchange="calculateBudget()">
+                    <span class="result" id="budgetInnovationProjectsResult">10</span>
                 </div>
                 <div class="input-group">
                     <label>Other Strategic Plan:</label>
-                    <input type="number" id="budgetDigitalTransform" value="4" onchange="calculateBudget()">
-                    <span class="result" id="budgetDigitalTransformResult">4</span>
+                    <input type="number" id="budgetDigitalTransform" value="9" onchange="calculateBudget()">
+                    <span class="result" id="budgetDigitalTransformResult">9</span>
                 </div>
                 <div class="input-group">
                     <label>Other:</label>
@@ -668,26 +682,51 @@
                 </div>
                 <div class="input-group">
                     <label><strong>Total Strategy / Innovation:</strong></label>
-                    <span class="result" id="budgetInnovationTotal">10</span>
+                    <span class="result" id="budgetInnovationTotal">19</span>
                 </div>
             </div>
 
             <div class="section">
                 <h3>Culture & Employee Experience</h3>
                 <div class="input-group">
-                    <label>ERG Participation:</label>
-                    <input type="number" id="budgetERG" value="8" onchange="calculateBudget()">
-                    <span class="result" id="budgetERGResult">8</span>
+                    <label>ERG Member (1-2 Hours per month):</label>
+                    <input type="number" id="budgetERGMember" value="7" onchange="calculateBudget()">
+                    <span class="result" id="budgetERGMemberResult">7</span>
+                </div>
+                <div class="input-group">
+                    <label>ERG Leader (5 Hours per month):</label>
+                    <input type="number" id="budgetERGLeader" value="0" onchange="calculateBudget()">
+                    <span class="result" id="budgetERGLeaderResult">0</span>
+                </div>
+                <div class="input-group">
+                    <label>ERG Leader Development Offsite (16 Hours / additional travel):</label>
+                    <input type="number" id="budgetERGOffsite" value="0" onchange="calculateBudget()">
+                    <span class="result" id="budgetERGOffsiteResult">0</span>
+                </div>
+                <div class="input-group">
+                    <label>EX Council (1-2 Hours per month):</label>
+                    <input type="number" id="budgetEXCouncil" value="0" onchange="calculateBudget()">
+                    <span class="result" id="budgetEXCouncilResult">0</span>
+                </div>
+                <div class="input-group">
+                    <label>Culture Committee Member (5 Hours per month):</label>
+                    <input type="number" id="budgetCultureMember" value="0" onchange="calculateBudget()">
+                    <span class="result" id="budgetCultureMemberResult">0</span>
+                </div>
+                <div class="input-group">
+                    <label>Culture Committee Chair or Assistant Chair (10 Hours per month):</label>
+                    <input type="number" id="budgetCultureChair" value="0" onchange="calculateBudget()">
+                    <span class="result" id="budgetCultureChairResult">0</span>
                 </div>
                 <div class="input-group">
                     <label>Wellbeing Activities:</label>
-                    <input type="number" id="budgetWellbeing" value="3" onchange="calculateBudget()">
-                    <span class="result" id="budgetWellbeingResult">3</span>
+                    <input type="number" id="budgetWellbeing" value="7" onchange="calculateBudget()">
+                    <span class="result" id="budgetWellbeingResult">7</span>
                 </div>
                 <div class="input-group">
-                    <label>Culture / Connectivity:</label>
-                    <input type="number" id="budgetConnectivity" value="2" onchange="calculateBudget()">
-                    <span class="result" id="budgetConnectivityResult">2</span>
+                    <label>Culture / Connectivity Activities:</label>
+                    <input type="number" id="budgetConnectivity" value="8" onchange="calculateBudget()">
+                    <span class="result" id="budgetConnectivityResult">8</span>
                 </div>
                 <div class="input-group">
                     <label>Other:</label>
@@ -696,7 +735,7 @@
                 </div>
                 <div class="input-group">
                     <label><strong>Total Culture & Employee Experience:</strong></label>
-                    <span class="result" id="budgetCultureTotal">13</span>
+                    <span class="result" id="budgetCultureTotal">22</span>
                 </div>
             </div>
 
@@ -708,11 +747,6 @@
                     <span class="result" id="budgetVolunteerResult">8</span>
                 </div>
                 <div class="input-group">
-                    <label>Other:</label>
-                    <input type="number" id="budgetVolunteerOther" value="0" onchange="calculateBudget()" class="small-input">
-                    <input type="text" id="budgetVolunteerOtherDesc" placeholder="Describe other volunteer work" style="width: 200px;">
-                </div>
-                <div class="input-group">
                     <label><strong>Total Volunteer Hours:</strong></label>
                     <span class="result" id="budgetVolunteerTotal">8</span>
                 </div>
@@ -722,13 +756,13 @@
                 <h3>Optional Professional Development</h3>
                 <div class="input-group">
                     <label>External Conferences:</label>
-                    <input type="number" id="budgetExternalConf" value="12" onchange="calculateBudget()">
-                    <span class="result" id="budgetExternalConfResult">12</span>
+                    <input type="number" id="budgetExternalConf" value="8" onchange="calculateBudget()">
+                    <span class="result" id="budgetExternalConfResult">8</span>
                 </div>
                 <div class="input-group">
                     <label>External Training:</label>
-                    <input type="number" id="budgetExternalTraining" value="5" onchange="calculateBudget()">
-                    <span class="result" id="budgetExternalTrainingResult">5</span>
+                    <input type="number" id="budgetExternalTraining" value="9" onchange="calculateBudget()">
+                    <span class="result" id="budgetExternalTrainingResult">9</span>
                 </div>
                 <div class="input-group">
                     <label>Other:</label>
@@ -745,18 +779,28 @@
                 <h3>Business Activities</h3>
                 <div class="input-group">
                     <label>Team Meetings:</label>
-                    <input type="number" id="budgetTeamMeetings" value="20" onchange="calculateBudget()">
-                    <span class="result" id="budgetTeamMeetingsResult">20</span>
+                    <input type="number" id="budgetTeamMeetings" value="26" onchange="calculateBudget()">
+                    <span class="result" id="budgetTeamMeetingsResult">26</span>
                 </div>
                 <div class="input-group">
                     <label>Town Halls:</label>
-                    <input type="number" id="budgetTownHalls" value="6" onchange="calculateBudget()">
-                    <span class="result" id="budgetTownHallsResult">6</span>
+                    <input type="number" id="budgetTownHalls" value="1" onchange="calculateBudget()">
+                    <span class="result" id="budgetTownHallsResult">1</span>
                 </div>
                 <div class="input-group">
                     <label>Check-ins:</label>
-                    <input type="number" id="budgetCheckins" value="5" onchange="calculateBudget()">
-                    <span class="result" id="budgetCheckinsResult">5</span>
+                    <input type="number" id="budgetCheckins" value="16" onchange="calculateBudget()">
+                    <span class="result" id="budgetCheckinsResult">16</span>
+                </div>
+                <div class="input-group">
+                    <label>Team Offsites:</label>
+                    <input type="number" id="budgetBusinessOffsites" value="0" onchange="calculateBudget()">
+                    <span class="result" id="budgetBusinessOffsitesResult">0</span>
+                </div>
+                <div class="input-group">
+                    <label>Proposals Work:</label>
+                    <input type="number" id="budgetProposals" value="0" onchange="calculateBudget()">
+                    <span class="result" id="budgetProposalsResult">0</span>
                 </div>
                 <div class="input-group">
                     <label>Other:</label>
@@ -765,7 +809,7 @@
                 </div>
                 <div class="input-group">
                     <label><strong>Total Business Activities:</strong></label>
-                    <span class="result" id="budgetBusinessActivitiesTotal">31</span>
+                    <span class="result" id="budgetBusinessActivitiesTotal">43</span>
                 </div>
             </div>
 
@@ -801,8 +845,7 @@
             <div class="export-section">
                 <h3>Export Budget Planning</h3>
                 <p><strong>Save your detailed budget breakdown:</strong></p>
-                <button class="export-btn" onclick="exportBudgetToCPM()">Export Budget to CPM</button>
-                <button class="export-btn" onclick="exportBudgetToCSV()">Download Budget as CSV</button>
+                <button class="export-btn" onclick="exportBudgetToCPM()">Export to CPM Compatible</button>
                 <button class="export-btn" onclick="printBudgetReport()">Print Budget Report</button>
                 <button class="export-btn" onclick="resetBudgetForm()">Clear Budget for Next Employee</button>
             </div>
@@ -815,18 +858,18 @@
         
         // Monthly work hours for 2026 with percentages
         var months2026 = [
-            { name: 'Jan-2026', hours: 176, percentage: 8.66 },
-            { name: 'Feb-2026', hours: 160, percentage: 7.87 },
-            { name: 'Mar-2026', hours: 168, percentage: 8.27 },
-            { name: 'Apr-2026', hours: 176, percentage: 8.66 },
-            { name: 'May-2026', hours: 160, percentage: 7.87 },
-            { name: 'Jun-2026', hours: 176, percentage: 8.66 },
-            { name: 'Jul-2026', hours: 168, percentage: 8.27 },
-            { name: 'Aug-2026', hours: 168, percentage: 8.27 },
-            { name: 'Sep-2026', hours: 168, percentage: 8.27 },
-            { name: 'Oct-2026', hours: 176, percentage: 8.66 },
-            { name: 'Nov-2026', hours: 160, percentage: 7.87 },
-            { name: 'Dec-2026', hours: 176, percentage: 8.66 }
+            { name: 'Jan-2026', hours: 176, percentage: 8.33 },
+            { name: 'Feb-2026', hours: 160, percentage: 7.69 },
+            { name: 'Mar-2026', hours: 168, percentage: 8.08 },
+            { name: 'Apr-2026', hours: 176, percentage: 8.46 },
+            { name: 'May-2026', hours: 160, percentage: 7.69 },
+            { name: 'Jun-2026', hours: 176, percentage: 8.46 },
+            { name: 'Jul-2026', hours: 168, percentage: 8.08 },
+            { name: 'Aug-2026', hours: 168, percentage: 8.08 },
+            { name: 'Sep-2026', hours: 168, percentage: 8.08 },
+            { name: 'Oct-2026', hours: 176, percentage: 8.46 },
+            { name: 'Nov-2026', hours: 160, percentage: 7.69 },
+            { name: 'Dec-2026', hours: 176, percentage: 8.46 }
         ];
         
         // Tab switching function
@@ -909,19 +952,28 @@
             // Update default values based on employee type
             if (employeeType === 'leader') {
                 setValue('utilization', 50);
-                setValue('actualUtilization', 55);
                 setValue('businessTraining', 35);
                 setValue('travel', 40);
+                setValue('admin', 50);
+                setValue('innovation', 22);
+                setValue('culture', 31);
+                setValue('businessActivities', 52);
             } else if (employeeType === 'embedded') {
                 setValue('utilization', 95);
-                setValue('actualUtilization', 100);
                 setValue('businessTraining', 13);
                 setValue('travel', 20);
+                setValue('admin', 30);
+                setValue('innovation', 19);
+                setValue('culture', 22);
+                setValue('businessActivities', 43);
             } else { // individual contributor
                 setValue('utilization', 80);
-                setValue('actualUtilization', 85);
                 setValue('businessTraining', 13);
                 setValue('travel', 20);
+                setValue('admin', 30);
+                setValue('innovation', 19);
+                setValue('culture', 22);
+                setValue('businessActivities', 43);
             }
             
             // Recalculate everything
@@ -933,7 +985,6 @@
             // Get basic values
             var totalHours = getValue('totalHours', 2080);
             var utilization = getValue('utilization', 80);
-            var actualUtilization = getValue('actualUtilization', 85);
             
             // Calculate billable/non-billable split
             var billableHours = Math.round(totalHours * (utilization / 100));
@@ -941,17 +992,17 @@
             
             // Get all category values
             var pto = getValue('pto', 120);
-            var holidays = getValue('holidays', 64);
+            var holidays = 64; // Fixed value
             var travel = getValue('travel', 20);
             var businessTraining = getValue('businessTraining', 13);
             var techTraining = getValue('techTraining', 30);
             var hiring = getValue('hiring', 20);
-            var admin = getValue('admin', 60);
-            var innovation = getValue('innovation', 10);
-            var culture = getValue('culture', 13);
+            var admin = getValue('admin', 30);
+            var innovation = getValue('innovation', 19);
+            var culture = getValue('culture', 22);
             var volunteer = getValue('volunteer', 8);
             var optionalDev = getValue('optionalDev', 17);
-            var businessActivities = getValue('businessActivities', 31);
+            var businessActivities = getValue('businessActivities', 43);
             
             // Calculate totals
             var totalAllocated = pto + holidays + travel + businessTraining + techTraining + 
@@ -962,7 +1013,6 @@
             // Update display values
             setText('totalHoursResult', totalHours.toLocaleString());
             setText('utilizationResult', utilization + '%');
-            setText('actualUtilizationResult', actualUtilization + '%');
             setText('billableResult', billableHours.toLocaleString());
             setText('nonBillableResult', nonBillableHours.toLocaleString());
             
@@ -999,18 +1049,6 @@
                 }
             }
             
-            // Update utilization warning
-            var warningElement = document.getElementById('utilizationWarning');
-            if (warningElement) {
-                if (actualUtilization > utilization) {
-                    warningElement.style.display = 'block';
-                    warningElement.textContent = 'Warning: Actual utilization exceeds target by ' + 
-                                               (actualUtilization - utilization) + ' percentage points.';
-                } else {
-                    warningElement.style.display = 'none';
-                }
-            }
-            
             // Update budget tab values
             updateBudgetTotals();
         }
@@ -1029,15 +1067,68 @@
             
             setText('budgetTotal', nonBillableHours + ' hours');
             
-            // Sync individual category values
+            // Sync PTO
             setValue('budgetPTO', getValue('pto', 120));
-            setValue('budgetHolidays', getValue('holidays', 64));
+            
+            // Sync travel time - even split (excluding other)
+            var travelHours = getValue('travel', 20);
+            setValue('budgetConferenceTravel', Math.round(travelHours / 3));
+            setValue('budgetTrainingTravel', Math.round(travelHours / 3));
+            setValue('budgetClientTravel', travelHours - (2 * Math.round(travelHours / 3)));
+            
+            // Sync business training - even split (excluding other)
+            var businessTrainingHours = getValue('businessTraining', 13);
+            setValue('budgetCompliance', Math.round(businessTrainingHours / 3));
+            setValue('budgetLeadership', Math.round(businessTrainingHours / 3));
+            setValue('budgetPlatform', businessTrainingHours - (2 * Math.round(businessTrainingHours / 3)));
+            
+            // Sync technical training - even split (excluding other)
+            var techTrainingHours = getValue('techTraining', 30);
+            setValue('budgetCertifications', Math.round(techTrainingHours / 2));
+            setValue('budgetUpskilling', techTrainingHours - Math.round(techTrainingHours / 2));
+            
+            // Sync hiring - 10% recruiting, 30% interviewing, 60% onboarding
+            var hiringHours = getValue('hiring', 20);
+            setValue('budgetRecruiting', Math.round(hiringHours * 0.1));
+            setValue('budgetInterviewing', Math.round(hiringHours * 0.3));
+            setValue('budgetOnboarding', hiringHours - Math.round(hiringHours * 0.1) - Math.round(hiringHours * 0.3));
+            
+            // Sync administrative - 40% reviews, 40% reporting, 20% surveys
+            var adminHours = getValue('admin', 30);
+            setValue('budgetReviews', Math.round(adminHours * 0.4));
+            setValue('budgetReporting', Math.round(adminHours * 0.4));
+            setValue('budgetSurveys', adminHours - (2 * Math.round(adminHours * 0.4)));
+            
+            // Sync innovation - even split (excluding other)
+            var innovationHours = getValue('innovation', 19);
+            setValue('budgetInnovationProjects', Math.round(innovationHours / 2));
+            setValue('budgetDigitalTransform', innovationHours - Math.round(innovationHours / 2));
+            
+            // Sync culture - even split between ERG Member, Wellbeing, and Connectivity
+            var cultureHours = getValue('culture', 22);
+            setValue('budgetERGMember', Math.round(cultureHours / 3));
+            setValue('budgetWellbeing', Math.round(cultureHours / 3));
+            setValue('budgetConnectivity', cultureHours - (2 * Math.round(cultureHours / 3)));
+            
+            // Sync volunteer - 8 hours (excluding other)
+            setValue('budgetVolunteer', getValue('volunteer', 8));
+            
+            // Sync optional development - even split (excluding other)
+            var optionalDevHours = getValue('optionalDev', 17);
+            setValue('budgetExternalConf', Math.round(optionalDevHours / 2));
+            setValue('budgetExternalTraining', optionalDevHours - Math.round(optionalDevHours / 2));
+            
+            // Sync business activities - 60% team meetings, 2% town halls, 38% check-ins
+            var businessHours = getValue('businessActivities', 43);
+            setValue('budgetTeamMeetings', Math.round(businessHours * 0.6));
+            setValue('budgetTownHalls', Math.round(businessHours * 0.02));
+            setValue('budgetCheckins', businessHours - Math.round(businessHours * 0.6) - Math.round(businessHours * 0.02));
             
             // Calculate strategic time
-            var essentialTime = getValue('pto', 120) + getValue('holidays', 64) + 
+            var essentialTime = getValue('pto', 120) + 64 + 
                               getValue('travel', 20) + getValue('businessTraining', 13) + 
                               getValue('techTraining', 30) + getValue('hiring', 20) + 
-                              getValue('admin', 60);
+                              getValue('admin', 30);
             var strategicTime = nonBillableHours - essentialTime;
             setText('budgetStrategic', strategicTime + ' hours');
             
@@ -1047,12 +1138,13 @@
         // Budget planning calculations
         function calculateBudget() {
             // Calculate all subcategory totals
-            var ptoTotal = getValue('budgetPTO', 120) + getValue('budgetPTOOther', 0);
-            var holidaysTotal = getValue('budgetHolidays', 64) + getValue('budgetHolidaysOther', 0);
+            var ptoTotal = getValue('budgetPTO', 120);
+            var holidaysTotal = 64; // Fixed
             
-            var travelTotal = getValue('budgetConferenceTravel', 10) + 
-                            getValue('budgetTrainingTravel', 5) + 
-                            getValue('budgetClientTravel', 5) + 
+            var travelTotal = getValue('budgetConferenceTravel', 7) + 
+                            getValue('budgetTrainingTravel', 7) + 
+                            getValue('budgetClientTravel', 6) + 
+                            getValue('budgetTeamOffsites', 0) +
                             getValue('budgetTravelOther', 0);
             
             var businessTrainingTotal = getValue('budgetCompliance', 4) + 
@@ -1064,35 +1156,41 @@
                                   getValue('budgetUpskilling', 15) + 
                                   getValue('budgetTechTrainingOther', 0);
             
-            var hiringTotal = getValue('budgetInterviewing', 10) + 
-                            getValue('budgetRecruiting', 5) + 
-                            getValue('budgetOnboarding', 5) + 
+            var hiringTotal = getValue('budgetRecruiting', 2) + 
+                            getValue('budgetInterviewing', 6) + 
+                            getValue('budgetOnboarding', 12) + 
                             getValue('budgetHiringOther', 0);
             
-            var adminTotal = getValue('budgetReviews', 25) + 
-                           getValue('budgetReporting', 20) + 
-                           getValue('budgetSurveys', 15) + 
+            var adminTotal = getValue('budgetReviews', 12) + 
+                           getValue('budgetReporting', 12) + 
+                           getValue('budgetSurveys', 6) + 
                            getValue('budgetAdminOther', 0);
             
-            var innovationTotal = getValue('budgetInnovationProjects', 6) + 
-                                getValue('budgetDigitalTransform', 4) + 
+            var innovationTotal = getValue('budgetInnovationProjects', 10) + 
+                                getValue('budgetDigitalTransform', 9) + 
                                 getValue('budgetInnovationOther', 0);
             
-            var cultureTotal = getValue('budgetERG', 8) + 
-                             getValue('budgetWellbeing', 3) + 
-                             getValue('budgetConnectivity', 2) + 
+            var cultureTotal = getValue('budgetERGMember', 7) + 
+                             getValue('budgetERGLeader', 0) + 
+                             getValue('budgetERGOffsite', 0) +
+                             getValue('budgetEXCouncil', 0) +
+                             getValue('budgetCultureMember', 0) +
+                             getValue('budgetCultureChair', 0) +
+                             getValue('budgetWellbeing', 7) + 
+                             getValue('budgetConnectivity', 8) + 
                              getValue('budgetCultureOther', 0);
             
-            var volunteerTotal = getValue('budgetVolunteer', 8) + 
-                               getValue('budgetVolunteerOther', 0);
+            var volunteerTotal = getValue('budgetVolunteer', 8);
             
-            var optionalDevTotal = getValue('budgetExternalConf', 12) + 
-                                 getValue('budgetExternalTraining', 5) + 
+            var optionalDevTotal = getValue('budgetExternalConf', 8) + 
+                                 getValue('budgetExternalTraining', 9) + 
                                  getValue('budgetOptionalDevOther', 0);
             
-            var businessActivitiesTotal = getValue('budgetTeamMeetings', 20) + 
-                                        getValue('budgetTownHalls', 6) + 
-                                        getValue('budgetCheckins', 5) + 
+            var businessActivitiesTotal = getValue('budgetTeamMeetings', 26) + 
+                                        getValue('budgetTownHalls', 1) + 
+                                        getValue('budgetCheckins', 16) + 
+                                        getValue('budgetBusinessOffsites', 0) +
+                                        getValue('budgetProposals', 0) +
                                         getValue('budgetBusinessOther', 0);
 
             // Update category totals
@@ -1111,61 +1209,150 @@
 
             // Update individual result displays
             setText('budgetPTOResult', getValue('budgetPTO', 120));
-            setText('budgetHolidaysResult', getValue('budgetHolidays', 64));
-            setText('budgetConferenceTravelResult', getValue('budgetConferenceTravel', 10));
-            setText('budgetTrainingTravelResult', getValue('budgetTrainingTravel', 5));
-            setText('budgetClientTravelResult', getValue('budgetClientTravel', 5));
+            setText('budgetHolidaysResult', 64);
+            setText('budgetConferenceTravelResult', getValue('budgetConferenceTravel', 7));
+            setText('budgetTrainingTravelResult', getValue('budgetTrainingTravel', 7));
+            setText('budgetClientTravelResult', getValue('budgetClientTravel', 6));
+            setText('budgetTeamOffsitesResult', getValue('budgetTeamOffsites', 0));
             setText('budgetComplianceResult', getValue('budgetCompliance', 4));
             setText('budgetLeadershipResult', getValue('budgetLeadership', 5));
             setText('budgetPlatformResult', getValue('budgetPlatform', 4));
             setText('budgetCertificationsResult', getValue('budgetCertifications', 15));
             setText('budgetUpskillingResult', getValue('budgetUpskilling', 15));
-            setText('budgetInterviewingResult', getValue('budgetInterviewing', 10));
-            setText('budgetRecruitingResult', getValue('budgetRecruiting', 5));
-            setText('budgetOnboardingResult', getValue('budgetOnboarding', 5));
-            setText('budgetReviewsResult', getValue('budgetReviews', 25));
-            setText('budgetReportingResult', getValue('budgetReporting', 20));
-            setText('budgetSurveysResult', getValue('budgetSurveys', 15));
-            setText('budgetInnovationProjectsResult', getValue('budgetInnovationProjects', 6));
-            setText('budgetDigitalTransformResult', getValue('budgetDigitalTransform', 4));
-            setText('budgetERGResult', getValue('budgetERG', 8));
-            setText('budgetWellbeingResult', getValue('budgetWellbeing', 3));
-            setText('budgetConnectivityResult', getValue('budgetConnectivity', 2));
+            setText('budgetRecruitingResult', getValue('budgetRecruiting', 2));
+            setText('budgetInterviewingResult', getValue('budgetInterviewing', 6));
+            setText('budgetOnboardingResult', getValue('budgetOnboarding', 12));
+            setText('budgetReviewsResult', getValue('budgetReviews', 12));
+            setText('budgetReportingResult', getValue('budgetReporting', 12));
+            setText('budgetSurveysResult', getValue('budgetSurveys', 6));
+            setText('budgetInnovationProjectsResult', getValue('budgetInnovationProjects', 10));
+            setText('budgetDigitalTransformResult', getValue('budgetDigitalTransform', 9));
+            setText('budgetERGMemberResult', getValue('budgetERGMember', 7));
+            setText('budgetERGLeaderResult', getValue('budgetERGLeader', 0));
+            setText('budgetERGOffsiteResult', getValue('budgetERGOffsite', 0));
+            setText('budgetEXCouncilResult', getValue('budgetEXCouncil', 0));
+            setText('budgetCultureMemberResult', getValue('budgetCultureMember', 0));
+            setText('budgetCultureChairResult', getValue('budgetCultureChair', 0));
+            setText('budgetWellbeingResult', getValue('budgetWellbeing', 7));
+            setText('budgetConnectivityResult', getValue('budgetConnectivity', 8));
             setText('budgetVolunteerResult', getValue('budgetVolunteer', 8));
-            setText('budgetExternalConfResult', getValue('budgetExternalConf', 12));
-            setText('budgetExternalTrainingResult', getValue('budgetExternalTraining', 5));
-            setText('budgetTeamMeetingsResult', getValue('budgetTeamMeetings', 20));
-            setText('budgetTownHallsResult', getValue('budgetTownHalls', 6));
-            setText('budgetCheckinsResult', getValue('budgetCheckins', 5));
+            setText('budgetExternalConfResult', getValue('budgetExternalConf', 8));
+            setText('budgetExternalTrainingResult', getValue('budgetExternalTraining', 9));
+            setText('budgetTeamMeetingsResult', getValue('budgetTeamMeetings', 26));
+            setText('budgetTownHallsResult', getValue('budgetTownHalls', 1));
+            setText('budgetCheckinsResult', getValue('budgetCheckins', 16));
+            setText('budgetBusinessOffsitesResult', getValue('budgetBusinessOffsites', 0));
+            setText('budgetProposalsResult', getValue('budgetProposals', 0));
+
+            // Calculate guidelines breakdown
+            updateGuidelinesBreakdown();
 
             updateBudgetTotals();
+        }
+
+        // Update guidelines breakdown calculation
+        function updateGuidelinesBreakdown() {
+            // Calculate strategic hours (excluding required training)
+            var strategicForGuidelines = getValue('budgetConferenceTravel', 7) + 
+                                       getValue('budgetTrainingTravel', 7) + 
+                                       getValue('budgetClientTravel', 6) + 
+                                       getValue('budgetTeamOffsites', 0) +
+                                       getValue('budgetTravelOther', 0) +
+                                       getValue('budgetRecruiting', 2) + 
+                                       getValue('budgetInterviewing', 6) + 
+                                       getValue('budgetOnboarding', 12) + 
+                                       getValue('budgetHiringOther', 0) +
+                                       getValue('budgetReviews', 12) + 
+                                       getValue('budgetReporting', 12) + 
+                                       getValue('budgetSurveys', 6) + 
+                                       getValue('budgetAdminOther', 0) +
+                                       getValue('budgetERGMember', 7) + 
+                                       getValue('budgetERGLeader', 0) + 
+                                       getValue('budgetERGOffsite', 0) +
+                                       getValue('budgetEXCouncil', 0) +
+                                       getValue('budgetCultureMember', 0) +
+                                       getValue('budgetCultureChair', 0) +
+                                       getValue('budgetWellbeing', 7) + 
+                                       getValue('budgetConnectivity', 8) + 
+                                       getValue('budgetCultureOther', 0) +
+                                       getValue('budgetVolunteer', 8) +
+                                       getValue('budgetExternalConf', 8) + 
+                                       getValue('budgetExternalTraining', 9) + 
+                                       getValue('budgetOptionalDevOther', 0) +
+                                       getValue('budgetTeamMeetings', 26) + 
+                                       getValue('budgetTownHalls', 1) + 
+                                       getValue('budgetCheckins', 16) + 
+                                       getValue('budgetBusinessOffsites', 0) +
+                                       getValue('budgetProposals', 0) +
+                                       getValue('budgetBusinessOther', 0);
+
+            // Calculate by guideline category
+            var optionalDevHours = getValue('budgetExternalConf', 8) + 
+                                 getValue('budgetExternalTraining', 9) + 
+                                 getValue('budgetOptionalDevOther', 0);
+
+            var cultureHours = getValue('budgetERGMember', 7) + 
+                             getValue('budgetERGLeader', 0) + 
+                             getValue('budgetERGOffsite', 0) +
+                             getValue('budgetEXCouncil', 0) +
+                             getValue('budgetCultureMember', 0) +
+                             getValue('budgetCultureChair', 0) +
+                             getValue('budgetWellbeing', 7) + 
+                             getValue('budgetConnectivity', 8) + 
+                             getValue('budgetCultureOther', 0) +
+                             getValue('budgetVolunteer', 8);
+
+            var businessHours = getValue('budgetConferenceTravel', 7) + 
+                              getValue('budgetTrainingTravel', 7) + 
+                              getValue('budgetClientTravel', 6) + 
+                              getValue('budgetTeamOffsites', 0) +
+                              getValue('budgetTravelOther', 0) +
+                              getValue('budgetRecruiting', 2) + 
+                              getValue('budgetInterviewing', 6) + 
+                              getValue('budgetOnboarding', 12) + 
+                              getValue('budgetHiringOther', 0) +
+                              getValue('budgetReviews', 12) + 
+                              getValue('budgetReporting', 12) + 
+                              getValue('budgetSurveys', 6) + 
+                              getValue('budgetAdminOther', 0) +
+                              getValue('budgetTeamMeetings', 26) + 
+                              getValue('budgetTownHalls', 1) + 
+                              getValue('budgetCheckins', 16) + 
+                              getValue('budgetBusinessOffsites', 0) +
+                              getValue('budgetProposals', 0) +
+                              getValue('budgetBusinessOther', 0);
+
+            setText('guidelineOptionalDev', optionalDevHours + ' hours');
+            setText('guidelineCulture', cultureHours + ' hours');
+            setText('guidelineBusiness', businessHours + ' hours');
         }
 
         // Update budget summary totals
         function updateBudgetTotals() {
             // Calculate essential vs strategic totals
-            var essentialTotal = getValue('budgetPTO', 120) + getValue('budgetPTOOther', 0) +
-                               getValue('budgetHolidays', 64) + getValue('budgetHolidaysOther', 0) +
-                               (getValue('budgetConferenceTravel', 10) + getValue('budgetTrainingTravel', 5) + 
-                                getValue('budgetClientTravel', 5) + getValue('budgetTravelOther', 0)) +
+            var essentialTotal = getValue('budgetPTO', 120) + 64 +
+                               (getValue('budgetConferenceTravel', 7) + getValue('budgetTrainingTravel', 7) + 
+                                getValue('budgetClientTravel', 6) + getValue('budgetTeamOffsites', 0) + getValue('budgetTravelOther', 0)) +
                                (getValue('budgetCompliance', 4) + getValue('budgetLeadership', 5) + 
                                 getValue('budgetPlatform', 4) + getValue('budgetBusinessTrainingOther', 0)) +
                                (getValue('budgetCertifications', 15) + getValue('budgetUpskilling', 15) + 
                                 getValue('budgetTechTrainingOther', 0)) +
-                               (getValue('budgetInterviewing', 10) + getValue('budgetRecruiting', 5) + 
-                                getValue('budgetOnboarding', 5) + getValue('budgetHiringOther', 0)) +
-                               (getValue('budgetReviews', 25) + getValue('budgetReporting', 20) + 
-                                getValue('budgetSurveys', 15) + getValue('budgetAdminOther', 0));
+                               (getValue('budgetRecruiting', 2) + getValue('budgetInterviewing', 6) + 
+                                getValue('budgetOnboarding', 12) + getValue('budgetHiringOther', 0)) +
+                               (getValue('budgetReviews', 12) + getValue('budgetReporting', 12) + 
+                                getValue('budgetSurveys', 6) + getValue('budgetAdminOther', 0));
             
-            var strategicTotal = (getValue('budgetInnovationProjects', 6) + getValue('budgetDigitalTransform', 4) + 
+            var strategicTotal = (getValue('budgetInnovationProjects', 10) + getValue('budgetDigitalTransform', 9) + 
                                 getValue('budgetInnovationOther', 0)) +
-                               (getValue('budgetERG', 8) + getValue('budgetWellbeing', 3) + 
-                                getValue('budgetConnectivity', 2) + getValue('budgetCultureOther', 0)) +
-                               (getValue('budgetVolunteer', 8) + getValue('budgetVolunteerOther', 0)) +
-                               (getValue('budgetExternalConf', 12) + getValue('budgetExternalTraining', 5) + 
+                               (getValue('budgetERGMember', 7) + getValue('budgetERGLeader', 0) + getValue('budgetERGOffsite', 0) +
+                                getValue('budgetEXCouncil', 0) + getValue('budgetCultureMember', 0) + getValue('budgetCultureChair', 0) +
+                                getValue('budgetWellbeing', 7) + getValue('budgetConnectivity', 8) + getValue('budgetCultureOther', 0)) +
+                               getValue('budgetVolunteer', 8) +
+                               (getValue('budgetExternalConf', 8) + getValue('budgetExternalTraining', 9) + 
                                 getValue('budgetOptionalDevOther', 0)) +
-                               (getValue('budgetTeamMeetings', 20) + getValue('budgetTownHalls', 6) + 
-                                getValue('budgetCheckins', 5) + getValue('budgetBusinessOther', 0));
+                               (getValue('budgetTeamMeetings', 26) + getValue('budgetTownHalls', 1) + 
+                                getValue('budgetCheckins', 16) + getValue('budgetBusinessOffsites', 0) + 
+                                getValue('budgetProposals', 0) + getValue('budgetBusinessOther', 0));
             
             var grandTotal = essentialTotal + strategicTotal;
             
@@ -1202,17 +1389,17 @@
                 
                 // Calculate totals for CPM categories
                 var billableHours = Math.round(getValue('totalHours', 2080) * (getValue('utilization', 80) / 100));
-                var boldStepHours = getValue('innovation', 10); // Strategy / Innovation
+                var boldStepHours = getValue('innovation', 19); // Strategy / Innovation
                 var ptoHours = getValue('pto', 120); // PTO only, not holidays
                 
                 // All other indirect = everything else
-                var allOtherIndirect = getValue('holidays', 64) + getValue('travel', 20) + 
+                var allOtherIndirect = 64 + getValue('travel', 20) + 
                                      getValue('businessTraining', 13) + getValue('techTraining', 30) + 
-                                     getValue('hiring', 20) + getValue('admin', 60) + 
-                                     getValue('culture', 13) + getValue('volunteer', 8) + 
-                                     getValue('optionalDev', 17) + getValue('businessActivities', 31);
+                                     getValue('hiring', 20) + getValue('admin', 30) + 
+                                     getValue('culture', 22) + getValue('volunteer', 8) + 
+                                     getValue('optionalDev', 17) + getValue('businessActivities', 43);
                 
-                // Create CPM format data
+                // Create CPM format data with corrected percentages
                 var cpmData = [];
                 
                 // Header row
@@ -1232,20 +1419,24 @@
                 
                 // Direct Override row (billable hours)
                 var directOverrideRow = ['  Direct Override'];
+                var billableTotal = 0;
                 for (var i = 0; i < months2026.length; i++) {
                     var monthlyHours = Math.round(billableHours * (months2026[i].percentage / 100));
                     directOverrideRow.push(monthlyHours);
+                    billableTotal += monthlyHours;
                 }
-                directOverrideRow.push(billableHours);
+                directOverrideRow.push(billableTotal);
                 cpmData.push(directOverrideRow);
                 
                 // Bold Step Hours row (Strategy/Innovation)
                 var boldStepRow = ['  Bold Step Hours'];
+                var boldStepTotal = 0;
                 for (var i = 0; i < months2026.length; i++) {
                     var monthlyHours = Math.round(boldStepHours * (months2026[i].percentage / 100));
                     boldStepRow.push(monthlyHours);
+                    boldStepTotal += monthlyHours;
                 }
-                boldStepRow.push(boldStepHours);
+                boldStepRow.push(boldStepTotal);
                 cpmData.push(boldStepRow);
                 
                 // PTO Usage row
@@ -1253,21 +1444,25 @@
                 
                 // PTO Usage Override row
                 var ptoOverrideRow = ['  PTO Usage Override'];
+                var ptoTotal = 0;
                 for (var i = 0; i < months2026.length; i++) {
                     var monthlyHours = Math.round(ptoHours * (months2026[i].percentage / 100));
                     ptoOverrideRow.push(monthlyHours);
+                    ptoTotal += monthlyHours;
                 }
-                ptoOverrideRow.push(ptoHours);
+                ptoOverrideRow.push(ptoTotal);
                 cpmData.push(ptoOverrideRow);
                 
                 // Company Holiday Hours row
-                var holidayHours = getValue('holidays', 64);
+                var holidayHours = 64;
                 var holidayRow = ['  Company Holiday Hours'];
+                var holidayTotal = 0;
                 for (var i = 0; i < months2026.length; i++) {
                     var monthlyHours = Math.round(holidayHours * (months2026[i].percentage / 100));
                     holidayRow.push(monthlyHours);
+                    holidayTotal += monthlyHours;
                 }
-                holidayRow.push(holidayHours);
+                holidayRow.push(holidayTotal);
                 cpmData.push(holidayRow);
                 
                 // All other Indirect Hours row
@@ -1275,11 +1470,13 @@
                 
                 // All other Indirect Override row
                 var allOtherRow = ['  All other Indirect Override'];
+                var allOtherTotal = 0;
                 for (var i = 0; i < months2026.length; i++) {
                     var monthlyHours = Math.round(allOtherIndirect * (months2026[i].percentage / 100));
                     allOtherRow.push(monthlyHours);
+                    allOtherTotal += monthlyHours;
                 }
-                allOtherRow.push(allOtherIndirect);
+                allOtherRow.push(allOtherTotal);
                 cpmData.push(allOtherRow);
                 
                 // Convert to CSV format
@@ -1329,34 +1526,36 @@
                 var billableHours = Math.round(getValue('totalHours', 2080) * (getValue('utilization', 80) / 100));
                 
                 // Bold Step = Strategy/Innovation from budget
-                var boldStepHours = getValue('budgetInnovationProjects', 6) + 
-                                   getValue('budgetDigitalTransform', 4) + 
+                var boldStepHours = getValue('budgetInnovationProjects', 10) + 
+                                   getValue('budgetDigitalTransform', 9) + 
                                    getValue('budgetInnovationOther', 0);
                 
                 // PTO = PTO categories only
-                var ptoHours = getValue('budgetPTO', 120) + getValue('budgetPTOOther', 0);
+                var ptoHours = getValue('budgetPTO', 120);
                 
                 // All other indirect = everything else from budget
-                var allOtherIndirect = (getValue('budgetHolidays', 64) + getValue('budgetHolidaysOther', 0)) +
-                                     (getValue('budgetConferenceTravel', 10) + getValue('budgetTrainingTravel', 5) + 
-                                      getValue('budgetClientTravel', 5) + getValue('budgetTravelOther', 0)) +
+                var allOtherIndirect = 64 +
+                                     (getValue('budgetConferenceTravel', 7) + getValue('budgetTrainingTravel', 7) + 
+                                      getValue('budgetClientTravel', 6) + getValue('budgetTeamOffsites', 0) + getValue('budgetTravelOther', 0)) +
                                      (getValue('budgetCompliance', 4) + getValue('budgetLeadership', 5) + 
                                       getValue('budgetPlatform', 4) + getValue('budgetBusinessTrainingOther', 0)) +
                                      (getValue('budgetCertifications', 15) + getValue('budgetUpskilling', 15) + 
                                       getValue('budgetTechTrainingOther', 0)) +
-                                     (getValue('budgetInterviewing', 10) + getValue('budgetRecruiting', 5) + 
-                                      getValue('budgetOnboarding', 5) + getValue('budgetHiringOther', 0)) +
-                                     (getValue('budgetReviews', 25) + getValue('budgetReporting', 20) + 
-                                      getValue('budgetSurveys', 15) + getValue('budgetAdminOther', 0)) +
-                                     (getValue('budgetERG', 8) + getValue('budgetWellbeing', 3) + 
-                                      getValue('budgetConnectivity', 2) + getValue('budgetCultureOther', 0)) +
-                                     (getValue('budgetVolunteer', 8) + getValue('budgetVolunteerOther', 0)) +
-                                     (getValue('budgetExternalConf', 12) + getValue('budgetExternalTraining', 5) + 
+                                     (getValue('budgetRecruiting', 2) + getValue('budgetInterviewing', 6) + 
+                                      getValue('budgetOnboarding', 12) + getValue('budgetHiringOther', 0)) +
+                                     (getValue('budgetReviews', 12) + getValue('budgetReporting', 12) + 
+                                      getValue('budgetSurveys', 6) + getValue('budgetAdminOther', 0)) +
+                                     (getValue('budgetERGMember', 7) + getValue('budgetERGLeader', 0) + getValue('budgetERGOffsite', 0) +
+                                      getValue('budgetEXCouncil', 0) + getValue('budgetCultureMember', 0) + getValue('budgetCultureChair', 0) +
+                                      getValue('budgetWellbeing', 7) + getValue('budgetConnectivity', 8) + getValue('budgetCultureOther', 0)) +
+                                     getValue('budgetVolunteer', 8) +
+                                     (getValue('budgetExternalConf', 8) + getValue('budgetExternalTraining', 9) + 
                                       getValue('budgetOptionalDevOther', 0)) +
-                                     (getValue('budgetTeamMeetings', 20) + getValue('budgetTownHalls', 6) + 
-                                      getValue('budgetCheckins', 5) + getValue('budgetBusinessOther', 0));
+                                     (getValue('budgetTeamMeetings', 26) + getValue('budgetTownHalls', 1) + 
+                                      getValue('budgetCheckins', 16) + getValue('budgetBusinessOffsites', 0) + 
+                                      getValue('budgetProposals', 0) + getValue('budgetBusinessOther', 0));
                 
-                // Create CPM format data
+                // Create CPM format data with corrected calculations
                 var cpmData = [];
                 
                 // Header row
@@ -1376,52 +1575,62 @@
                 
                 // Direct Override row
                 var directOverrideRow = ['  Direct Override'];
+                var billableTotal = 0;
                 for (var i = 0; i < months2026.length; i++) {
                     var monthlyHours = Math.round(billableHours * (months2026[i].percentage / 100));
                     directOverrideRow.push(monthlyHours);
+                    billableTotal += monthlyHours;
                 }
-                directOverrideRow.push(billableHours);
+                directOverrideRow.push(billableTotal);
                 cpmData.push(directOverrideRow);
                 
                 // Bold Step Hours row
                 var boldStepRow = ['  Bold Step Hours'];
+                var boldStepTotal = 0;
                 for (var i = 0; i < months2026.length; i++) {
                     var monthlyHours = Math.round(boldStepHours * (months2026[i].percentage / 100));
                     boldStepRow.push(monthlyHours);
+                    boldStepTotal += monthlyHours;
                 }
-                boldStepRow.push(boldStepHours);
+                boldStepRow.push(boldStepTotal);
                 cpmData.push(boldStepRow);
                 
                 cpmData.push(['  PTO Usage']);
                 
                 // PTO Usage Override row
                 var ptoOverrideRow = ['  PTO Usage Override'];
+                var ptoTotal = 0;
                 for (var i = 0; i < months2026.length; i++) {
                     var monthlyHours = Math.round(ptoHours * (months2026[i].percentage / 100));
                     ptoOverrideRow.push(monthlyHours);
+                    ptoTotal += monthlyHours;
                 }
-                ptoOverrideRow.push(ptoHours);
+                ptoOverrideRow.push(ptoTotal);
                 cpmData.push(ptoOverrideRow);
                 
                 // Company Holiday Hours row
-                var holidayHours = getValue('budgetHolidays', 64) + getValue('budgetHolidaysOther', 0);
+                var holidayHours = 64;
                 var holidayRow = ['  Company Holiday Hours'];
+                var holidayTotal = 0;
                 for (var i = 0; i < months2026.length; i++) {
                     var monthlyHours = Math.round(holidayHours * (months2026[i].percentage / 100));
                     holidayRow.push(monthlyHours);
+                    holidayTotal += monthlyHours;
                 }
-                holidayRow.push(holidayHours);
+                holidayRow.push(holidayTotal);
                 cpmData.push(holidayRow);
                 
                 cpmData.push(['  All other Indirect Hours']);
                 
                 // All other Indirect Override row
                 var allOtherRow = ['  All other Indirect Override'];
+                var allOtherTotal = 0;
                 for (var i = 0; i < months2026.length; i++) {
                     var monthlyHours = Math.round(allOtherIndirect * (months2026[i].percentage / 100));
                     allOtherRow.push(monthlyHours);
+                    allOtherTotal += monthlyHours;
                 }
-                allOtherRow.push(allOtherIndirect);
+                allOtherRow.push(allOtherTotal);
                 cpmData.push(allOtherRow);
                 
                 // Convert to CSV
@@ -1462,106 +1671,6 @@
             }
         }
 
-        // Standard export functions
-        function exportToCSV() {
-            try {
-                var empName = getText('employeeName') || 'Employee';
-                var csvContent = "Category,Hours\n";
-                csvContent += "Employee Name," + empName + "\n";
-                csvContent += "Employee Type," + document.getElementById('employeeType').value + "\n";
-                csvContent += "Life Line Sector," + document.getElementById('lls').value + "\n";
-                csvContent += "Target Utilization," + getValue('utilization', 80) + "%\n";
-                csvContent += "PTO," + getValue('pto', 120) + "\n";
-                csvContent += "Holiday Hours," + getValue('holidays', 64) + "\n";
-                csvContent += "Travel Time," + getValue('travel', 20) + "\n";
-                csvContent += "Required Business Training," + getValue('businessTraining', 13) + "\n";
-                csvContent += "Technical Training," + getValue('techTraining', 30) + "\n";
-                csvContent += "Hiring Activities," + getValue('hiring', 20) + "\n";
-                csvContent += "Administrative," + getValue('admin', 60) + "\n";
-                csvContent += "Strategy / Innovation," + getValue('innovation', 10) + "\n";
-                csvContent += "Culture & Employee Experience," + getValue('culture', 13) + "\n";
-                csvContent += "Volunteer Hours," + getValue('volunteer', 8) + "\n";
-                csvContent += "Optional Professional Development," + getValue('optionalDev', 17) + "\n";
-                csvContent += "Business Activities," + getValue('businessActivities', 31) + "\n";
-                
-                var blob = new Blob([csvContent], { type: 'text/csv' });
-                var url = window.URL.createObjectURL(blob);
-                var link = document.createElement('a');
-                link.href = url;
-                link.download = empName.replace(/\s+/g, '_') + '_time_allocation.csv';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                window.URL.revokeObjectURL(url);
-            } catch (error) {
-                alert('CSV export not available in this environment. Please use CPM export instead.');
-            }
-        }
-
-        function exportBudgetToCSV() {
-            try {
-                var empName = getText('employeeName') || 'Employee';
-                var csvContent = "Budget Category,Subcategory,Hours\n";
-                csvContent += "Employee Name,," + empName + "\n";
-                csvContent += "Employee Type,," + document.getElementById('employeeType').value + "\n";
-                csvContent += "PTO,Personal/Sick Time," + getValue('budgetPTO', 120) + "\n";
-                csvContent += "PTO,Other," + getValue('budgetPTOOther', 0) + "\n";
-                csvContent += "Holiday Hours,Company Holidays," + getValue('budgetHolidays', 64) + "\n";
-                csvContent += "Holiday Hours,Other," + getValue('budgetHolidaysOther', 0) + "\n";
-                csvContent += "Travel,Conference Travel," + getValue('budgetConferenceTravel', 10) + "\n";
-                csvContent += "Travel,Training Travel," + getValue('budgetTrainingTravel', 5) + "\n";
-                csvContent += "Travel,Client Meeting Travel," + getValue('budgetClientTravel', 5) + "\n";
-                csvContent += "Travel,Other," + getValue('budgetTravelOther', 0) + "\n";
-                csvContent += "Required Business Training,Compliance Training," + getValue('budgetCompliance', 4) + "\n";
-                csvContent += "Required Business Training,Leadership Development," + getValue('budgetLeadership', 5) + "\n";
-                csvContent += "Required Business Training,Processes & Platforms," + getValue('budgetPlatform', 4) + "\n";
-                csvContent += "Required Business Training,Other," + getValue('budgetBusinessTrainingOther', 0) + "\n";
-                csvContent += "Technical Training,Certifications," + getValue('budgetCertifications', 15) + "\n";
-                csvContent += "Technical Training,Upskilling/Reskilling," + getValue('budgetUpskilling', 15) + "\n";
-                csvContent += "Technical Training,Other," + getValue('budgetTechTrainingOther', 0) + "\n";
-                csvContent += "Hiring Activities,Interviewing," + getValue('budgetInterviewing', 10) + "\n";
-                csvContent += "Hiring Activities,Recruiting," + getValue('budgetRecruiting', 5) + "\n";
-                csvContent += "Hiring Activities,Onboarding," + getValue('budgetOnboarding', 5) + "\n";
-                csvContent += "Hiring Activities,Other," + getValue('budgetHiringOther', 0) + "\n";
-                csvContent += "Administrative,Performance Reviews," + getValue('budgetReviews', 25) + "\n";
-                csvContent += "Administrative,Indirect Reporting," + getValue('budgetReporting', 20) + "\n";
-                csvContent += "Administrative,Employee Surveys," + getValue('budgetSurveys', 15) + "\n";
-                csvContent += "Administrative,Other," + getValue('budgetAdminOther', 0) + "\n";
-                csvContent += "Strategy / Innovation,Innovation / Digital Transformation," + getValue('budgetInnovationProjects', 6) + "\n";
-                csvContent += "Strategy / Innovation,Other Strategic Plan," + getValue('budgetDigitalTransform', 4) + "\n";
-                csvContent += "Strategy / Innovation,Other," + getValue('budgetInnovationOther', 0) + "\n";
-                csvContent += "Culture & Employee Experience,ERG Participation," + getValue('budgetERG', 8) + "\n";
-                csvContent += "Culture & Employee Experience,Wellbeing Activities," + getValue('budgetWellbeing', 3) + "\n";
-                csvContent += "Culture & Employee Experience,Culture/Connectivity," + getValue('budgetConnectivity', 2) + "\n";
-                csvContent += "Culture & Employee Experience,Other," + getValue('budgetCultureOther', 0) + "\n";
-                csvContent += "Volunteer Hours,Company Volunteer Time," + getValue('budgetVolunteer', 8) + "\n";
-                csvContent += "Volunteer Hours,Other," + getValue('budgetVolunteerOther', 0) + "\n";
-                csvContent += "Optional Professional Development,External Conferences," + getValue('budgetExternalConf', 12) + "\n";
-                csvContent += "Optional Professional Development,External Training," + getValue('budgetExternalTraining', 5) + "\n";
-                csvContent += "Optional Professional Development,Other," + getValue('budgetOptionalDevOther', 0) + "\n";
-                csvContent += "Business Activities,Team Meetings," + getValue('budgetTeamMeetings', 20) + "\n";
-                csvContent += "Business Activities,Town Halls," + getValue('budgetTownHalls', 6) + "\n";
-                csvContent += "Business Activities,Check-ins," + getValue('budgetCheckins', 5) + "\n";
-                csvContent += "Business Activities,Other," + getValue('budgetBusinessOther', 0) + "\n";
-                
-                var blob = new Blob([csvContent], { type: 'text/csv' });
-                var url = window.URL.createObjectURL(blob);
-                var link = document.createElement('a');
-                link.href = url;
-                link.download = empName.replace(/\s+/g, '_') + '_budget_detail.csv';
-                document.body.appendChild(link);
-                link.click();
-                document.body.removeChild(link);
-                window.URL.revokeObjectURL(url);
-            } catch (error) {
-                alert('CSV export not available in this environment. Please use CPM export instead.');
-            }
-        }
-
-        function printReport() {
-            window.print();
-        }
-
         function printBudgetReport() {
             showTab('budget');
             setTimeout(function() {
@@ -1592,39 +1701,8 @@
                 setValue('employeeName', '');
                 setText('budgetEmployeeName', 'Enter name in Basic Planning');
                 
-                // Reset all budget fields to defaults
-                var budgetDefaults = {
-                    'budgetPTO': 120, 'budgetPTOOther': 0,
-                    'budgetHolidays': 64, 'budgetHolidaysOther': 0,
-                    'budgetConferenceTravel': 10, 'budgetTrainingTravel': 5, 'budgetClientTravel': 5, 'budgetTravelOther': 0,
-                    'budgetCompliance': 4, 'budgetLeadership': 5, 'budgetPlatform': 4, 'budgetBusinessTrainingOther': 0,
-                    'budgetCertifications': 15, 'budgetUpskilling': 15, 'budgetTechTrainingOther': 0,
-                    'budgetInterviewing': 10, 'budgetRecruiting': 5, 'budgetOnboarding': 5, 'budgetHiringOther': 0,
-                    'budgetReviews': 25, 'budgetReporting': 20, 'budgetSurveys': 15, 'budgetAdminOther': 0,
-                    'budgetInnovationProjects': 6, 'budgetDigitalTransform': 4, 'budgetInnovationOther': 0,
-                    'budgetERG': 8, 'budgetWellbeing': 3, 'budgetConnectivity': 2, 'budgetCultureOther': 0,
-                    'budgetVolunteer': 8, 'budgetVolunteerOther': 0,
-                    'budgetExternalConf': 12, 'budgetExternalTraining': 5, 'budgetOptionalDevOther': 0,
-                    'budgetTeamMeetings': 20, 'budgetTownHalls': 6, 'budgetCheckins': 5, 'budgetBusinessOther': 0
-                };
-                
-                for (var field in budgetDefaults) {
-                    setValue(field, budgetDefaults[field]);
-                }
-                
-                // Clear description fields
-                var descFields = [
-                    'budgetPTOOtherDesc', 'budgetHolidaysOtherDesc', 'budgetTravelOtherDesc',
-                    'budgetBusinessTrainingOtherDesc', 'budgetTechTrainingOtherDesc', 'budgetHiringOtherDesc',
-                    'budgetAdminOtherDesc', 'budgetInnovationOtherDesc', 'budgetCultureOtherDesc',
-                    'budgetVolunteerOtherDesc', 'budgetOptionalDevOtherDesc', 'budgetBusinessOtherDesc'
-                ];
-                
-                for (var i = 0; i < descFields.length; i++) {
-                    setValue(descFields[i], '');
-                }
-                
-                calculateBudget();
+                // Reset all budget fields to defaults based on current employee type
+                syncBasicToBudget();
             }
         }
 
