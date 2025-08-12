@@ -349,9 +349,9 @@
                 <p><strong>People Leaders managing billable employees have a fiduciary responsibility to proactively engage in strategic workforce planning conversations.</strong> This includes conducting structured discussions with team members to identify individual professional development priorities, align personal growth objectives with organizational strategic initiatives, and optimize indirect time allocation to maximize both employee engagement and business value creation.</p>
             </div>
             
-                            <div class="section">
+            <div class="section">
                 <h3>Strategic Allocation Guidelines for Indirect Time</h3>
-                <p>To ensure optimal return on human capital investment, managers should implement the following strategic allocation framework for available indirect hours:</p>
+                <p>To ensure optimal return on human capital investment, managers should use the following strategic allocation framework to guide their planning for available indirect hours:</p>
                 <ol>
                     <li><strong>20% Optional Training/Development Opportunities</strong> - Builds future capability pipeline and maintains competitive skill sets</li>
                     <li><strong>30% Culture & Employee Experience Activities</strong> - Drives engagement metrics, retention rates, and organizational culture strength</li>
@@ -461,7 +461,7 @@
             <div class="section">
                 <h3>Strategic & Development Indirect Activities</h3>
                 <div class="culture-leadership">
-                    <h4>If an employee is interested in or is currently a Culture or ERG leader or is leading a strategic project, please plan their time accordingly to support their leadership role and developmental opportunity.</h4>
+                    <h4>If an employee is interested in or currently a Culture / ERG leader or leading a strategic initiative, please balance their time accordingly to support their developmental role.</h4>
                 </div>
                 <div class="input-group">
                     <label>Strategy / Innovation:</label>
@@ -676,7 +676,7 @@
             </div>
 
             <div class="culture-leadership">
-                <h4>If an employee is interested in or is currently a Culture or ERG leader or is leading a strategic project, please plan their time accordingly to support their leadership role and developmental opportunity.</h4>
+                <h4>If an employee is interested in or currently a Culture / ERG leader or leading a strategic initiative, please balance their time accordingly to support their developmental role.</h4>
             </div>
 
             <div class="section">
@@ -860,7 +860,7 @@
         <div id="scenarios" class="tab-content">
             <div class="section">
                 <h3>Scenario Planning & Comparisons</h3>
-                <p><strong>Compare different allocation scenarios and utilization targets.</strong></p>
+                <p><strong>The utilization targets listed below are averages, not requirements. Compare different allocation scenarios below to understand average allocations for billable employees.</strong></p>
                 
                 <table>
                     <tr>
@@ -902,8 +902,8 @@
                     <p><strong>Utilization:</strong> 80% (1,664 billable hours)</p>
                     <p><strong>Indirect Hours:</strong> 416 hours available</p>
                     <p><strong>Strategic Time:</strong> ~129 hours after essential categories</p>
-                    <p><strong>Balanced Approach:</strong> Standard allocation following 25/30/45 framework.</p>
-                    <p><strong>Recommended Allocation:</strong> Development (25%), Culture (30%), Business (45%).</p>
+                    <p><strong>Balanced Approach:</strong> Standard allocation following 20/30/50 framework.</p>
+                    <p><strong>Recommended Allocation:</strong> Development (20%), Culture (30%), Business (50%).</p>
                 </div>
             </div>
         </div>
@@ -961,19 +961,31 @@
         function applyEmployeeDefaults() {
             currentEmployeeType = document.getElementById('employeeType').value;
             
-            // Set utilization and travel defaults based on employee type
+            // Set utilization and defaults based on employee type
             switch(currentEmployeeType) {
                 case 'People Leader':
                     setFieldValue('utilization', 50);
-                    setFieldValue('travel', 27);
-                    setFieldValue('admin', 45); // People Leader admin default
-                    setFieldValue('hiring', 20); // People Leader keeps full hiring
+                    setFieldValue('travel', 68); // 27 * 2.5
+                    setFieldValue('admin', 113); // 45 for People Leader * 2.5
+                    setFieldValue('hiring', 50); // 20 for People Leader * 2.5
+                    // Scale strategic categories by 2.5x
+                    setFieldValue('innovation', 48); // 19 * 2.5
+                    setFieldValue('culture', 55); // 22 * 2.5
+                    setFieldValue('volunteer', 20); // 8 * 2.5
+                    setFieldValue('optionalDev', 43); // 17 * 2.5
+                    setFieldValue('businessActivities', 138); // 55 * 2.5
                     break;
                 default: // Individual Contributor
                     setFieldValue('utilization', 80);
                     setFieldValue('travel', 27);
                     setFieldValue('admin', 25); // IC admin default
                     setFieldValue('hiring', 8); // IC reduced hiring
+                    // Standard IC defaults
+                    setFieldValue('innovation', 19);
+                    setFieldValue('culture', 22);
+                    setFieldValue('volunteer', 8);
+                    setFieldValue('optionalDev', 17);
+                    setFieldValue('businessActivities', 55);
                     break;
             }
             
@@ -985,10 +997,10 @@
         function applyBudgetDefaults() {
             // Administrative defaults based on employee type
             if (currentEmployeeType === 'People Leader') {
-                setFieldValue('budgetReviews', 20);
-                setFieldValue('budgetReporting', 19);
-                setFieldValue('budgetSurveys', 6);
-                setFieldValue('budgetOnboarding', 12); // People Leaders keep onboarding
+                setFieldValue('budgetReviews', 50); // 20 * 2.5
+                setFieldValue('budgetReporting', 48); // 19 * 2.5
+                setFieldValue('budgetSurveys', 15); // 6 * 2.5
+                setFieldValue('budgetOnboarding', 30); // 12 * 2.5
             } else {
                 // Individual Contributor
                 setFieldValue('budgetReviews', 7);
@@ -1064,81 +1076,84 @@
             // Sync PTO directly
             setFieldValue('budgetPTO', getFieldValue('pto', 120));
             
-            // Travel - distribute 27 hours total, accounting for team offsites travel portion
+            // Travel - distribute total travel hours proportionally
             const totalTravel = getFieldValue('travel', 27);
-            const teamOffsiteTravel = 7; // Fixed team offsite travel portion
-            const remainingTravel = totalTravel - teamOffsiteTravel;
-            
+            // Fixed distribution maintaining 27 total
             setFieldValue('budgetConferenceTravel', 7);
             setFieldValue('budgetTrainingTravel', 7);
             setFieldValue('budgetClientTravel', 6);
-            setFieldValue('budgetTeamOffsitesTravel', teamOffsiteTravel);
-            setFieldValue('budgetTravelOther', Math.max(0, remainingTravel - 20)); // 7+7+6 = 20
+            setFieldValue('budgetTeamOffsitesTravel', 7);
+            setFieldValue('budgetTravelOther', Math.max(0, totalTravel - 27));
             
-            // Distribute required training proportionally
+            // Distribute required training proportionally - maintain 13 total
             const businessTraining = getFieldValue('businessTraining', 13);
-            setFieldValue('budgetCompliance', Math.round(businessTraining * 0.31));
-            setFieldValue('budgetLeadership', Math.round(businessTraining * 0.38));
-            setFieldValue('budgetPlatform', businessTraining - Math.round(businessTraining * 0.69));
-            setFieldValue('budgetBusinessTrainingOther', 0);
+            setFieldValue('budgetCompliance', 4);
+            setFieldValue('budgetLeadership', 5);
+            setFieldValue('budgetPlatform', 4);
+            setFieldValue('budgetBusinessTrainingOther', Math.max(0, businessTraining - 13));
             
-            // Distribute technical training
+            // Distribute technical training - maintain 30 total
             const techTraining = getFieldValue('techTraining', 30);
-            setFieldValue('budgetCertifications', Math.round(techTraining * 0.5));
-            setFieldValue('budgetUpskilling', techTraining - Math.round(techTraining * 0.5));
-            setFieldValue('budgetTechTrainingOther', 0);
+            setFieldValue('budgetCertifications', 15);
+            setFieldValue('budgetUpskilling', 15);
+            setFieldValue('budgetTechTrainingOther', Math.max(0, techTraining - 30));
             
             // Distribute hiring based on employee type
             const hiring = getFieldValue('hiring', 8);
-            setFieldValue('budgetRecruiting', 2);
-            setFieldValue('budgetInterviewing', 6);
             if (currentEmployeeType === 'People Leader') {
-                setFieldValue('budgetOnboarding', 12);
+                setFieldValue('budgetRecruiting', Math.round(hiring * 0.25));
+                setFieldValue('budgetInterviewing', Math.round(hiring * 0.75));
+                setFieldValue('budgetOnboarding', 30); // Scaled for People Leader
                 setFieldValue('budgetHiringOther', 0);
             } else {
+                setFieldValue('budgetRecruiting', 2);
+                setFieldValue('budgetInterviewing', 6);
                 setFieldValue('budgetOnboarding', 0);
                 setFieldValue('budgetHiringOther', 0);
             }
             
-            // Administrative already set by applyBudgetDefaults
+            // Administrative - maintain exact totals based on employee type
+            if (currentEmployeeType === 'People Leader') {
+                // Already set by applyBudgetDefaults - don't override
+            } else {
+                // IC defaults - maintain 25 total
+                setFieldValue('budgetReviews', 7);
+                setFieldValue('budgetReporting', 12);
+                setFieldValue('budgetSurveys', 6);
+                setFieldValue('budgetAdminOther', 0);
+            }
             
-            // Distribute innovation/strategy
+            // Distribute innovation/strategy - maintain 19 total for IC
             const innovation = getFieldValue('innovation', 19);
-            setFieldValue('budgetInnovationProjects', Math.round(innovation * 0.53));
-            setFieldValue('budgetDigitalTransform', innovation - Math.round(innovation * 0.53));
-            setFieldValue('budgetInnovationOther', 0);
+            setFieldValue('budgetInnovationProjects', 10);
+            setFieldValue('budgetDigitalTransform', 9);
+            setFieldValue('budgetInnovationOther', Math.max(0, innovation - 19));
             
-            // Distribute culture (excluding volunteer which is separate)
+            // Distribute culture (excluding volunteer which is separate) - maintain 22 total for IC
             const culture = getFieldValue('culture', 22);
-            setFieldValue('budgetWellbeing', Math.round(culture * 0.32));
-            setFieldValue('budgetConnectivity', 8); // Fixed to 8 hours
-            setFieldValue('budgetCultureOther', 0);
+            const connectivityHours = 8; // Fixed default
+            const wellbeingHours = 7; // Fixed default
+            setFieldValue('budgetWellbeing', wellbeingHours);
+            setFieldValue('budgetConnectivity', connectivityHours);
+            setFieldValue('budgetCultureOther', 0); // ERG Member (7) + Wellbeing (7) + Connectivity (8) = 22
             
             // Set volunteer directly
             setFieldValue('budgetVolunteer', getFieldValue('volunteer', 8));
             
-            // Distribute optional development
+            // Distribute optional development - maintain 17 total for IC
             const optionalDev = getFieldValue('optionalDev', 17);
-            setFieldValue('budgetExternalConf', Math.round(optionalDev * 0.47));
-            setFieldValue('budgetExternalTraining', optionalDev - Math.round(optionalDev * 0.47));
-            setFieldValue('budgetOptionalDevOther', 0);
+            setFieldValue('budgetExternalConf', 8);
+            setFieldValue('budgetExternalTraining', 9);
+            setFieldValue('budgetOptionalDevOther', Math.max(0, optionalDev - 17));
             
-            // Business activities - distribute 55 hours total, accounting for team offsites business portion
+            // Business activities - maintain 55 total for IC
             const totalBusinessActivities = getFieldValue('businessActivities', 55);
-            const teamOffsiteBusiness = 7; // Fixed team offsite business portion
-            const remainingBusiness = totalBusinessActivities - teamOffsiteBusiness;
-            
-            // Distribute remaining business hours proportionally
-            const teamMeetingsRatio = 26/48; // 26 out of 48 (55-7)
-            const townHallsRatio = 6/48;
-            const checkinsRatio = 16/48;
-            
-            setFieldValue('budgetTeamMeetings', Math.round(remainingBusiness * teamMeetingsRatio));
-            setFieldValue('budgetTownHalls', Math.round(remainingBusiness * townHallsRatio));
-            setFieldValue('budgetCheckins', remainingBusiness - Math.round(remainingBusiness * teamMeetingsRatio) - Math.round(remainingBusiness * townHallsRatio));
-            setFieldValue('budgetTeamOffsitesBusiness', teamOffsiteBusiness);
+            setFieldValue('budgetTeamMeetings', 26);
+            setFieldValue('budgetTownHalls', 6);
+            setFieldValue('budgetCheckins', 16);
+            setFieldValue('budgetTeamOffsitesBusiness', 7);
             setFieldValue('budgetProposals', 0);
-            setFieldValue('budgetBusinessOther', 0);
+            setFieldValue('budgetBusinessOther', Math.max(0, totalBusinessActivities - 55));
             
             runBudgetCalculations();
         }
@@ -1262,6 +1277,7 @@
             updateDisplay('budgetERGLeaderDisplay', getFieldValue('budgetERGLeader', 0));
             updateDisplay('budgetERGDevelopmentDisplay', getFieldValue('budgetERGDevelopment', 0));
             updateDisplay('budgetEXCouncilDisplay', getFieldValue('budgetEXCouncil', 0));
+            updateDisplay('budgetCultureMemberDisplay', getFieldValue('budgetCultureMember', 0));
             updateDisplay('budgetCultureChairDisplay', getFieldValue('budgetCultureChair', 0));
             updateDisplay('budgetWellbeingDisplay', getFieldValue('budgetWellbeing', 7));
             updateDisplay('budgetConnectivityDisplay', getFieldValue('budgetConnectivity', 8));
@@ -1453,12 +1469,12 @@
             if (empType === 'People Leader') {
                 analysisHTML += `
                     <p><strong>Leadership Focus:</strong> Substantial time available for team development, strategic initiatives, and cultural leadership.</p>
-                    <p><strong>Recommended Allocation:</strong> Focus on coaching (40%), strategic planning (30%), and cultural initiatives (30%).</p>
+                    <p><strong>Recommended Allocation:</strong> Development (20%), Culture (30%), Business (50%).</p>
                 `;
             } else {
                 analysisHTML += `
-                    <p><strong>Balanced Approach:</strong> Standard allocation following 25/30/45 framework.</p>
-                    <p><strong>Recommended Allocation:</strong> Development (25%), Culture (30%), Business (45%).</p>
+                    <p><strong>Balanced Approach:</strong> Standard allocation following 20/30/50 framework.</p>
+                    <p><strong>Recommended Allocation:</strong> Development (20%), Culture (30%), Business (50%).</p>
                 `;
             }
             
@@ -1776,5 +1792,4 @@
         });
     </script>
 </body>
-</html>MemberDisplay', getFieldValue('budgetCultureMember', 0));
-            updateDisplay('budgetCulture
+</html>
