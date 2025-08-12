@@ -311,6 +311,7 @@
         <div class="header">
             <h1>Enhanced Time Allocation Planning Model</h1>
             <p>Strategic Workforce Planning for AOP 2026</p>
+            <button onclick="openFullScreen()" style="background: rgba(255,255,255,0.2); color: white; border: 1px solid rgba(255,255,255,0.3); padding: 8px 16px; border-radius: 5px; cursor: pointer; font-size: 0.9em; margin-top: 10px;">📱 Open Full Screen</button>
         </div>
 
         <div class="tabs">
@@ -1778,6 +1779,26 @@
                 applyEmployeeDefaults();
                 
                 alert('All data has been reset for the next employee.');
+            }
+        }
+
+        // Full screen function
+        function openFullScreen() {
+            // Direct link to GitHub Pages version (index.html)
+            const fullScreenUrl = 'https://asrezac.github.io/time-allocation-planning-tool/';
+            
+            // Try to open in new window
+            const newWindow = window.open(fullScreenUrl, '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes,toolbar=yes,menubar=yes');
+            
+            // Fallback if popup was blocked
+            if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                // Copy URL to clipboard and show message
+                navigator.clipboard.writeText(fullScreenUrl).then(function() {
+                    alert('Full screen URL copied to clipboard!\n\nPaste this URL in a new browser tab:\n' + fullScreenUrl);
+                }).catch(function() {
+                    // If clipboard fails, just show the URL
+                    prompt('Copy this URL to open in full screen:', fullScreenUrl);
+                });
             }
         }
 
