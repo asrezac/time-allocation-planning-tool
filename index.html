@@ -347,7 +347,7 @@
 
             <div class="section">
                 <h3>Leadership Accountability Framework</h3>
-                <p><strong>People Leaders managing billable employees have a fiduciary responsibility to proactively engage in strategic workforce planning conversations.</strong> This includes conducting structured discussions with team members to identify individual professional development priorities, align personal growth objectives with organizational strategic initiatives, and optimize indirect time allocation to maximize both employee engagement and business value creation.</p>
+                <p><strong>People Leaders managing billable employees have a responsibility to proactively engage in strategic workforce planning conversations.</strong> This includes conducting structured discussions with team members to identify individual professional development priorities, align personal growth objectives with organizational strategic initiatives, and optimize indirect time allocation to maximize both employee engagement and business value creation.</p>
             </div>
             
             <div class="section">
@@ -396,7 +396,7 @@
                     <span class="result" id="totalHoursDisplay">2080</span>
                 </div>
                 <div class="input-group">
-                    <label>Target Utilization (%):</label>
+                    <label>Billable Percentage (%):</label>
                     <input type="number" id="utilization" value="80" onchange="runBasicCalculations()">
                     <span class="result" id="utilizationDisplay">80%</span>
                 </div>
@@ -851,12 +851,12 @@
         <div id="scenarios" class="tab-content">
             <div class="section">
                 <h3>Scenario Planning & Comparisons</h3>
-                <p><strong>The utilization targets listed below are averages, not requirements. Compare different allocation scenarios below to understand average allocations for billable employees.</strong></p>
+                <p><strong>The billable percentage targets listed below are averages, not requirements. Compare different allocation scenarios below to understand average allocations for billable employees.</strong></p>
                 
                 <table>
                     <tr>
                         <th>Employee Type</th>
-                        <th>Target Utilization</th>
+                        <th>Billable Percentage</th>
                         <th>Billable Hours</th>
                         <th>Indirect Hours</th>
                         <th>Strategic Time Available</th>
@@ -890,7 +890,7 @@
                 <h3>Current vs. Target Analysis</h3>
                 <div id="scenarioAnalysisDisplay">
                     <h4>Current Configuration: Individual Contributor</h4>
-                    <p><strong>Utilization:</strong> 80% (1,664 billable hours)</p>
+                    <p><strong>Billable Percentage:</strong> 80% (1,664 billable hours)</p>
                     <p><strong>Indirect Hours:</strong> 416 hours available</p>
                     <p><strong>Strategic Time:</strong> ~129 hours after essential categories</p>
                     <p><strong>Balanced Approach:</strong> Standard allocation following 20/30/50 framework.</p>
@@ -1452,7 +1452,7 @@
             
             let analysisHTML = `
                 <h4>Current Configuration: ${empType}</h4>
-                <p><strong>Utilization:</strong> ${utilization}% (${billableHours.toLocaleString()} billable hours)</p>
+                <p><strong>Billable Percentage:</strong> ${utilization}% (${billableHours.toLocaleString()} billable hours)</p>
                 <p><strong>Indirect Hours:</strong> ${indirectHours.toLocaleString()} hours available</p>
                 <p><strong>Strategic Time:</strong> ~${Math.max(0, indirectHours - 287)} hours after essential categories</p>
             `;
@@ -1800,4 +1800,4 @@
         });
     </script>
 </body>
-</html>
+</html>jects', 10
