@@ -44,6 +44,7 @@
             font-size: 0.9em;
             font-weight: 500;
             transition: all 0.3s ease;
+            z-index: 100;
         }
         .fullscreen-btn:hover {
             background: rgba(255,255,255,0.3);
@@ -476,6 +477,10 @@
                 <p><strong>If an employee is interested in or currently a cultural / ERG leader or leading a strategic initiative, please balance their time accordingly to support their developmental role.</strong></p>
             </div>
 
+            <div class="info-card">
+                <p><strong>If an employee is interested in or currently a cultural / ERG leader or leading a strategic initiative, please balance their time accordingly to support their developmental role.</strong></p>
+            </div>
+
             <div class="section" style="background: #f4ecf7; border-left: 4px solid #9b59b6;">
                 <h3 style="color: #9b59b6;">Category 3: Strategic Initiatives</h3>
                 <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
@@ -542,7 +547,7 @@
 
             <div class="export-section">
                 <h3>Export & Planning Tools</h3>
-                <button class="export-btn" onclick="alert('Export to CPM spreadsheet')">Export CPM Spreadsheet</button>
+                <button class="export-btn" onclick="exportToCPM()">Export CPM Spreadsheet</button>
                 <button class="export-btn" onclick="window.print()">Print/PDF Report</button>
             </div>
         </div>
@@ -617,8 +622,9 @@
 
             <div class="export-section">
                 <h3>Export Budget Planning</h3>
-                <button class="export-btn" onclick="alert('Export detailed budget')">Export Budget CPM Spreadsheet</button>
-                <button class="export-btn sync" onclick="alert('Sync to Basic Planning')">Sync to Basic Planning</button>
+                <button class="export-btn" onclick="exportToCPM()">Export Budget CPM Spreadsheet</button>
+                <button class="export-btn sync" onclick="syncToBasic()">Sync to Basic Planning</button>
+                <button class="export-btn" onclick="window.print()">Print Budget</button>
             </div>
         </div>
     </div>
@@ -626,13 +632,71 @@
     <script>
         function openFullscreen() {
             const elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) {
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) {
-                elem.msRequestFullscreen();
+            if (!document.fullscreenElement && !document.webkitFullscreenElement && !document.mozFullScreenElement && !document.msFullscreenElement) {
+                if (elem.requestFullscreen) {
+                    elem.requestFullscreen();
+                } else if (elem.webkitRequestFullscreen) {
+                    elem.webkitRequestFullscreen();
+                } else if (elem.mozRequestFullScreen) {
+                    elem.mozRequestFullScreen();
+                } else if (elem.msRequestFullscreen) {
+                    elem.msRequestFullscreen();
+                }
+            } else {
+                if (document.exitFullscreen) {
+                    document.exitFullscreen();
+                } else if (document.webkitExitFullscreen) {
+                    document.webkitExitFullscreen();
+                } else if (document.mozCancelFullScreen) {
+                    document.mozCancelFullScreen();
+                } else if (document.msExitFullscreen) {
+                    document.msExitFullscreen();
+                }
             }
+        }
+
+        function exportToCPM() {
+            const employeeName = get('employeeName').value || 'Employee';
+            const employeeType = get('employeeType').value;
+            const totalHours = val('totalHours');
+            const billPct = val('billPct');
+            const billHrs = Math.round(totalHours * billPct / 100);
+            
+            let csvContent = "data:text/csv;charset=utf-8,";
+            csvContent += "Time Allocation Planning - CPM Export\n";
+            csvContent += "Employee Name," + employeeName + "\n";
+            csvContent += "Employee Type," + (employeeType === 'IC' ? 'Individual Contributor' : 'People Leader') + "\n";
+            csvContent += "Billable Percentage," + billPct + "%\n";
+            csvContent += "Billable Hours," + billHrs + "\n\n";
+            
+            csvContent += "Category,Subcategory,Hours\n";
+            csvContent += "Operational Indirect,PTO," + val('pto') + "\n";
+            csvContent += "Operational Indirect,Holiday Hours," + val('holidays') + "\n";
+            csvContent += "Operational Indirect,Essential Time Travel," + val('essentialTravel') + "\n";
+            csvContent += "Operational Indirect,Required Business Training," + val('reqTrain') + "\n";
+            csvContent += "Operational Indirect,Technical Training," + val('techTrain') + "\n";
+            csvContent += "Operational Indirect,Hiring Activities," + val('hiring') + "\n";
+            csvContent += "Operational Indirect,Administrative," + val('admin') + "\n";
+            csvContent += "Operational Indirect,Business Activities," + val('bizAct') + "\n";
+            csvContent += "Strategic Initiatives,Innovation Projects," + val('innov') + "\n";
+            csvContent += "Strategic Initiatives,Digital Transformation," + val('digital') + "\n";
+            csvContent += "Strategic Initiatives,Upskilling/Reskilling," + val('upskill') + "\n";
+            csvContent += "Employee Experience,Connectivity & Wellbeing," + val('connectivity') + "\n";
+            csvContent += "Employee Experience,ERG Participation," + val('erg') + "\n";
+            csvContent += "Employee Experience,Optional Professional Development," + val('optDev') + "\n";
+            csvContent += "Employee Experience,Volunteer Hours," + val('volunteer') + "\n";
+            
+            const encodedUri = encodeURI(csvContent);
+            const link = document.createElement("a");
+            link.setAttribute("href", encodedUri);
+            link.setAttribute("download", employeeName.replace(/\s+/g, '_') + "_CPM_Export.csv");
+            document.body.appendChild(link);
+            link.click();
+            document.body.removeChild(link);
+        }
+
+        function syncToBasic() {
+            alert('Sync functionality: This would sync detailed budget values back to basic planning categories. Feature coming soon!');
         }
 
         document.querySelectorAll('.tab').forEach(tab => {
