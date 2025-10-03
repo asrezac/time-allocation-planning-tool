@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time Allocation Planning Tool - Complete Working Version</title>
+    <title>Time Allocation Planning Tool</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -241,14 +241,14 @@
     <div class="container">
         <div class="header">
             <button class="fullscreen-btn" onclick="openFullscreen()">Open Full Screen</button>
-            <h1>Enhanced Time Allocation Planning Model</h1>
+            <h1>Time Allocation Planning Model</h1>
             <p>Strategic Workforce Planning for AOP 2026</p>
         </div>
 
         <div class="tabs">
-            <button class="tab active" onclick="switchToTab('instructions')">Instructions & Guidelines</button>
-            <button class="tab" onclick="switchToTab('basic')">Basic Planning</button>
-            <button class="tab" onclick="switchToTab('budget')">Budget Planning</button>
+            <button class="tab active" onclick="switchToTab(event, 'instructions')">Instructions & Guidelines</button>
+            <button class="tab" onclick="switchToTab(event, 'basic')">Basic Planning</button>
+            <button class="tab" onclick="switchToTab(event, 'budget')">Budget Planning</button>
         </div>
 
         <!-- INSTRUCTIONS TAB -->
@@ -259,246 +259,7 @@
             </div>
 
             <div class="guidelines-container" style="margin-top: 30px;">
-                <div class="input-group"><label>Connectivity & Wellbeing:</label><input type="number" id="connectivity" value="15" onchange="calculate()"><span class="result" id="connectivityDisp">15</span></div>
-                <div class="input-group"><label>ERG Participation:</label><input type="number" id="erg" value="7" onchange="calculate()"><span class="result" id="ergDisp">7</span></div>
-                <div class="input-group"><label>Optional Professional Development:</label><input type="number" id="optDev" value="10" onchange="calculate()"><span class="result" id="optDevDisp">10</span></div>
-                <div class="input-group"><label>Volunteer Hours:</label><input type="number" id="volunteer" value="0" onchange="calculate()"><span class="result" id="volunteerDisp">0</span></div>
-            </div>
-
-            <div class="section">
-                <h3>Planning Summary</h3>
-                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
-                    <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid #27ae60;">
-                        <p style="font-size: 0.85em; color: #666;">Operational</p>
-                        <p style="font-size: 1.5em; font-weight: bold; color: #27ae60;" id="opSummary">364</p>
-                        <p style="font-size: 0.8em; color: #666;" id="opStatus">✓ Meets minimum</p>
-                    </div>
-                    <div style="background: #f4ecf7; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid #9b59b6;">
-                        <p style="font-size: 0.85em; color: #666;">Strategic</p>
-                        <p style="font-size: 1.5em; font-weight: bold; color: #9b59b6;" id="stratSummary">19</p>
-                        <p style="font-size: 0.8em; color: #666;" id="stratStatus">21 hrs short</p>
-                    </div>
-                    <div style="background: #fef5e7; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid #e67e22;">
-                        <p style="font-size: 0.85em; color: #666;">Employee Exp</p>
-                        <p style="font-size: 1.5em; font-weight: bold; color: #e67e22;" id="expSummary">32</p>
-                        <p style="font-size: 0.8em; color: #666;" id="expStatus">✓ Meets minimum</p>
-                    </div>
-                </div>
-                
-                <div class="input-group"><label>Total Allocated Indirect Hours:</label><span class="result" id="totalAlloc">415</span></div>
-                <div class="input-group"><label>Buffer Time Remaining:</label><span class="result" id="buffer">1</span></div>
-                <div id="statusMsg" class="summary warning">⚠ Review category minimums before proceeding</div>
-            </div>
-
-            <div class="export-section">
-                <h3>Export & Planning Tools</h3>
-                <button class="export-btn" onclick="alert('Export to CPM spreadsheet')">Export CPM Spreadsheet</button>
-                <button class="export-btn" onclick="window.print()">Print/PDF Report</button>
-            </div>
-        </div>
-
-        <!-- BUDGET PLANNING TAB -->
-        <div id="budget" class="tab-content">
-            <div class="section">
-                <h3>Budget Planning - Detailed Breakdown</h3>
-                <p>Break down your Basic Planning categories into detailed subcategories for AOP submission.</p>
-                <div class="remaining-hours">
-                    <h4>Buffer Time Available</h4>
-                    <div class="hours-display" id="budgetBuffer">1</div>
-                </div>
-            </div>
-
-            <div class="section" style="background: #e8f5e8; border-left: 4px solid #27ae60;">
-                <h3 style="color: #27ae60;">Operational Indirect - Detailed Breakdown</h3>
-                
-                <h4>Travel Categories</h4>
-                <div class="input-group"><label>Training Travel:</label><input type="number" id="budgetTrainingTravel" value="7" onchange="calculateBudget()"><span class="result">7</span></div>
-                <div class="input-group"><label>Client Travel:</label><input type="number" id="budgetClientTravel" value="6" onchange="calculateBudget()"><span class="result">6</span></div>
-                <div class="input-group"><label>Team Offsites Travel:</label><input type="number" id="budgetOffsitesTravel" value="7" onchange="calculateBudget()"><span class="result">7</span></div>
-                
-                <h4 style="margin-top: 20px;">Required Training Categories</h4>
-                <div class="input-group"><label>Compliance Training:</label><input type="number" id="budgetCompliance" value="6" onchange="calculateBudget()"><span class="result">6</span></div>
-                <div class="input-group"><label>Leadership Training:</label><input type="number" id="budgetLeadership" value="5" onchange="calculateBudget()"><span class="result">5</span></div>
-                <div class="input-group"><label>Platform/Tech Training:</label><input type="number" id="budgetPlatform" value="4" onchange="calculateBudget()"><span class="result">4</span></div>
-                
-                <h4 style="margin-top: 20px;">Technical Training Categories</h4>
-                <div class="input-group"><label>Certifications:</label><input type="number" id="budgetCertifications" value="15" onchange="calculateBudget()"><span class="result">15</span></div>
-                <div class="input-group"><label>Other Technical Training:</label><input type="number" id="budgetOtherTech" value="15" onchange="calculateBudget()"><span class="result">15</span></div>
-                
-                <h4 style="margin-top: 20px;">Hiring Categories</h4>
-                <div class="input-group"><label>Recruiting:</label><input type="number" id="budgetRecruiting" value="2" onchange="calculateBudget()"><span class="result">2</span></div>
-                <div class="input-group"><label>Interviewing:</label><input type="number" id="budgetInterviewing" value="6" onchange="calculateBudget()"><span class="result">6</span></div>
-                
-                <h4 style="margin-top: 20px;">Administrative Categories</h4>
-                <div class="input-group"><label>Performance Reviews:</label><input type="number" id="budgetPerfReviews" value="4" onchange="calculateBudget()"><span class="result">4</span></div>
-                <div class="input-group"><label>Internal Reporting:</label><input type="number" id="budgetReporting" value="12" onchange="calculateBudget()"><span class="result">12</span></div>
-                <div class="input-group"><label>Employee Surveys:</label><input type="number" id="budgetSurveys" value="6" onchange="calculateBudget()"><span class="result">6</span></div>
-                
-                <h4 style="margin-top: 20px;">Business Activities</h4>
-                <div class="input-group"><label>Team Meetings:</label><input type="number" id="budgetMeetings" value="26" onchange="calculateBudget()"><span class="result">26</span></div>
-                <div class="input-group"><label>Town Halls:</label><input type="number" id="budgetTownHalls" value="8" onchange="calculateBudget()"><span class="result">8</span></div>
-                <div class="input-group"><label>Check-ins:</label><input type="number" id="budgetCheckins" value="16" onchange="calculateBudget()"><span class="result">16</span></div>
-                <div class="input-group"><label>Team Offsites:</label><input type="number" id="budgetOffsites" value="10" onchange="calculateBudget()"><span class="result">10</span></div>
-            </div>
-
-            <div class="section" style="background: #f4ecf7; border-left: 4px solid #9b59b6;">
-                <h3 style="color: #9b59b6;">Strategic Initiatives - Detailed Breakdown</h3>
-                <div class="input-group"><label>Innovation Projects:</label><input type="number" id="budgetInnovation" value="10" onchange="calculateBudget()"><span class="result">10</span></div>
-                <div class="input-group"><label>Digital Transformation:</label><input type="number" id="budgetDigital" value="10" onchange="calculateBudget()"><span class="result">10</span></div>
-                <div class="input-group"><label>Upskilling / Reskilling:</label><input type="number" id="budgetUpskilling" value="10" onchange="calculateBudget()"><span class="result">10</span></div>
-            </div>
-
-            <div class="section" style="background: #fef5e7; border-left: 4px solid #e67e22;">
-                <h3 style="color: #e67e22;">Employee Experience - Detailed Breakdown</h3>
-                
-                <h4>Culture & ERG Activities</h4>
-                <div class="input-group"><label>ERG Member (5-10 hours annually):</label><input type="number" id="budgetErgMember" value="0" onchange="calculateBudget()"><span class="result">0</span></div>
-                <div class="input-group"><label>ERG Leader (60 hours annually):</label><input type="number" id="budgetErgLeader" value="0" onchange="calculateBudget()"><span class="result">0</span></div>
-                <div class="input-group"><label>Council Member (12 hours annually):</label><input type="number" id="budgetCouncil" value="0" onchange="calculateBudget()"><span class="result">0</span></div>
-                <div class="input-group"><label>Culture Committee Leader (120 hours annually):</label><input type="number" id="budgetCultureLeader" value="0" onchange="calculateBudget()"><span class="result">0</span></div>
-                <div class="input-group"><label>Culture Committee Member (60 hours annually):</label><input type="number" id="budgetCultureMember" value="0" onchange="calculateBudget()"><span class="result">0</span></div>
-                <div class="input-group"><label>Wellbeing Activities:</label><input type="number" id="budgetWellbeing" value="2" onchange="calculateBudget()"><span class="result">2</span></div>
-                <div class="input-group"><label>Connectivity:</label><input type="number" id="budgetConnectivity" value="8" onchange="calculateBudget()"><span class="result">8</span></div>
-                <div class="input-group"><label>Volunteer Hours:</label><input type="number" id="budgetVolunteer" value="8" onchange="calculateBudget()"><span class="result">8</span></div>
-                
-                <h4 style="margin-top: 20px;">Optional Professional Development</h4>
-                <div class="input-group"><label>External Conferences:</label><input type="number" id="budgetConferences" value="5" onchange="calculateBudget()"><span class="result">5</span></div>
-                <div class="input-group"><label>External Training:</label><input type="number" id="budgetExtTraining" value="5" onchange="calculateBudget()"><span class="result">5</span></div>
-            </div>
-
-            <div class="export-section">
-                <h3>Export Budget Planning</h3>
-                <button class="export-btn" onclick="alert('Export detailed budget')">Export Budget CPM Spreadsheet</button>
-                <button class="export-btn sync" onclick="alert('Sync to Basic Planning')">Sync to Basic Planning</button>
-            </div>
-        </div>
-    </div>
-
-    <script>
-        function openFullscreen() {
-            const elem = document.documentElement;
-            if (elem.requestFullscreen) {
-                elem.requestFullscreen();
-            } else if (elem.webkitRequestFullscreen) {
-                elem.webkitRequestFullscreen();
-            } else if (elem.msRequestFullscreen) {
-                elem.msRequestFullscreen();
-            }
-        }
-
-        function switchToTab(targetTab) {
-            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
-            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
-            event.target.classList.add('active');
-            document.getElementById(targetTab).classList.add('active');
-        }
-
-        function get(id) { return document.getElementById(id); }
-        function val(id) { const el = get(id); return el ? (parseInt(el.value) || 0) : 0; }
-        function set(id, v) { const el = get(id); if(el) el.textContent = v; }
-
-        function calculate() {
-            const total = val('totalHours');
-            const pct = val('billPct');
-            const bill = Math.round(total * pct / 100);
-            const indir = total - bill;
-            
-            set('totalHoursDisp', total);
-            set('billPctDisp', pct + '%');
-            set('billHrs', bill);
-            set('indirHrs', indir);
-            
-            // Operational
-            const op = val('pto') + val('holidays') + val('essentialTravel') + val('travel') + val('reqTrain') + val('techTrain') + val('hiring') + val('admin') + val('bizAct');
-            set('opTotal', op);
-            set('opSummary', op);
-            const opShort = 300 - op;
-            set('opStatus', opShort > 0 ? opShort + ' hrs short' : '✓ Meets minimum');
-            const opBadge = get('opBadge');
-            if(opBadge) {
-                opBadge.textContent = opShort > 0 ? '✗ Below Minimum (' + opShort + ' hrs short)' : '✓ Meets Minimum';
-                opBadge.style.background = opShort > 0 ? '#fdf2f2' : '#e8f5e8';
-                opBadge.style.color = opShort > 0 ? '#e74c3c' : '#27ae60';
-            }
-            
-            // Strategic
-            const strat = val('innov') + val('digital') + val('upskill');
-            set('stratTotal', strat);
-            set('stratSummary', strat);
-            const stratShort = 40 - strat;
-            set('stratStatus', stratShort > 0 ? stratShort + ' hrs short' : '✓ Meets minimum');
-            const stratBadge = get('stratBadge');
-            if(stratBadge) {
-                stratBadge.textContent = stratShort > 0 ? '✗ Below Minimum (' + stratShort + ' hrs short)' : '✓ Meets Minimum';
-                stratBadge.style.background = stratShort > 0 ? '#fdf2f2' : '#e8f5e8';
-                stratBadge.style.color = stratShort > 0 ? '#e74c3c' : '#27ae60';
-            }
-            
-            // Experience
-            const exp = val('connectivity') + val('erg') + val('optDev') + val('volunteer');
-            set('expTotal', exp);
-            set('expSummary', exp);
-            const expShort = 24 - exp;
-            set('expStatus', expShort > 0 ? expShort + ' hrs short' : '✓ Meets minimum');
-            const expBadge = get('expBadge');
-            if(expBadge) {
-                expBadge.textContent = expShort > 0 ? '✗ Below Minimum (' + expShort + ' hrs short)' : '✓ Meets Minimum';
-                expBadge.style.background = expShort > 0 ? '#fdf2f2' : '#e8f5e8';
-                expBadge.style.color = expShort > 0 ? '#e74c3c' : '#27ae60';
-            }
-            
-            // Summary
-            const alloc = op + strat + exp;
-            const buff = indir - alloc;
-            set('totalAlloc', alloc);
-            set('buffer', buff);
-            set('budgetBuffer', buff);
-            
-            const msg = get('statusMsg');
-            if(msg) {
-                if (buff < 0) {
-                    msg.textContent = '⚠ Over allocated by ' + Math.abs(buff) + ' hours';
-                    msg.className = 'summary error';
-                } else if (opShort > 0 || stratShort > 0 || expShort > 0) {
-                    msg.textContent = '⚠ Review category minimums before proceeding';
-                    msg.className = 'summary warning';
-                } else {
-                    msg.textContent = '✓ All categories meet minimums, ' + buff + ' hours buffer remaining';
-                    msg.className = 'summary';
-                }
-            }
-            
-            // Update displays
-            ['pto','holidays','essentialTravel','travel','reqTrain','techTrain','hiring','admin','bizAct','innov','digital','upskill','connectivity','erg','optDev','volunteer'].forEach(function(id) {
-                set(id + 'Disp', val(id));
-            });
-        }
-
-        function calculateBudget() {
-            // Placeholder for budget calculation
-        }
-
-        function applyDefaults() {
-            const type = get('employeeType').value;
-            if(type === 'PL') {
-                get('billPct').value = 50;
-                if(get('budgetPerfReviews')) {
-                    get('budgetPerfReviews').value = 20;
-                }
-            } else {
-                get('billPct').value = 80;
-                if(get('budgetPerfReviews')) {
-                    get('budgetPerfReviews').value = 4;
-                }
-            }
-            calculate();
-        }
-
-        // Initialize on load
-        setTimeout(calculate, 100);
-    </script>
-</body>
-</html>="guideline-card" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; border: none;">
+                <div class="guideline-card" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; border: none;">
                     <h4 style="color: white; font-size: 1.3em; margin-bottom: 15px;">Set Clear Billable Expectations</h4>
                     <p style="margin-bottom: 12px;"><strong>Every employee must know their billable percentage target for the year.</strong></p>
                     <p style="font-size: 0.95em; line-height: 1.6;">As a people leader, you are responsible for:</p>
@@ -660,7 +421,236 @@
         <div id="basic" class="tab-content">
             <div class="section">
                 <h3>Employee Information</h3>
-                <div class="input-group">
+                <div class="input-group"><label>Connectivity & Wellbeing:</label><input type="number" id="connectivity" value="15" onchange="calculate()"><span class="result" id="connectivityDisp">15</span></div>
+                <div class="input-group"><label>ERG Participation:</label><input type="number" id="erg" value="7" onchange="calculate()"><span class="result" id="ergDisp">7</span></div>
+                <div class="input-group"><label>Optional Professional Development:</label><input type="number" id="optDev" value="10" onchange="calculate()"><span class="result" id="optDevDisp">10</span></div>
+                <div class="input-group"><label>Volunteer Hours:</label><input type="number" id="volunteer" value="0" onchange="calculate()"><span class="result" id="volunteerDisp">0</span></div>
+            </div>
+
+            <div class="section">
+                <h3>Planning Summary</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+                    <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid #27ae60;">
+                        <p style="font-size: 0.85em; color: #666;">Operational</p>
+                        <p style="font-size: 1.5em; font-weight: bold; color: #27ae60;" id="opSummary">364</p>
+                        <p style="font-size: 0.8em; color: #666;" id="opStatus">✓ Meets minimum</p>
+                    </div>
+                    <div style="background: #f4ecf7; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid #9b59b6;">
+                        <p style="font-size: 0.85em; color: #666;">Strategic</p>
+                        <p style="font-size: 1.5em; font-weight: bold; color: #9b59b6;" id="stratSummary">19</p>
+                        <p style="font-size: 0.8em; color: #666;" id="stratStatus">21 hrs short</p>
+                    </div>
+                    <div style="background: #fef5e7; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid #e67e22;">
+                        <p style="font-size: 0.85em; color: #666;">Employee Exp</p>
+                        <p style="font-size: 1.5em; font-weight: bold; color: #e67e22;" id="expSummary">32</p>
+                        <p style="font-size: 0.8em; color: #666;" id="expStatus">✓ Meets minimum</p>
+                    </div>
+                </div>
+                
+                <div class="input-group"><label>Total Allocated Indirect Hours:</label><span class="result" id="totalAlloc">415</span></div>
+                <div class="input-group"><label>Buffer Time Remaining:</label><span class="result" id="buffer">1</span></div>
+                <div id="statusMsg" class="summary warning">⚠ Review category minimums before proceeding</div>
+            </div>
+
+            <div class="export-section">
+                <h3>Export & Planning Tools</h3>
+                <button class="export-btn" onclick="alert('Export to CPM spreadsheet')">Export CPM Spreadsheet</button>
+                <button class="export-btn" onclick="window.print()">Print/PDF Report</button>
+            </div>
+        </div>
+
+        <!-- BUDGET PLANNING TAB -->
+        <div id="budget" class="tab-content">
+            <div class="section">
+                <h3>Budget Planning - Detailed Breakdown</h3>
+                <p>Break down your Basic Planning categories into detailed subcategories for AOP submission.</p>
+                <div class="remaining-hours">
+                    <h4>Buffer Time Available</h4>
+                    <div class="hours-display" id="budgetBuffer">1</div>
+                </div>
+            </div>
+
+            <div class="section" style="background: #e8f5e8; border-left: 4px solid #27ae60;">
+                <h3 style="color: #27ae60;">Operational Indirect - Detailed Breakdown</h3>
+                
+                <h4>Travel Categories</h4>
+                <div class="input-group"><label>Training Travel:</label><input type="number" value="7"><span class="result">7</span></div>
+                <div class="input-group"><label>Client Travel:</label><input type="number" value="6"><span class="result">6</span></div>
+                <div class="input-group"><label>Team Offsites Travel:</label><input type="number" value="7"><span class="result">7</span></div>
+                
+                <h4 style="margin-top: 20px;">Required Training Categories</h4>
+                <div class="input-group"><label>Compliance Training:</label><input type="number" value="6"><span class="result">6</span></div>
+                <div class="input-group"><label>Leadership Training:</label><input type="number" value="5"><span class="result">5</span></div>
+                <div class="input-group"><label>Platform/Tech Training:</label><input type="number" value="4"><span class="result">4</span></div>
+                
+                <h4 style="margin-top: 20px;">Technical Training Categories</h4>
+                <div class="input-group"><label>Certifications:</label><input type="number" value="15"><span class="result">15</span></div>
+                <div class="input-group"><label>Other Technical Training:</label><input type="number" value="15"><span class="result">15</span></div>
+                
+                <h4 style="margin-top: 20px;">Hiring Categories</h4>
+                <div class="input-group"><label>Recruiting:</label><input type="number" value="2"><span class="result">2</span></div>
+                <div class="input-group"><label>Interviewing:</label><input type="number" value="6"><span class="result">6</span></div>
+                
+                <h4 style="margin-top: 20px;">Administrative Categories</h4>
+                <div class="input-group"><label>Performance Reviews:</label><input type="number" id="budgetPerfReviews" value="4"><span class="result">4</span></div>
+                <div class="input-group"><label>Internal Reporting:</label><input type="number" value="12"><span class="result">12</span></div>
+                <div class="input-group"><label>Employee Surveys:</label><input type="number" value="6"><span class="result">6</span></div>
+                
+                <h4 style="margin-top: 20px;">Business Activities</h4>
+                <div class="input-group"><label>Team Meetings:</label><input type="number" value="26"><span class="result">26</span></div>
+                <div class="input-group"><label>Town Halls:</label><input type="number" value="8"><span class="result">8</span></div>
+                <div class="input-group"><label>Check-ins:</label><input type="number" value="16"><span class="result">16</span></div>
+                <div class="input-group"><label>Team Offsites:</label><input type="number" value="10"><span class="result">10</span></div>
+            </div>
+
+            <div class="section" style="background: #f4ecf7; border-left: 4px solid #9b59b6;">
+                <h3 style="color: #9b59b6;">Strategic Initiatives - Detailed Breakdown</h3>
+                <div class="input-group"><label>Innovation Projects:</label><input type="number" value="10"><span class="result">10</span></div>
+                <div class="input-group"><label>Digital Transformation:</label><input type="number" value="10"><span class="result">10</span></div>
+                <div class="input-group"><label>Upskilling / Reskilling:</label><input type="number" value="10"><span class="result">10</span></div>
+            </div>
+
+            <div class="section" style="background: #fef5e7; border-left: 4px solid #e67e22;">
+                <h3 style="color: #e67e22;">Employee Experience - Detailed Breakdown</h3>
+                
+                <h4>Culture & ERG Activities</h4>
+                <div class="input-group"><label>ERG Member (5-10 hours annually):</label><input type="number" value="0"><span class="result">0</span></div>
+                <div class="input-group"><label>ERG Leader (60 hours annually):</label><input type="number" value="0"><span class="result">0</span></div>
+                <div class="input-group"><label>Council Member (12 hours annually):</label><input type="number" value="0"><span class="result">0</span></div>
+                <div class="input-group"><label>Culture Committee Leader (120 hours annually):</label><input type="number" value="0"><span class="result">0</span></div>
+                <div class="input-group"><label>Culture Committee Member (60 hours annually):</label><input type="number" value="0"><span class="result">0</span></div>
+                <div class="input-group"><label>Wellbeing Activities:</label><input type="number" value="2"><span class="result">2</span></div>
+                <div class="input-group"><label>Connectivity:</label><input type="number" value="8"><span class="result">8</span></div>
+                <div class="input-group"><label>Volunteer Hours:</label><input type="number" value="8"><span class="result">8</span></div>
+                
+                <h4 style="margin-top: 20px;">Optional Professional Development</h4>
+                <div class="input-group"><label>External Conferences:</label><input type="number" value="5"><span class="result">5</span></div>
+                <div class="input-group"><label>External Training:</label><input type="number" value="5"><span class="result">5</span></div>
+            </div>
+
+            <div class="export-section">
+                <h3>Export Budget Planning</h3>
+                <button class="export-btn" onclick="alert('Export detailed budget')">Export Budget CPM Spreadsheet</button>
+                <button class="export-btn sync" onclick="alert('Sync to Basic Planning')">Sync to Basic Planning</button>
+            </div>
+        </div>
+    </div>
+
+    <script>
+        function openFullscreen() {
+            const elem = document.documentElement;
+            if (elem.requestFullscreen) {
+                elem.requestFullscreen();
+            } else if (elem.webkitRequestFullscreen) {
+                elem.webkitRequestFullscreen();
+            } else if (elem.msRequestFullscreen) {
+                elem.msRequestFullscreen();
+            }
+        }
+
+        function switchToTab(evt, targetTab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            evt.currentTarget.classList.add('active');
+            document.getElementById(targetTab).classList.add('active');
+        }
+
+        function get(id) { return document.getElementById(id); }
+        function val(id) { const el = get(id); return el ? (parseInt(el.value) || 0) : 0; }
+        function set(id, v) { const el = get(id); if(el) el.textContent = v; }
+
+        function calculate() {
+            const total = val('totalHours');
+            const pct = val('billPct');
+            const bill = Math.round(total * pct / 100);
+            const indir = total - bill;
+            
+            set('totalHoursDisp', total);
+            set('billPctDisp', pct + '%');
+            set('billHrs', bill);
+            set('indirHrs', indir);
+            
+            const op = val('pto') + val('holidays') + val('essentialTravel') + val('travel') + val('reqTrain') + val('techTrain') + val('hiring') + val('admin') + val('bizAct');
+            set('opTotal', op);
+            set('opSummary', op);
+            const opShort = 300 - op;
+            set('opStatus', opShort > 0 ? opShort + ' hrs short' : '✓ Meets minimum');
+            const opBadge = get('opBadge');
+            if(opBadge) {
+                opBadge.textContent = opShort > 0 ? '✗ Below Minimum (' + opShort + ' hrs short)' : '✓ Meets Minimum';
+                opBadge.style.background = opShort > 0 ? '#fdf2f2' : '#e8f5e8';
+                opBadge.style.color = opShort > 0 ? '#e74c3c' : '#27ae60';
+            }
+            
+            const strat = val('innov') + val('digital') + val('upskill');
+            set('stratTotal', strat);
+            set('stratSummary', strat);
+            const stratShort = 40 - strat;
+            set('stratStatus', stratShort > 0 ? stratShort + ' hrs short' : '✓ Meets minimum');
+            const stratBadge = get('stratBadge');
+            if(stratBadge) {
+                stratBadge.textContent = stratShort > 0 ? '✗ Below Minimum (' + stratShort + ' hrs short)' : '✓ Meets Minimum';
+                stratBadge.style.background = stratShort > 0 ? '#fdf2f2' : '#e8f5e8';
+                stratBadge.style.color = stratShort > 0 ? '#e74c3c' : '#27ae60';
+            }
+            
+            const exp = val('connectivity') + val('erg') + val('optDev') + val('volunteer');
+            set('expTotal', exp);
+            set('expSummary', exp);
+            const expShort = 24 - exp;
+            set('expStatus', expShort > 0 ? expShort + ' hrs short' : '✓ Meets minimum');
+            const expBadge = get('expBadge');
+            if(expBadge) {
+                expBadge.textContent = expShort > 0 ? '✗ Below Minimum (' + expShort + ' hrs short)' : '✓ Meets Minimum';
+                expBadge.style.background = expShort > 0 ? '#fdf2f2' : '#e8f5e8';
+                expBadge.style.color = expShort > 0 ? '#e74c3c' : '#27ae60';
+            }
+            
+            const alloc = op + strat + exp;
+            const buff = indir - alloc;
+            set('totalAlloc', alloc);
+            set('buffer', buff);
+            set('budgetBuffer', buff);
+            
+            const msg = get('statusMsg');
+            if(msg) {
+                if (buff < 0) {
+                    msg.textContent = '⚠ Over allocated by ' + Math.abs(buff) + ' hours';
+                    msg.className = 'summary error';
+                } else if (opShort > 0 || stratShort > 0 || expShort > 0) {
+                    msg.textContent = '⚠ Review category minimums before proceeding';
+                    msg.className = 'summary warning';
+                } else {
+                    msg.textContent = '✓ All categories meet minimums, ' + buff + ' hours buffer remaining';
+                    msg.className = 'summary';
+                }
+            }
+            
+            ['pto','holidays','essentialTravel','travel','reqTrain','techTrain','hiring','admin','bizAct','innov','digital','upskill','connectivity','erg','optDev','volunteer'].forEach(function(id) {
+                set(id + 'Disp', val(id));
+            });
+        }
+
+        function applyDefaults() {
+            const type = get('employeeType').value;
+            if(type === 'PL') {
+                get('billPct').value = 50;
+                if(get('budgetPerfReviews')) {
+                    get('budgetPerfReviews').value = 20;
+                }
+            } else {
+                get('billPct').value = 80;
+                if(get('budgetPerfReviews')) {
+                    get('budgetPerfReviews').value = 4;
+                }
+            }
+            calculate();
+        }
+
+        setTimeout(calculate, 100);
+    </script>
+</body>
+</html>
                     <label>Employee Name:</label>
                     <input type="text" id="employeeName" placeholder="Enter name">
                 </div>
@@ -753,4 +743,4 @@
                     </div>
                 </div>
                 
-                <div class
+                <div class="input-group">
