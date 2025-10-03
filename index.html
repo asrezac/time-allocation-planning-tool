@@ -595,6 +595,10 @@
                 <div class="input-group"><label>Team Offsites:</label><input type="number" value="10"><span class="result">10</span></div>
             </div>
 
+            <div class="info-card">
+                <p><strong>If an employee is interested in or currently a cultural / ERG leader or leading a strategic initiative, please balance their time accordingly to support their developmental role.</strong></p>
+            </div>
+
             <div class="section" style="background: #f4ecf7; border-left: 4px solid #9b59b6;">
                 <h3 style="color: #9b59b6;">Strategic Initiatives - Detailed Breakdown</h3>
                 <div class="input-group"><label>Innovation Projects:</label><input type="number" value="15"><span class="result">15</span></div>
@@ -631,19 +635,15 @@
 
     <script>
         function openFullscreen() {
-            const elem = document.documentElement;
-            const btn = document.getElementById('fullscreenBtn');
+            // For users viewing in embedded contexts (like Igloo), open in new window
+            const currentUrl = window.location.href;
             
-            if (!document.fullscreenElement) {
-                elem.requestFullscreen().then(() => {
-                    if (btn) btn.textContent = '⛶ Exit Full Screen';
-                }).catch(err => {
-                    alert(`Error attempting to enable fullscreen: ${err.message}. Try pressing F11 on your keyboard instead.`);
-                });
-            } else {
-                document.exitFullscreen().then(() => {
-                    if (btn) btn.textContent = '⛶ Open Full Screen';
-                });
+            // Try to open in new window with generous dimensions
+            const newWindow = window.open(currentUrl, '_blank', 'width=1400,height=900,scrollbars=yes,resizable=yes,toolbar=yes,menubar=yes');
+            
+            // Fallback if popup was blocked
+            if (!newWindow || newWindow.closed || typeof newWindow.closed == 'undefined') {
+                alert('Pop-up blocked! Please allow pop-ups for this site, or use F11 for fullscreen mode.\n\nAlternatively, right-click and open this page in a new tab.');
             }
         }
         
