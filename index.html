@@ -3,7 +3,7 @@
 <head>
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
-    <title>Time Allocation Planning Tool - Complete</title>
+    <title>Time Allocation Planning Tool - Complete Working Version</title>
     <style>
         * { margin: 0; padding: 0; box-sizing: border-box; }
         body {
@@ -250,7 +250,7 @@
 
             <div class="section" style="margin-top: 30px;">
                 <h3 style="text-align: center; margin-bottom: 25px; font-size: 1.6em;">Four Categories of Time Allocation</h3>
-                <p style="text-align: center; margin-bottom: 30px; font-size: 1.05em;">All billable employees should understand that their time falls into 4 categories — all of which are business imperatives that drive productivity and growth.</p>
+                <p style="text-align: center; margin-bottom: 30px; font-size: 1.05em;">All billable employees should understand that their time falls into 4 categories - all of which are business imperatives that drive productivity and growth.</p>
                 
                 <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 25px;">
                     <div style="background: white; padding: 20px; border-radius: 10px; border: 3px solid #3498db; text-align: center;">
@@ -348,23 +348,292 @@
 
         <!-- BASIC PLANNING TAB -->
         <div id="basic" class="tab-content">
-            <p style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-size: 1.1em;">
-                <strong>✓ Tool is working!</strong> This is a simplified version. Copy this HTML file, save it as "time_allocation_tool.html" and open in your browser for the complete functional tool.
-            </p>
+            <div class="section">
+                <h3>Employee Information</h3>
+                <div class="input-group">
+                    <label>Employee Name:</label>
+                    <input type="text" id="employeeName" placeholder="Enter name">
+                </div>
+                <div class="input-group">
+                    <label>Employee Type:</label>
+                    <select id="employeeType" onchange="applyDefaults()">
+                        <option value="IC">Individual Contributor</option>
+                        <option value="PL">People Leader</option>
+                    </select>
+                </div>
+                <div class="input-group">
+                    <label>Total Working Hours (Annual):</label>
+                    <input type="number" id="totalHours" value="2080" onchange="calculate()">
+                    <span class="result" id="totalHoursDisp">2080</span>
+                </div>
+                <div class="input-group">
+                    <label>Billable Percentage (%):</label>
+                    <input type="number" id="billPct" value="80" onchange="calculate()">
+                    <span class="result" id="billPctDisp">80%</span>
+                </div>
+                <div class="input-group">
+                    <label>Billable Hours:</label>
+                    <span class="result" id="billHrs">1664</span>
+                </div>
+                <div class="input-group">
+                    <label>Total Indirect Hours Available:</label>
+                    <span class="result" id="indirHrs">416</span>
+                </div>
+            </div>
+
+            <div class="section" style="background: #e8f5e8; border-left: 4px solid #27ae60;">
+                <h3 style="color: #27ae60;">Category 2: Operational Indirect Hours</h3>
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div>
+                            <p style="font-size: 0.9em; color: #666;">Minimum Required: 300 hours</p>
+                            <p style="font-size: 1.8em; font-weight: bold; margin: 0;" id="opTotal">287</p>
+                        </div>
+                        <div id="opBadge" style="padding: 10px 20px; border-radius: 6px; background: #fdf2f2; color: #e74c3c; font-weight: bold;">
+                            ✗ Below Minimum (13 hrs short)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group"><label>PTO:</label><input type="number" id="pto" value="120" onchange="calculate()"><span class="result" id="ptoDisp">120</span></div>
+                <div class="input-group"><label>Holiday Hours:</label><input type="number" id="holidays" value="64" onchange="calculate()"><span class="result" id="holidaysDisp">64</span></div>
+                <div class="input-group"><label>Travel Time:</label><input type="number" id="travel" value="27" onchange="calculate()"><span class="result" id="travelDisp">27</span></div>
+                <div class="input-group"><label>Required Business Training:</label><input type="number" id="reqTrain" value="13" onchange="calculate()"><span class="result" id="reqTrainDisp">13</span></div>
+                <div class="input-group"><label>Technical Training:</label><input type="number" id="techTrain" value="30" onchange="calculate()"><span class="result" id="techTrainDisp">30</span></div>
+                <div class="input-group"><label>Hiring Activities:</label><input type="number" id="hiring" value="8" onchange="calculate()"><span class="result" id="hiringDisp">8</span></div>
+                <div class="input-group"><label>Administrative:</label><input type="number" id="admin" value="25" onchange="calculate()"><span class="result" id="adminDisp">25</span></div>
+                <div class="input-group"><label>Business Activities:</label><input type="number" id="bizAct" value="0" onchange="calculate()"><span class="result" id="bizActDisp">0</span></div>
+            </div>
+
+            <div class="section" style="background: #f4ecf7; border-left: 4px solid #9b59b6;">
+                <h3 style="color: #9b59b6;">Category 3: Strategic Initiatives</h3>
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div>
+                            <p style="font-size: 0.9em; color: #666;">Minimum Required: 40 hours</p>
+                            <p style="font-size: 1.8em; font-weight: bold; margin: 0;" id="stratTotal">19</p>
+                        </div>
+                        <div id="stratBadge" style="padding: 10px 20px; border-radius: 6px; background: #fdf2f2; color: #e74c3c; font-weight: bold;">
+                            ✗ Below Minimum (21 hrs short)
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group"><label>Innovation Projects:</label><input type="number" id="innov" value="10" onchange="calculate()"><span class="result" id="innovDisp">10</span></div>
+                <div class="input-group"><label>Digital Transformation:</label><input type="number" id="digital" value="9" onchange="calculate()"><span class="result" id="digitalDisp">9</span></div>
+                <div class="input-group"><label>Upskilling / Reskilling:</label><input type="number" id="upskill" value="0" onchange="calculate()"><span class="result" id="upskillDisp">0</span></div>
+            </div>
+
+            <div class="section" style="background: #fef5e7; border-left: 4px solid #e67e22;">
+                <h3 style="color: #e67e22;">Category 4: Employee Experience & Development</h3>
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
+                    <div style="display: flex; justify-content: space-between;">
+                        <div>
+                            <p style="font-size: 0.9em; color: #666;">Minimum Required: 24 hours</p>
+                            <p style="font-size: 1.8em; font-weight: bold; margin: 0;" id="expTotal">47</p>
+                        </div>
+                        <div id="expBadge" style="padding: 10px 20px; border-radius: 6px; background: #e8f5e8; color: #27ae60; font-weight: bold;">
+                            ✓ Meets Minimum
+                        </div>
+                    </div>
+                </div>
+                
+                <div class="input-group"><label>Culture & Connectivity:</label><input type="number" id="culture" value="15" onchange="calculate()"><span class="result" id="cultureDisp">15</span></div>
+                <div class="input-group"><label>ERG Participation:</label><input type="number" id="erg" value="7" onchange="calculate()"><span class="result" id="ergDisp">7</span></div>
+                <div class="input-group"><label>Wellbeing Activities:</label><input type="number" id="wellbeing" value="0" onchange="calculate()"><span class="result" id="wellbeingDisp">0</span></div>
+                <div class="input-group"><label>Optional Professional Development:</label><input type="number" id="optDev" value="17" onchange="calculate()"><span class="result" id="optDevDisp">17</span></div>
+                <div class="input-group"><label>Volunteer Hours:</label><input type="number" id="volunteer" value="8" onchange="calculate()"><span class="result" id="volunteerDisp">8</span></div>
+            </div>
+
+            <div class="section">
+                <h3>Planning Summary</h3>
+                <div style="display: grid; grid-template-columns: repeat(3, 1fr); gap: 15px; margin-bottom: 20px;">
+                    <div style="background: #e8f5e8; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid #27ae60;">
+                        <p style="font-size: 0.85em; color: #666;">Operational</p>
+                        <p style="font-size: 1.5em; font-weight: bold; color: #27ae60;" id="opSummary">287</p>
+                        <p style="font-size: 0.8em; color: #666;" id="opStatus">13 hrs short</p>
+                    </div>
+                    <div style="background: #f4ecf7; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid #9b59b6;">
+                        <p style="font-size: 0.85em; color: #666;">Strategic</p>
+                        <p style="font-size: 1.5em; font-weight: bold; color: #9b59b6;" id="stratSummary">19</p>
+                        <p style="font-size: 0.8em; color: #666;" id="stratStatus">21 hrs short</p>
+                    </div>
+                    <div style="background: #fef5e7; padding: 15px; border-radius: 8px; text-align: center; border: 2px solid #e67e22;">
+                        <p style="font-size: 0.85em; color: #666;">Employee Exp</p>
+                        <p style="font-size: 1.5em; font-weight: bold; color: #e67e22;" id="expSummary">47</p>
+                        <p style="font-size: 0.8em; color: #666;" id="expStatus">✓ Meets minimum</p>
+                    </div>
+                </div>
+                
+                <div class="input-group"><label>Total Allocated Indirect Hours:</label><span class="result" id="totalAlloc">353</span></div>
+                <div class="input-group"><label>Buffer Time Remaining:</label><span class="result" id="buffer">63</span></div>
+                <div id="statusMsg" class="summary warning">⚠ Review category minimums before proceeding</div>
+            </div>
+
+            <div class="export-section">
+                <h3>Export & Planning Tools</h3>
+                <button class="export-btn" onclick="alert('Export to CPM spreadsheet')">Export CPM Spreadsheet</button>
+                <button class="export-btn" onclick="window.print()">Print/PDF Report</button>
+            </div>
         </div>
 
         <!-- BUDGET PLANNING TAB -->
         <div id="budget" class="tab-content">
-            <p style="background: #e8f4fd; padding: 20px; border-radius: 8px; text-align: center; font-size: 1.1em;">
-                Budget Planning tab - Full version available when you save this HTML file
-            </p>
+            <div class="section">
+                <h3>Budget Planning - Detailed Breakdown</h3>
+                <p>Break down your Basic Planning categories into detailed subcategories for AOP submission.</p>
+                <div class="remaining-hours">
+                    <h4>Buffer Time Available</h4>
+                    <div class="hours-display" id="budgetBuffer">63</div>
+                </div>
+            </div>
+
+            <div class="section" style="background: #e8f5e8; border-left: 4px solid #27ae60;">
+                <h3 style="color: #27ae60;">Operational Indirect - Detailed Breakdown</h3>
+                
+                <h4>Travel Categories</h4>
+                <div class="input-group"><label>Conference Travel:</label><input type="number" value="7"><span class="result">7</span></div>
+                <div class="input-group"><label>Training Travel:</label><input type="number" value="7"><span class="result">7</span></div>
+                <div class="input-group"><label>Client Travel:</label><input type="number" value="6"><span class="result">6</span></div>
+                <div class="input-group"><label>Team Offsites Travel:</label><input type="number" value="7"><span class="result">7</span></div>
+                
+                <h4 style="margin-top: 20px;">Required Training Categories</h4>
+                <div class="input-group"><label>Compliance Training:</label><input type="number" value="4"><span class="result">4</span></div>
+                <div class="input-group"><label>Leadership Training:</label><input type="number" value="5"><span class="result">5</span></div>
+                <div class="input-group"><label>Platform/Tech Training:</label><input type="number" value="4"><span class="result">4</span></div>
+                
+                <h4 style="margin-top: 20px;">Technical Training Categories</h4>
+                <div class="input-group"><label>Certifications:</label><input type="number" value="15"><span class="result">15</span></div>
+                <div class="input-group"><label>Upskilling/Reskilling:</label><input type="number" value="15"><span class="result">15</span></div>
+                
+                <h4 style="margin-top: 20px;">Hiring Categories</h4>
+                <div class="input-group"><label>Recruiting:</label><input type="number" value="2"><span class="result">2</span></div>
+                <div class="input-group"><label>Interviewing:</label><input type="number" value="6"><span class="result">6</span></div>
+                
+                <h4 style="margin-top: 20px;">Administrative Categories</h4>
+                <div class="input-group"><label>Performance Reviews:</label><input type="number" value="7"><span class="result">7</span></div>
+                <div class="input-group"><label>Internal Reporting:</label><input type="number" value="12"><span class="result">12</span></div>
+                <div class="input-group"><label>Employee Surveys:</label><input type="number" value="6"><span class="result">6</span></div>
+                
+                <h4 style="margin-top: 20px;">Business Activities</h4>
+                <div class="input-group"><label>Team Meetings:</label><input type="number" value="26"><span class="result">26</span></div>
+                <div class="input-group"><label>Town Halls:</label><input type="number" value="6"><span class="result">6</span></div>
+                <div class="input-group"><label>Check-ins:</label><input type="number" value="16"><span class="result">16</span></div>
+                <div class="input-group"><label>Team Offsites:</label><input type="number" value="7"><span class="result">7</span></div>
+            </div>
+
+            <div class="section" style="background: #f4ecf7; border-left: 4px solid #9b59b6;">
+                <h3 style="color: #9b59b6;">Strategic Initiatives - Detailed Breakdown</h3>
+                <div class="input-group"><label>Innovation Projects:</label><input type="number" value="10"><span class="result">10</span></div>
+                <div class="input-group"><label>Digital Transformation:</label><input type="number" value="9"><span class="result">9</span></div>
+                <div class="input-group"><label>Upskilling Programs:</label><input type="number" value="0"><span class="result">0</span></div>
+            </div>
+
+            <div class="section" style="background: #fef5e7; border-left: 4px solid #e67e22;">
+                <h3 style="color: #e67e22;">Employee Experience - Detailed Breakdown</h3>
+                
+                <h4>Culture & ERG Activities</h4>
+                <div class="input-group"><label>ERG Member:</label><input type="number" value="7"><span class="result">7</span></div>
+                <div class="input-group"><label>ERG Leader:</label><input type="number" value="0"><span class="result">0</span></div>
+                <div class="input-group"><label>Wellbeing Activities:</label><input type="number" value="7"><span class="result">7</span></div>
+                <div class="input-group"><label>Connectivity/Team Building:</label><input type="number" value="8"><span class="result">8</span></div>
+                <div class="input-group"><label>Volunteer Hours:</label><input type="number" value="8"><span class="result">8</span></div>
+                
+                <h4 style="margin-top: 20px;">Optional Professional Development</h4>
+                <div class="input-group"><label>External Conferences:</label><input type="number" value="8"><span class="result">8</span></div>
+                <div class="input-group"><label>External Training:</label><input type="number" value="9"><span class="result">9</span></div>
+            </div>
+
+            <div class="export-section">
+                <h3>Export Budget Planning</h3>
+                <button class="export-btn" onclick="alert('Export detailed budget')">Export Budget CPM Spreadsheet</button>
+                <button class="export-btn sync" onclick="alert('Sync to Basic Planning')">Sync to Basic Planning</button>
+            </div>
         </div>
 
         <!-- SCENARIO PLANNING TAB -->
         <div id="scenarios" class="tab-content">
-            <p style="background: #e8f4fd; padding: 20px; border-radius: 8px; text-align: center; font-size: 1.1em;">
-                Scenario Planning tab - Full version available when you save this HTML file
-            </p>
+            <div class="section">
+                <h3>Scenario Planning & Comparisons</h3>
+                <p>Compare different allocation scenarios to understand typical allocations for billable employees.</p>
+                
+                <table>
+                    <tr>
+                        <th>Employee Type</th>
+                        <th>Billable %</th>
+                        <th>Billable Hrs</th>
+                        <th>Indirect Hrs</th>
+                        <th>Op Min</th>
+                        <th>Strat Min</th>
+                        <th>EX Min</th>
+                        <th>Buffer</th>
+                    </tr>
+                    <tr>
+                        <td>Individual Contributor</td>
+                        <td>80%</td>
+                        <td>1,664</td>
+                        <td>416</td>
+                        <td>300</td>
+                        <td>40</td>
+                        <td>24</td>
+                        <td>52</td>
+                    </tr>
+                    <tr>
+                        <td>People Leader</td>
+                        <td>50%</td>
+                        <td>1,040</td>
+                        <td>1,040</td>
+                        <td>300</td>
+                        <td>40</td>
+                        <td>24</td>
+                        <td>676</td>
+                    </tr>
+                </table>
+            </div>
+
+            <div class="section">
+                <h3>Category Minimum Requirements</h3>
+                <p>All billable employees must meet these minimum hour allocations:</p>
+                <ul style="line-height: 2;">
+                    <li><strong>Operational Indirect (300 hours):</strong> PTO, Holiday, Travel, Training, Hiring, Admin, Business Activities</li>
+                    <li><strong>Strategic Initiatives (40 hours):</strong> Innovation Projects, Digital Transformation, Upskilling/Reskilling</li>
+                    <li><strong>Employee Experience (24 hours):</strong> Culture, ERGs, Wellbeing, Connectivity, Optional Development, Volunteer</li>
+                </ul>
+            </div>
+
+            <div class="section" style="background: #e8f4fd; border-left: 4px solid #3498db;">
+                <h3>Example Scenarios</h3>
+                
+                <h4>Scenario 1: Standard Individual Contributor</h4>
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <p><strong>Profile:</strong> Mid-level IC focused on technical growth</p>
+                    <ul>
+                        <li>Operational: 300 hours (meets minimum)</li>
+                        <li>Strategic: 55 hours (40 min + 15 buffer for upskilling)</li>
+                        <li>Employee Experience: 61 hours (24 min + 37 buffer for conferences & ERG)</li>
+                    </ul>
+                </div>
+
+                <h4>Scenario 2: Culture Leader IC</h4>
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <p><strong>Profile:</strong> IC serving as ERG Leader or Culture Committee Chair</p>
+                    <ul>
+                        <li>Operational: 300 hours (meets minimum)</li>
+                        <li>Strategic: 40 hours (meets minimum)</li>
+                        <li>Employee Experience: 76 hours (includes 60+ hours for culture leadership)</li>
+                    </ul>
+                </div>
+
+                <h4>Scenario 3: People Leader</h4>
+                <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
+                    <p><strong>Profile:</strong> People Leader with team management responsibilities</p>
+                    <ul>
+                        <li>Operational: 500 hours (increased hiring, admin, business activities)</li>
+                        <li>Strategic: 140 hours (innovation and capability building)</li>
+                        <li>Employee Experience: 400 hours (team development and culture)</li>
+                    </ul>
+                </div>
+            </div>
         </div>
     </div>
 
@@ -375,6 +644,100 @@
             event.target.classList.add('active');
             document.getElementById(targetTab).classList.add('active');
         }
+
+        function get(id) { return document.getElementById(id); }
+        function val(id) { const el = get(id); return el ? (parseInt(el.value) || 0) : 0; }
+        function set(id, v) { const el = get(id); if(el) el.textContent = v; }
+
+        function calculate() {
+            const total = val('totalHours');
+            const pct = val('billPct');
+            const bill = Math.round(total * pct / 100);
+            const indir = total - bill;
+            
+            set('totalHoursDisp', total);
+            set('billPctDisp', pct + '%');
+            set('billHrs', bill);
+            set('indirHrs', indir);
+            
+            // Operational
+            const op = val('pto') + val('holidays') + val('travel') + val('reqTrain') + val('techTrain') + val('hiring') + val('admin') + val('bizAct');
+            set('opTotal', op);
+            set('opSummary', op);
+            const opShort = 300 - op;
+            set('opStatus', opShort > 0 ? opShort + ' hrs short' : '✓ Meets minimum');
+            const opBadge = get('opBadge');
+            if(opBadge) {
+                opBadge.textContent = opShort > 0 ? '✗ Below Minimum (' + opShort + ' hrs short)' : '✓ Meets Minimum';
+                opBadge.style.background = opShort > 0 ? '#fdf2f2' : '#e8f5e8';
+                opBadge.style.color = opShort > 0 ? '#e74c3c' : '#27ae60';
+            }
+            
+            // Strategic
+            const strat = val('innov') + val('digital') + val('upskill');
+            set('stratTotal', strat);
+            set('stratSummary', strat);
+            const stratShort = 40 - strat;
+            set('stratStatus', stratShort > 0 ? stratShort + ' hrs short' : '✓ Meets minimum');
+            const stratBadge = get('stratBadge');
+            if(stratBadge) {
+                stratBadge.textContent = stratShort > 0 ? '✗ Below Minimum (' + stratShort + ' hrs short)' : '✓ Meets Minimum';
+                stratBadge.style.background = stratShort > 0 ? '#fdf2f2' : '#e8f5e8';
+                stratBadge.style.color = stratShort > 0 ? '#e74c3c' : '#27ae60';
+            }
+            
+            // Experience
+            const exp = val('culture') + val('erg') + val('wellbeing') + val('optDev') + val('volunteer');
+            set('expTotal', exp);
+            set('expSummary', exp);
+            const expShort = 24 - exp;
+            set('expStatus', expShort > 0 ? expShort + ' hrs short' : '✓ Meets minimum');
+            const expBadge = get('expBadge');
+            if(expBadge) {
+                expBadge.textContent = expShort > 0 ? '✗ Below Minimum (' + expShort + ' hrs short)' : '✓ Meets Minimum';
+                expBadge.style.background = expShort > 0 ? '#fdf2f2' : '#e8f5e8';
+                expBadge.style.color = expShort > 0 ? '#e74c3c' : '#27ae60';
+            }
+            
+            // Summary
+            const alloc = op + strat + exp;
+            const buff = indir - alloc;
+            set('totalAlloc', alloc);
+            set('buffer', buff);
+            set('budgetBuffer', buff);
+            
+            const msg = get('statusMsg');
+            if(msg) {
+                if (buff < 0) {
+                    msg.textContent = '⚠ Over allocated by ' + Math.abs(buff) + ' hours';
+                    msg.className = 'summary error';
+                } else if (opShort > 0 || stratShort > 0 || expShort > 0) {
+                    msg.textContent = '⚠ Review category minimums before proceeding';
+                    msg.className = 'summary warning';
+                } else {
+                    msg.textContent = '✓ All categories meet minimums, ' + buff + ' hours buffer remaining';
+                    msg.className = 'summary';
+                }
+            }
+            
+            // Update displays
+            ['pto','holidays','travel','reqTrain','techTrain','hiring','admin','bizAct','innov','digital','upskill','culture','erg','wellbeing','optDev','volunteer'].forEach(function(id) {
+                set(id + 'Disp', val(id));
+            });
+        }
+
+        function applyDefaults() {
+            const type = get('employeeType').value;
+            if(type === 'PL') {
+                get('billPct').value = 50;
+            } else {
+                get('billPct').value = 80;
+            }
+            calculate();
+        }
+
+        // Initialize on load
+        setTimeout(calculate, 100);
     </script>
 </body>
 </html>
