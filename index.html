@@ -656,43 +656,134 @@
         }
 
         function exportToCPM() {
-            const employeeName = get('employeeName').value || 'Employee';
-            const employeeType = get('employeeType').value;
-            const totalHours = val('totalHours');
-            const billPct = val('billPct');
-            const billHrs = Math.round(totalHours * billPct / 100);
-            
-            let csvContent = "data:text/csv;charset=utf-8,";
-            csvContent += "Time Allocation Planning - CPM Export\n";
-            csvContent += "Employee Name," + employeeName + "\n";
-            csvContent += "Employee Type," + (employeeType === 'IC' ? 'Individual Contributor' : 'People Leader') + "\n";
-            csvContent += "Billable Percentage," + billPct + "%\n";
-            csvContent += "Billable Hours," + billHrs + "\n\n";
-            
-            csvContent += "Category,Subcategory,Hours\n";
-            csvContent += "Operational Indirect,PTO," + val('pto') + "\n";
-            csvContent += "Operational Indirect,Holiday Hours," + val('holidays') + "\n";
-            csvContent += "Operational Indirect,Essential Time Travel," + val('essentialTravel') + "\n";
-            csvContent += "Operational Indirect,Required Business Training," + val('reqTrain') + "\n";
-            csvContent += "Operational Indirect,Technical Training," + val('techTrain') + "\n";
-            csvContent += "Operational Indirect,Hiring Activities," + val('hiring') + "\n";
-            csvContent += "Operational Indirect,Administrative," + val('admin') + "\n";
-            csvContent += "Operational Indirect,Business Activities," + val('bizAct') + "\n";
-            csvContent += "Strategic Initiatives,Innovation Projects," + val('innov') + "\n";
-            csvContent += "Strategic Initiatives,Digital Transformation," + val('digital') + "\n";
-            csvContent += "Strategic Initiatives,Upskilling/Reskilling," + val('upskill') + "\n";
-            csvContent += "Employee Experience,Connectivity & Wellbeing," + val('connectivity') + "\n";
-            csvContent += "Employee Experience,ERG Participation," + val('erg') + "\n";
-            csvContent += "Employee Experience,Optional Professional Development," + val('optDev') + "\n";
-            csvContent += "Employee Experience,Volunteer Hours," + val('volunteer') + "\n";
-            
-            const encodedUri = encodeURI(csvContent);
-            const link = document.createElement("a");
-            link.setAttribute("href", encodedUri);
-            link.setAttribute("download", employeeName.replace(/\s+/g, '_') + "_CPM_Export.csv");
-            document.body.appendChild(link);
-            link.click();
-            document.body.removeChild(link);
+            try {
+                const employeeName = get('employeeName').value || 'Employee';
+                const employeeType = get('employeeType').value;
+                const totalHours = val('totalHours');
+                const billPct = val('billPct');
+                const billableHours = Math.round(totalHours * billPct / 100);
+                
+                // Calculate CPM Bucket Totals
+                const boldStepHours = val('innov') + val('digital') + val('upskill');
+                const ptoHours = val('pto');
+                const allOtherIndirect = val('holidays') + val('essentialTravel') + val('reqTrain') + 
+                                        val('techTrain') + val('hiring') + val('admin') + val('bizAct') + 
+                                        val('connectivity') + val('erg') + val('optDev') + val('volunteer');
+                
+                // Month percentages for 2026 based on workdays
+                const months2026 = [
+                    {month: 'January', percentage: 8.65},
+                    {month: 'February', percentage: 7.69},
+                    {month: 'March', percentage: 8.65},
+                    {month: 'April', percentage: 8.27},
+                    {month: 'May', percentage: 8.27},
+                    {month: 'June', percentage: 8.65},
+                    {month: 'July', percentage: 8.65},
+                    {month: 'August', percentage: 8.65},
+                    {month: 'September', percentage: 8.27},
+                    {month: 'October', percentage: 8.65},
+                    {month: 'November', percentage: 7.69},
+                    {month: 'December', percentage: 7.31}
+                ];
+                
+                // Build CPM data array
+                let cpmData = [];
+                
+                // Header row - employee info then months, then total
+                let headerRow = ['Budget Planning Export: ' + employeeName, 'Employee Type: ' + (employeeType === 'IC' ? 'Individual Contributor' : 'People Leader')];
+                months2026.forEach(month => headerRow.push(month.month + ' 2026'));
+                headerRow.push('Total 2026');
+                cpmData.push(headerRow);
+                
+                // Empty row
+                cpmData.push(['']);
+                
+                // Direct Override (Billable Hours)
+                cpmData.push(['Direct Override (Billable Hours)', '']);
+                let directOverrideRow = ['  Direct Override', ''];
+                let directTotal = 0;
+                months2026.forEach(month => {
+                    const monthlyHours = Math.round(billableHours * (month.percentage / 100));
+                    directOverrideRow.push(monthlyHours);
+                    directTotal += monthlyHours;
+                });
+                directOverrideRow.push(directTotal);
+                cpmData.push(directOverrideRow);
+                
+                // Empty row
+                cpmData.push(['']);
+                
+                // Bold Step Hours
+                cpmData.push(['Bold Step Hours', '']);
+                let boldStepRow = ['  Bold Step Override', ''];
+                let boldTotal = 0;
+                months2026.forEach(month => {
+                    const monthlyHours = Math.round(boldStepHours * (month.percentage / 100));
+                    boldStepRow.push(monthlyHours);
+                    boldTotal += monthlyHours;
+                });
+                boldStepRow.push(boldTotal);
+                cpmData.push(boldStepRow);
+                
+                // Empty row
+                cpmData.push(['']);
+                
+                // PTO Usage Override
+                cpmData.push(['PTO Usage Override', '']);
+                let ptoOverrideRow = ['  PTO Usage Override', ''];
+                let ptoTotal = 0;
+                months2026.forEach(month => {
+                    const monthlyHours = Math.round(ptoHours * (month.percentage / 100));
+                    ptoOverrideRow.push(monthlyHours);
+                    ptoTotal += monthlyHours;
+                });
+                ptoOverrideRow.push(ptoTotal);
+                cpmData.push(ptoOverrideRow);
+                
+                // Empty row
+                cpmData.push(['']);
+                
+                // All other Indirect Hours
+                cpmData.push(['All other Indirect Hours', '']);
+                let allOtherRow = ['  All other Indirect Override', ''];
+                let allOtherTotal = 0;
+                months2026.forEach(month => {
+                    const monthlyHours = Math.round(allOtherIndirect * (month.percentage / 100));
+                    allOtherRow.push(monthlyHours);
+                    allOtherTotal += monthlyHours;
+                });
+                allOtherRow.push(allOtherTotal);
+                cpmData.push(allOtherRow);
+                
+                // Convert to CSV format
+                let csvContent = '';
+                cpmData.forEach(row => {
+                    let csvRow = row.map(cell => {
+                        if (typeof cell === 'string' && cell.indexOf(',') !== -1) {
+                            return '"' + cell + '"';
+                        }
+                        return cell;
+                    }).join(',');
+                    csvContent += csvRow + '\n';
+                });
+                
+                // Create download
+                const blob = new Blob([csvContent], { type: 'text/csv' });
+                const url = window.URL.createObjectURL(blob);
+                const link = document.createElement('a');
+                link.href = url;
+                link.download = employeeName.replace(/\s+/g, '_') + '_CPM_Export_2026.csv';
+                document.body.appendChild(link);
+                link.click();
+                document.body.removeChild(link);
+                window.URL.revokeObjectURL(url);
+                
+                alert('CPM Export Complete!\n\nFile: ' + employeeName.replace(/\s+/g, '_') + '_CPM_Export_2026.csv\n\nYour planning data has been exported in CPM format with monthly distribution across 2026.\n\nFour CPM Buckets:\n- Direct Override (Billable): ' + directTotal + ' hrs\n- Bold Step Override: ' + boldTotal + ' hrs\n- PTO Usage Override: ' + ptoTotal + ' hrs\n- All Other Indirect: ' + allOtherTotal + ' hrs');
+                
+            } catch (error) {
+                alert('CPM export failed. Please try again or contact support.');
+                console.error('CPM Export Error:', error);
+            }
         }
 
         function syncToBasic() {
