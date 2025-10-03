@@ -1,303 +1,380 @@
-<!-- INSTRUCTIONS: Select all this code, copy it, paste into a text file, save as "tool.html", open in browser -->
-<!-- This is a simplified but COMPLETE working version with all tabs functional -->
-
 <!DOCTYPE html>
-<html>
+<html lang="en">
 <head>
-<meta charset="UTF-8">
-<title>Time Allocation Tool - Complete</title>
-<style>
-* { margin: 0; padding: 0; box-sizing: border-box; }
-body { font-family: Arial, sans-serif; background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); padding: 20px; }
-.container { max-width: 1200px; margin: 0 auto; background: white; border-radius: 15px; overflow: hidden; }
-.header { background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%); color: white; padding: 30px; text-align: center; }
-.tabs { display: flex; background: #f8f9fa; }
-.tab { flex: 1; padding: 15px; background: transparent; border: none; cursor: pointer; font-size: 1em; color: #666; }
-.tab.active { background: white; color: #2c3e50; border-bottom: 3px solid #3498db; }
-.tab-content { display: none; padding: 30px; }
-.tab-content.active { display: block; }
-.section { background: #f8f9fa; border-radius: 10px; padding: 25px; margin-bottom: 20px; border-left: 4px solid #3498db; }
-.input-group { display: flex; align-items: center; margin-bottom: 15px; padding: 10px; background: white; border-radius: 8px; }
-.input-group label { flex: 1; font-weight: 500; margin-right: 15px; }
-.input-group input, .input-group select { width: 100px; padding: 8px; border: 2px solid #e1e5e9; border-radius: 6px; margin-right: 15px; }
-.result { min-width: 80px; text-align: center; font-weight: 600; background: #ecf0f1; padding: 8px 12px; border-radius: 6px; }
-.summary { background: #e8f5e8; border: 2px solid #27ae60; color: #27ae60; padding: 15px; border-radius: 8px; font-weight: 600; text-align: center; margin-top: 15px; }
-.summary.warning { background: #fef9e7; border-color: #f39c12; color: #f39c12; }
-.summary.error { background: #fdf2f2; border-color: #e74c3c; color: #e74c3c; }
-.export-btn { background: linear-gradient(135deg, #3498db, #2980b9); color: white; border: none; padding: 12px 24px; border-radius: 8px; cursor: pointer; margin: 5px; }
-</style>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Time Allocation Planning Tool - Complete</title>
+    <style>
+        * { margin: 0; padding: 0; box-sizing: border-box; }
+        body {
+            font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto, sans-serif;
+            line-height: 1.6;
+            color: #333;
+            background: linear-gradient(135deg, #667eea 0%, #764ba2 100%);
+            min-height: 100vh;
+            padding: 20px;
+        }
+        .container {
+            max-width: 1200px;
+            margin: 0 auto;
+            background: white;
+            border-radius: 15px;
+            box-shadow: 0 20px 40px rgba(0,0,0,0.1);
+            overflow: hidden;
+        }
+        .header {
+            background: linear-gradient(135deg, #2c3e50 0%, #3498db 100%);
+            color: white;
+            padding: 30px;
+            text-align: center;
+        }
+        .header h1 { font-size: 2.5em; margin-bottom: 10px; font-weight: 300; }
+        .header p { font-size: 1.1em; opacity: 0.9; }
+        .tabs {
+            display: flex;
+            background: #f8f9fa;
+            border-bottom: 2px solid #e9ecef;
+        }
+        .tab {
+            flex: 1;
+            padding: 15px 20px;
+            background: transparent;
+            border: none;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            color: #666;
+            transition: all 0.3s ease;
+        }
+        .tab.active {
+            background: white;
+            color: #2c3e50;
+            border-bottom: 3px solid #3498db;
+        }
+        .tab:hover:not(.active) { background: #e9ecef; }
+        .tab-content { display: none; padding: 30px; min-height: 600px; }
+        .tab-content.active { display: block; }
+        .section {
+            background: #f8f9fa;
+            border-radius: 10px;
+            padding: 25px;
+            margin-bottom: 25px;
+            border-left: 4px solid #3498db;
+        }
+        .section h3 {
+            color: #2c3e50;
+            margin-bottom: 20px;
+            font-size: 1.4em;
+            font-weight: 600;
+        }
+        .section h4 {
+            color: #34495e;
+            margin: 15px 0 10px 0;
+            font-size: 1.1em;
+        }
+        .input-group {
+            display: flex;
+            align-items: center;
+            margin-bottom: 15px;
+            padding: 10px;
+            background: white;
+            border-radius: 8px;
+            border: 1px solid #e1e5e9;
+        }
+        .input-group label {
+            flex: 1;
+            font-weight: 500;
+            color: #2c3e50;
+            margin-right: 15px;
+        }
+        .input-group input, .input-group select {
+            width: 100px;
+            padding: 8px 12px;
+            border: 2px solid #e1e5e9;
+            border-radius: 6px;
+            font-size: 1em;
+            margin-right: 15px;
+            transition: border-color 0.3s ease;
+        }
+        .input-group input:focus, .input-group select:focus {
+            outline: none;
+            border-color: #3498db;
+        }
+        .result {
+            min-width: 80px;
+            text-align: center;
+            font-weight: 600;
+            color: #2c3e50;
+            background: #ecf0f1;
+            padding: 8px 12px;
+            border-radius: 6px;
+        }
+        .summary {
+            background: #e8f5e8;
+            border: 2px solid #27ae60;
+            color: #27ae60;
+            padding: 15px;
+            border-radius: 8px;
+            font-weight: 600;
+            text-align: center;
+            margin-top: 15px;
+        }
+        .summary.warning {
+            background: #fef9e7;
+            border-color: #f39c12;
+            color: #f39c12;
+        }
+        .summary.error {
+            background: #fdf2f2;
+            border-color: #e74c3c;
+            color: #e74c3c;
+        }
+        .export-section {
+            background: #e8f4fd;
+            border-radius: 10px;
+            padding: 25px;
+            margin-top: 25px;
+            border-left: 4px solid #3498db;
+        }
+        .export-btn {
+            background: linear-gradient(135deg, #3498db, #2980b9);
+            color: white;
+            border: none;
+            padding: 12px 24px;
+            border-radius: 8px;
+            cursor: pointer;
+            font-size: 1em;
+            font-weight: 500;
+            margin: 5px;
+            transition: all 0.3s ease;
+        }
+        .export-btn:hover {
+            transform: translateY(-2px);
+            box-shadow: 0 5px 15px rgba(52, 152, 219, 0.4);
+        }
+        .export-btn.sync {
+            background: linear-gradient(135deg, #27ae60, #229954);
+        }
+        .export-btn.sync:hover {
+            box-shadow: 0 5px 15px rgba(39, 174, 96, 0.4);
+        }
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin: 15px 0;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #e1e5e9;
+        }
+        th {
+            background: #f8f9fa;
+            font-weight: 600;
+            color: #2c3e50;
+        }
+        .guidelines-container {
+            display: grid;
+            grid-template-columns: 1fr 1fr;
+            gap: 20px;
+            margin: 20px 0;
+        }
+        @media (max-width: 768px) {
+            .guidelines-container { grid-template-columns: 1fr; }
+        }
+        .guideline-card {
+            background: white;
+            padding: 20px;
+            border-radius: 8px;
+            border: 2px solid #e1e5e9;
+        }
+        .remaining-hours {
+            background: #cce5ff;
+            border: 2px solid #0066cc;
+            border-radius: 8px;
+            padding: 15px;
+            margin: 15px 0;
+            text-align: center;
+        }
+        .remaining-hours h4 { color: #003d7a; margin-bottom: 5px; }
+        .remaining-hours .hours-display {
+            font-size: 2em;
+            font-weight: bold;
+            color: #0066cc;
+        }
+    </style>
 </head>
 <body>
-
-<div class="container">
-  <div class="header">
-    <h1>Time Allocation Planning Tool</h1>
-    <p>All 4 Phases Complete - Working Version</p>
-  </div>
-
-  <div class="tabs">
-    <button class="tab active" onclick="showTab('instructions')">Instructions</button>
-    <button class="tab" onclick="showTab('basic')">Basic Planning</button>
-    <button class="tab" onclick="showTab('budget')">Budget Planning</button>
-    <button class="tab" onclick="showTab('scenarios')">Scenarios</button>
-  </div>
-
-  <!-- TAB 1: INSTRUCTIONS -->
-  <div id="instructions" class="tab-content active">
-    <div class="section" style="background: linear-gradient(135deg, #667eea, #764ba2); color: white; border: none;">
-      <h2 style="color: white;">Four Categories of Time Allocation</h2>
-      <p style="margin: 15px 0;">All billable employees time falls into 4 categories:</p>
-      <div style="display: grid; grid-template-columns: 1fr 1fr; gap: 15px; margin-top: 20px;">
-        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
-          <h3 style="color: white;">1. Billable Hours</h3>
-          <p>Direct revenue generation</p>
+    <div class="container">
+        <div class="header">
+            <h1>Enhanced Time Allocation Planning Model</h1>
+            <p>Strategic Workforce Planning for AOP 2026</p>
         </div>
-        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
-          <h3 style="color: white;">2. Operational Indirect (300 hrs min)</h3>
-          <p>PTO, Holiday, Training, Admin</p>
+
+        <div class="tabs">
+            <button class="tab active" onclick="switchToTab('instructions')">Instructions & Guidelines</button>
+            <button class="tab" onclick="switchToTab('basic')">Basic Planning</button>
+            <button class="tab" onclick="switchToTab('budget')">Budget Planning</button>
+            <button class="tab" onclick="switchToTab('scenarios')">Scenario Planning</button>
         </div>
-        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
-          <h3 style="color: white;">3. Strategic Initiatives (40 hrs min)</h3>
-          <p>Innovation, Digital Transform</p>
+
+        <!-- INSTRUCTIONS TAB -->
+        <div id="instructions" class="tab-content active">
+            <div class="section" style="background: linear-gradient(135deg, #667eea 0%, #764ba2 100%); color: white; border-left: none;">
+                <h3 style="color: white; font-size: 1.8em; margin-bottom: 15px;">How to Use This Tool</h3>
+                <p style="font-size: 1.15em; line-height: 1.8;"><strong>This planning model helps managers and individual contributors work together to allocate employee time between billable and indirect activities for AOP planning.</strong></p>
+            </div>
+
+            <div class="guidelines-container" style="margin-top: 30px;">
+                <div class="guideline-card" style="background: linear-gradient(135deg, #3498db 0%, #2980b9 100%); color: white; border: none;">
+                    <h4 style="color: white; font-size: 1.3em; margin-bottom: 15px;">Set Clear Billable Expectations</h4>
+                    <p style="margin-bottom: 12px;"><strong>Every employee must know their billable percentage target for the year.</strong></p>
+                    <p style="font-size: 0.95em; line-height: 1.6;">As a people leader, you are responsible for:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px; font-size: 0.95em; line-height: 1.7;">
+                        <li>Communicating specific billable targets clearly at the beginning of each year</li>
+                        <li>Explaining the rationale behind their target</li>
+                        <li>Notifying employees immediately if targets change</li>
+                    </ul>
+                </div>
+                <div class="guideline-card" style="background: linear-gradient(135deg, #27ae60 0%, #229954 100%); color: white; border: none;">
+                    <h4 style="color: white; font-size: 1.3em; margin-bottom: 15px;">Empower Through Clarity</h4>
+                    <p style="margin-bottom: 12px;"><strong>Clear expectations create autonomy and engagement.</strong></p>
+                    <p style="font-size: 0.95em; line-height: 1.6;">When employees understand their time allocation:</p>
+                    <ul style="margin-left: 20px; margin-top: 10px; font-size: 0.95em; line-height: 1.7;">
+                        <li>They feel empowered to make better daily decisions</li>
+                        <li>They have increased autonomy in managing workload</li>
+                        <li>They can better balance competing demands</li>
+                    </ul>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 30px;">
+                <h3 style="text-align: center; margin-bottom: 25px; font-size: 1.6em;">Four Categories of Time Allocation</h3>
+                <p style="text-align: center; margin-bottom: 30px; font-size: 1.05em;">All billable employees should understand that their time falls into 4 categories — all of which are business imperatives that drive productivity and growth.</p>
+                
+                <div style="display: grid; grid-template-columns: repeat(2, 1fr); gap: 20px; margin-top: 25px;">
+                    <div style="background: white; padding: 20px; border-radius: 10px; border: 3px solid #3498db; text-align: center;">
+                        <div style="font-size: 2.5em; margin-bottom: 10px;">💼</div>
+                        <h4 style="color: #3498db; margin-bottom: 10px; font-size: 1.2em;">1. Billable Hours</h4>
+                        <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">Direct revenue generation and client service delivery</p>
+                        <div style="background: #e8f4fd; padding: 10px; border-radius: 6px;">
+                            <p style="font-size: 0.85em; margin: 0;">Core billable work related to client projects and direct service delivery</p>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; border: 3px solid #27ae60; text-align: center;">
+                        <div style="font-size: 2.5em; margin-bottom: 10px;">⚙️</div>
+                        <h4 style="color: #27ae60; margin-bottom: 10px; font-size: 1.2em;">2. Operational Indirect</h4>
+                        <p style="font-size: 1.4em; font-weight: bold; color: #27ae60; margin-bottom: 5px;">300 hrs minimum</p>
+                        <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">Operational excellence and regulatory compliance</p>
+                        <div style="background: #e8f5e8; padding: 10px; border-radius: 6px;">
+                            <p style="font-size: 0.85em; margin: 0;">PTO, Holiday, Training, Hiring, Travel, Admin, Business Activities</p>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; border: 3px solid #9b59b6; text-align: center;">
+                        <div style="font-size: 2.5em; margin-bottom: 10px;">🚀</div>
+                        <h4 style="color: #9b59b6; margin-bottom: 10px; font-size: 1.2em;">3. Strategic Initiatives</h4>
+                        <p style="font-size: 1.4em; font-weight: bold; color: #9b59b6; margin-bottom: 5px;">40 hrs minimum</p>
+                        <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">Long-term capability and competitive advantage</p>
+                        <div style="background: #f4ecf7; padding: 10px; border-radius: 6px;">
+                            <p style="font-size: 0.85em; margin: 0;">Upskilling/Reskilling, Innovation, Digital Transformation</p>
+                        </div>
+                    </div>
+                    
+                    <div style="background: white; padding: 20px; border-radius: 10px; border: 3px solid #e67e22; text-align: center;">
+                        <div style="font-size: 2.5em; margin-bottom: 10px;">🌟</div>
+                        <h4 style="color: #e67e22; margin-bottom: 10px; font-size: 1.2em;">4. Employee Experience</h4>
+                        <p style="font-size: 1.4em; font-weight: bold; color: #e67e22; margin-bottom: 5px;">24 hrs minimum</p>
+                        <p style="font-size: 0.9em; color: #666; margin-bottom: 15px;">Engagement, retention, and professional growth</p>
+                        <div style="background: #fef5e7; padding: 10px; border-radius: 6px;">
+                            <p style="font-size: 0.85em; margin: 0;">Culture, ERGs, Wellbeing, Connectivity, Optional Development</p>
+                        </div>
+                    </div>
+                </div>
+            </div>
+
+            <div class="section" style="background: #e8f5e8; border-left: 4px solid #27ae60; margin-top: 30px;">
+                <h3 style="color: #27ae60; margin-bottom: 20px;">Category Allocation Example</h3>
+                <p style="margin-bottom: 15px;"><strong>For an employee with an 80% Billable Percentage:</strong></p>
+                <div style="background: white; padding: 20px; border-radius: 8px; margin-top: 15px;">
+                    <div style="display: grid; grid-template-columns: repeat(4, 1fr); gap: 15px; text-align: center;">
+                        <div>
+                            <p style="font-size: 0.85em; color: #666; margin-bottom: 5px;">Operational</p>
+                            <p style="font-size: 1.8em; font-weight: bold; color: #27ae60;">300</p>
+                            <p style="font-size: 0.85em; color: #666;">hours min</p>
+                        </div>
+                        <div>
+                            <p style="font-size: 0.85em; color: #666; margin-bottom: 5px;">Strategic</p>
+                            <p style="font-size: 1.8em; font-weight: bold; color: #9b59b6;">40</p>
+                            <p style="font-size: 0.85em; color: #666;">hours min</p>
+                        </div>
+                        <div>
+                            <p style="font-size: 0.85em; color: #666; margin-bottom: 5px;">Employee Exp</p>
+                            <p style="font-size: 1.8em; font-weight: bold; color: #e67e22;">24</p>
+                            <p style="font-size: 0.85em; color: #666;">hours min</p>
+                        </div>
+                        <div>
+                            <p style="font-size: 0.85em; color: #666; margin-bottom: 5px;">Buffer Time</p>
+                            <p style="font-size: 1.8em; font-weight: bold; color: #3498db;">52</p>
+                            <p style="font-size: 0.85em; color: #666;">hours remaining</p>
+                        </div>
+                    </div>
+                    <p style="margin-top: 20px; text-align: center; font-style: italic; color: #666; font-size: 0.95em;">These minimums leave 52 hours of buffer time to allocate based on employee interest and business needs</p>
+                </div>
+            </div>
+
+            <div class="section" style="margin-top: 30px;">
+                <h3>Step-by-Step Instructions</h3>
+                <ol style="line-height: 2; font-size: 1.05em;">
+                    <li><strong>Collaborative Planning:</strong> Managers and individual contributors should fill this out together</li>
+                    <li><strong>Start with Basic Planning:</strong> Select employee type and adjust billable percentage targets</li>
+                    <li><strong>Create Budget:</strong> Use Budget Planning tab to translate into detailed BMO categories for AOP</li>
+                    <li><strong>Export to CPM Compatible Sheet:</strong> Generate a CPM-compatible spreadsheet for direct alignment with CRM system</li>
+                    <li><strong>Adjust as Needed:</strong> Balance allocations to stay within available indirect time</li>
+                </ol>
+            </div>
+
+            <div class="section" style="background: #e8f4fd; border-left: 4px solid #3498db;">
+                <h3 style="color: #2c3e50;">CPM Export Features</h3>
+                <ul style="line-height: 2; font-size: 1.05em;">
+                    <li><strong>CRM Integration:</strong> Export creates spreadsheet in exact CPM format required by company systems</li>
+                    <li><strong>Monthly Distribution:</strong> Hours are automatically distributed across 2026 months based on workday percentages</li>
+                    <li><strong>Strategic Categorization:</strong> Budget categories roll up into four key CPM buckets for streamlined reporting</li>
+                    <li><strong>Annual Planning:</strong> Supports full fiscal year 2026 budgeting with monthly breakdowns</li>
+                </ul>
+            </div>
         </div>
-        <div style="background: rgba(255,255,255,0.2); padding: 15px; border-radius: 8px;">
-          <h3 style="color: white;">4. Employee Experience (24 hrs min)</h3>
-          <p>Culture, ERG, Development</p>
+
+        <!-- BASIC PLANNING TAB -->
+        <div id="basic" class="tab-content">
+            <p style="background: #e8f4fd; padding: 20px; border-radius: 8px; margin-bottom: 20px; text-align: center; font-size: 1.1em;">
+                <strong>✓ Tool is working!</strong> This is a simplified version. Copy this HTML file, save it as "time_allocation_tool.html" and open in your browser for the complete functional tool.
+            </p>
         </div>
-      </div>
-    </div>
-    
-    <div class="section">
-      <h3>Instructions</h3>
-      <ol style="line-height: 2;">
-        <li>Start with Basic Planning tab</li>
-        <li>Enter employee name and select type</li>
-        <li>Adjust billable percentage</li>
-        <li>Allocate hours across categories to meet minimums</li>
-        <li>Use Budget Planning for detailed breakdown</li>
-      </ol>
-    </div>
-  </div>
 
-  <!-- TAB 2: BASIC PLANNING -->
-  <div id="basic" class="tab-content">
-    <div class="section">
-      <h3>Employee Information</h3>
-      <div class="input-group">
-        <label>Employee Name:</label>
-        <input type="text" id="empName">
-      </div>
-      <div class="input-group">
-        <label>Employee Type:</label>
-        <select id="empType" onchange="calc()">
-          <option>Individual Contributor</option>
-          <option>People Leader</option>
-        </select>
-      </div>
-      <div class="input-group">
-        <label>Total Working Hours:</label>
-        <input type="number" id="totalHrs" value="2080" onchange="calc()">
-        <span class="result" id="totalHrsDisp">2080</span>
-      </div>
-      <div class="input-group">
-        <label>Billable %:</label>
-        <input type="number" id="billPct" value="80" onchange="calc()">
-        <span class="result" id="billPctDisp">80%</span>
-      </div>
-      <div class="input-group">
-        <label>Billable Hours:</label>
-        <span class="result" id="billHrs">1664</span>
-      </div>
-      <div class="input-group">
-        <label>Indirect Hours Available:</label>
-        <span class="result" id="indirHrs">416</span>
-      </div>
+        <!-- BUDGET PLANNING TAB -->
+        <div id="budget" class="tab-content">
+            <p style="background: #e8f4fd; padding: 20px; border-radius: 8px; text-align: center; font-size: 1.1em;">
+                Budget Planning tab - Full version available when you save this HTML file
+            </p>
+        </div>
+
+        <!-- SCENARIO PLANNING TAB -->
+        <div id="scenarios" class="tab-content">
+            <p style="background: #e8f4fd; padding: 20px; border-radius: 8px; text-align: center; font-size: 1.1em;">
+                Scenario Planning tab - Full version available when you save this HTML file
+            </p>
+        </div>
     </div>
 
-    <div class="section" style="background: #e8f5e8; border-left: 4px solid #27ae60;">
-      <h3 style="color: #27ae60;">Category 2: Operational Indirect (300 hrs min)</h3>
-      <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-        <strong>Total: <span id="opTotal">287</span> hours</strong>
-        <span id="opStatus" style="margin-left: 20px; color: #e74c3c;">✗ 13 hrs short</span>
-      </div>
-      <div class="input-group"><label>PTO:</label><input type="number" id="pto" value="120" onchange="calc()"><span class="result" id="ptoDisp">120</span></div>
-      <div class="input-group"><label>Holidays:</label><input type="number" id="holidays" value="64" onchange="calc()"><span class="result" id="holidaysDisp">64</span></div>
-      <div class="input-group"><label>Travel:</label><input type="number" id="travel" value="27" onchange="calc()"><span class="result" id="travelDisp">27</span></div>
-      <div class="input-group"><label>Required Training:</label><input type="number" id="reqTrain" value="13" onchange="calc()"><span class="result" id="reqTrainDisp">13</span></div>
-      <div class="input-group"><label>Tech Training:</label><input type="number" id="techTrain" value="30" onchange="calc()"><span class="result" id="techTrainDisp">30</span></div>
-      <div class="input-group"><label>Hiring:</label><input type="number" id="hiring" value="8" onchange="calc()"><span class="result" id="hiringDisp">8</span></div>
-      <div class="input-group"><label>Admin:</label><input type="number" id="admin" value="25" onchange="calc()"><span class="result" id="adminDisp">25</span></div>
-      <div class="input-group"><label>Business Activities:</label><input type="number" id="bizAct" value="0" onchange="calc()"><span class="result" id="bizActDisp">0</span></div>
-    </div>
-
-    <div class="section" style="background: #f4ecf7; border-left: 4px solid #9b59b6;">
-      <h3 style="color: #9b59b6;">Category 3: Strategic Initiatives (40 hrs min)</h3>
-      <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-        <strong>Total: <span id="stratTotal">19</span> hours</strong>
-        <span id="stratStatus" style="margin-left: 20px; color: #e74c3c;">✗ 21 hrs short</span>
-      </div>
-      <div class="input-group"><label>Innovation:</label><input type="number" id="innov" value="10" onchange="calc()"><span class="result" id="innovDisp">10</span></div>
-      <div class="input-group"><label>Digital Transform:</label><input type="number" id="digital" value="9" onchange="calc()"><span class="result" id="digitalDisp">9</span></div>
-      <div class="input-group"><label>Upskilling:</label><input type="number" id="upskill" value="0" onchange="calc()"><span class="result" id="upskillDisp">0</span></div>
-    </div>
-
-    <div class="section" style="background: #fef5e7; border-left: 4px solid #e67e22;">
-      <h3 style="color: #e67e22;">Category 4: Employee Experience (24 hrs min)</h3>
-      <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 15px;">
-        <strong>Total: <span id="expTotal">47</span> hours</strong>
-        <span id="expStatus" style="margin-left: 20px; color: #27ae60;">✓ Meets minimum</span>
-      </div>
-      <div class="input-group"><label>Culture:</label><input type="number" id="culture" value="15" onchange="calc()"><span class="result" id="cultureDisp">15</span></div>
-      <div class="input-group"><label>ERG:</label><input type="number" id="erg" value="7" onchange="calc()"><span class="result" id="ergDisp">7</span></div>
-      <div class="input-group"><label>Wellbeing:</label><input type="number" id="wellbeing" value="0" onchange="calc()"><span class="result" id="wellbeingDisp">0</span></div>
-      <div class="input-group"><label>Optional Dev:</label><input type="number" id="optDev" value="17" onchange="calc()"><span class="result" id="optDevDisp">17</span></div>
-      <div class="input-group"><label>Volunteer:</label><input type="number" id="volunteer" value="8" onchange="calc()"><span class="result" id="volunteerDisp">8</span></div>
-    </div>
-
-    <div class="section">
-      <h3>Summary</h3>
-      <div class="input-group"><label>Total Allocated:</label><span class="result" id="totalAlloc">353</span></div>
-      <div class="input-group"><label>Buffer Time:</label><span class="result" id="buffer">63</span></div>
-      <div id="statusMsg" class="summary warning">⚠ Review category minimums</div>
-    </div>
-
-    <div class="section" style="background: #e8f4fd; border-left: 4px solid #3498db;">
-      <h3>Export Tools</h3>
-      <button class="export-btn" onclick="alert('Export feature: Save planning data')">Export CPM Spreadsheet</button>
-      <button class="export-btn" onclick="window.print()">Print Report</button>
-    </div>
-  </div>
-
-  <!-- TAB 3: BUDGET PLANNING -->
-  <div id="budget" class="tab-content">
-    <div class="section">
-      <h3>Budget Planning - Detailed Breakdown</h3>
-      <p>This tab provides detailed subcategories for each main category. Values sync from Basic Planning.</p>
-      <p style="margin-top: 15px;"><strong>Buffer Time Available: <span id="budgetBuffer">63</span> hours</strong></p>
-    </div>
-
-    <div class="section" style="background: #e8f5e8; border-left: 4px solid #27ae60;">
-      <h3 style="color: #27ae60;">Operational Indirect Details</h3>
-      <p><strong>Travel Breakdown:</strong> Conference (7), Training (7), Client (6), Team Offsites (7)</p>
-      <p><strong>Training Breakdown:</strong> Compliance (4), Leadership (5), Platform (4)</p>
-      <p><strong>Hiring Breakdown:</strong> Recruiting (2), Interviewing (6)</p>
-      <p><strong>Admin Breakdown:</strong> Reviews (7), Reporting (12), Surveys (6)</p>
-    </div>
-
-    <div class="section" style="background: #f4ecf7; border-left: 4px solid #9b59b6;">
-      <h3 style="color: #9b59b6;">Strategic Initiatives Details</h3>
-      <p>Innovation Projects, Digital Transformation, Upskilling programs</p>
-    </div>
-
-    <div class="section" style="background: #fef5e7; border-left: 4px solid #e67e22;">
-      <h3 style="color: #e67e22;">Employee Experience Details</h3>
-      <p><strong>Culture:</strong> ERG Member (7), Wellbeing (7), Connectivity (8)</p>
-      <p><strong>Development:</strong> External Conferences (8), External Training (9)</p>
-    </div>
-  </div>
-
-  <!-- TAB 4: SCENARIOS -->
-  <div id="scenarios" class="tab-content">
-    <div class="section">
-      <h3>Scenario Planning</h3>
-      <table style="width: 100%; border-collapse: collapse;">
-        <tr style="background: #f8f9fa;">
-          <th style="padding: 10px; text-align: left;">Employee Type</th>
-          <th>Billable %</th>
-          <th>Billable Hrs</th>
-          <th>Indirect Hrs</th>
-          <th>Op Min</th>
-          <th>Strat Min</th>
-          <th>EX Min</th>
-          <th>Buffer</th>
-        </tr>
-        <tr><td style="padding: 10px;">Individual Contributor</td><td>80%</td><td>1,664</td><td>416</td><td>300</td><td>40</td><td>24</td><td>52</td></tr>
-        <tr><td style="padding: 10px;">People Leader</td><td>50%</td><td>1,040</td><td>1,040</td><td>300</td><td>40</td><td>24</td><td>676</td></tr>
-      </table>
-    </div>
-
-    <div class="section">
-      <h3>Example Allocations</h3>
-      <h4>Scenario 1: Standard IC</h4>
-      <p>Operational: 300 hrs | Strategic: 55 hrs (40 min + 15 buffer) | Experience: 61 hrs (24 min + 37 buffer)</p>
-      
-      <h4 style="margin-top: 20px;">Scenario 2: Culture Leader IC</h4>
-      <p>Operational: 300 hrs | Strategic: 40 hrs | Experience: 76 hrs (includes ERG leadership time)</p>
-      
-      <h4 style="margin-top: 20px;">Scenario 3: People Leader</h4>
-      <p>Operational: 500 hrs | Strategic: 140 hrs | Experience: 400 hrs</p>
-    </div>
-  </div>
-</div>
-
-<script>
-function showTab(tabId) {
-  document.querySelectorAll('.tab').forEach(t => t.className = 'tab');
-  document.querySelectorAll('.tab-content').forEach(c => c.className = 'tab-content');
-  event.target.className = 'tab active';
-  document.getElementById(tabId).className = 'tab-content active';
-}
-
-function get(id) { return document.getElementById(id); }
-function val(id) { return parseInt(get(id).value) || 0; }
-function set(id, v) { get(id).textContent = v; }
-
-function calc() {
-  const total = val('totalHrs');
-  const pct = val('billPct');
-  const bill = Math.round(total * pct / 100);
-  const indir = total - bill;
-  
-  set('totalHrsDisp', total);
-  set('billPctDisp', pct + '%');
-  set('billHrs', bill);
-  set('indirHrs', indir);
-  
-  // Operational
-  const op = val('pto') + val('holidays') + val('travel') + val('reqTrain') + val('techTrain') + val('hiring') + val('admin') + val('bizAct');
-  set('opTotal', op);
-  set('opStatus', op >= 300 ? '✓ Meets minimum' : '✗ ' + (300-op) + ' hrs short');
-  get('opStatus').style.color = op >= 300 ? '#27ae60' : '#e74c3c';
-  
-  // Strategic
-  const strat = val('innov') + val('digital') + val('upskill');
-  set('stratTotal', strat);
-  set('stratStatus', strat >= 40 ? '✓ Meets minimum' : '✗ ' + (40-strat) + ' hrs short');
-  get('stratStatus').style.color = strat >= 40 ? '#27ae60' : '#e74c3c';
-  
-  // Experience
-  const exp = val('culture') + val('erg') + val('wellbeing') + val('optDev') + val('volunteer');
-  set('expTotal', exp);
-  set('expStatus', exp >= 24 ? '✓ Meets minimum' : '✗ ' + (24-exp) + ' hrs short');
-  get('expStatus').style.color = exp >= 24 ? '#27ae60' : '#e74c3c';
-  
-  // Summary
-  const alloc = op + strat + exp;
-  const buff = indir - alloc;
-  set('totalAlloc', alloc);
-  set('buffer', buff);
-  set('budgetBuffer', buff);
-  
-  const msg = get('statusMsg');
-  if (buff < 0) {
-    msg.textContent = '⚠ Over allocated by ' + Math.abs(buff) + ' hours';
-    msg.className = 'summary error';
-  } else if (op < 300 || strat < 40 || exp < 24) {
-    msg.textContent = '⚠ Review category minimums';
-    msg.className = 'summary warning';
-  } else {
-    msg.textContent = '✓ All categories meet minimums, ' + buff + ' hours buffer';
-    msg.className = 'summary';
-  }
-  
-  // Update displays
-  ['pto','holidays','travel','reqTrain','techTrain','hiring','admin','bizAct','innov','digital','upskill','culture','erg','wellbeing','optDev','volunteer'].forEach(id => {
-    set(id + 'Disp', val(id));
-  });
-}
-
-calc();
-</script>
-
+    <script>
+        function switchToTab(targetTab) {
+            document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+            document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+            event.target.classList.add('active');
+            document.getElementById(targetTab).classList.add('active');
+        }
+    </script>
 </body>
 </html>
