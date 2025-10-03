@@ -35,19 +35,23 @@
             position: absolute;
             top: 20px;
             right: 20px;
-            background: rgba(255,255,255,0.2);
+            background: rgba(255,255,255,0.3);
             color: white;
             border: 2px solid white;
-            padding: 10px 20px;
+            padding: 12px 24px;
             border-radius: 6px;
             cursor: pointer;
-            font-size: 0.9em;
-            font-weight: 500;
+            font-size: 1em;
+            font-weight: 600;
             transition: all 0.3s ease;
             z-index: 100;
         }
         .fullscreen-btn:hover {
-            background: rgba(255,255,255,0.3);
+            background: rgba(255,255,255,0.5);
+            transform: scale(1.05);
+        }
+        .fullscreen-btn:active {
+            transform: scale(0.95);
         }
         .tabs {
             display: flex;
@@ -239,7 +243,7 @@
 <body>
     <div class="container">
         <div class="header">
-            <button class="fullscreen-btn" onclick="openFullscreen()">Open Full Screen</button>
+            <button class="fullscreen-btn" id="fullscreenBtn">⛶ Open Full Screen</button>
             <h1>Time Allocation Planning Model</h1>
             <p>Strategic Workforce Planning for AOP 2026</p>
         </div>
@@ -477,10 +481,6 @@
                 <p><strong>If an employee is interested in or currently a cultural / ERG leader or leading a strategic initiative, please balance their time accordingly to support their developmental role.</strong></p>
             </div>
 
-            <div class="info-card">
-                <p><strong>If an employee is interested in or currently a cultural / ERG leader or leading a strategic initiative, please balance their time accordingly to support their developmental role.</strong></p>
-            </div>
-
             <div class="section" style="background: #f4ecf7; border-left: 4px solid #9b59b6;">
                 <h3 style="color: #9b59b6;">Category 3: Strategic Initiatives</h3>
                 <div style="background: white; padding: 15px; border-radius: 8px; margin-bottom: 20px;">
@@ -632,42 +632,27 @@
     <script>
         function openFullscreen() {
             const elem = document.documentElement;
+            const btn = document.getElementById('fullscreenBtn');
             
-            try {
-                if (!document.fullscreenElement && !document.webkitFullscreenElement && 
-                    !document.mozFullScreenElement && !document.msFullscreenElement) {
-                    // Try to enter fullscreen
-                    if (elem.requestFullscreen) {
-                        elem.requestFullscreen().catch(err => {
-                            console.log('Fullscreen error:', err);
-                            alert('Fullscreen mode is not available in this environment. For fullscreen functionality, please save this HTML file and open it in your browser.');
-                        });
-                    } else if (elem.webkitRequestFullscreen) {
-                        elem.webkitRequestFullscreen();
-                    } else if (elem.mozRequestFullScreen) {
-                        elem.mozRequestFullScreen();
-                    } else if (elem.msRequestFullscreen) {
-                        elem.msRequestFullscreen();
-                    } else {
-                        alert('Fullscreen mode is not supported in this browser or environment.');
-                    }
-                } else {
-                    // Exit fullscreen
-                    if (document.exitFullscreen) {
-                        document.exitFullscreen();
-                    } else if (document.webkitExitFullscreen) {
-                        document.webkitExitFullscreen();
-                    } else if (document.mozCancelFullScreen) {
-                        document.mozCancelFullScreen();
-                    } else if (document.msExitFullscreen) {
-                        document.msExitFullscreen();
-                    }
-                }
-            } catch (err) {
-                console.log('Fullscreen error:', err);
-                alert('Unable to enter fullscreen mode. This may be restricted in embedded environments. Try opening this file in a standalone browser tab.');
+            if (!document.fullscreenElement) {
+                elem.requestFullscreen().then(() => {
+                    if (btn) btn.textContent = '⛶ Exit Full Screen';
+                }).catch(err => {
+                    alert(`Error attempting to enable fullscreen: ${err.message}. Try pressing F11 on your keyboard instead.`);
+                });
+            } else {
+                document.exitFullscreen().then(() => {
+                    if (btn) btn.textContent = '⛶ Open Full Screen';
+                });
             }
         }
+        
+        document.addEventListener('DOMContentLoaded', function() {
+            const btn = document.getElementById('fullscreenBtn');
+            if (btn) {
+                btn.addEventListener('click', openFullscreen);
+            }
+        });
 
         function exportToCPM() {
             try {
